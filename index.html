@@ -1,0 +1,161 @@
+﻿<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Roadmap Hub — System Design + ML Plan</title>
+  <style>
+    html, body, #root { height: 100%; margin: 0; }
+    body { background: #0A0A0F; color: #E8E8F0; font-family: 'DM Sans', 'Segoe UI', sans-serif; }
+    button { font: inherit; }
+  </style>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" src="./system_design_roadmap.jsx?v=3"></script>
+  <script type="text/babel" src="./ml_6month_focused.jsx?v=3"></script>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    function App() {
+      const [page, setPage] = useState('home');
+      const [user, setUser] = useState(localStorage.getItem('roadmapUser') || '');
+      const [nameInput, setNameInput] = useState('');
+
+      useEffect(() => {
+        if (user) {
+          localStorage.setItem('roadmapUser', user);
+        } else {
+          localStorage.removeItem('roadmapUser');
+        }
+      }, [user]);
+
+      if (!user) {
+        return (
+          <div style={{ minHeight: '100vh', background: '#0A0A0F', color: '#E8E8F0', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
+            <div style={{ width: '100%', maxWidth: 540, textAlign: 'center', background: '#11131B', border: '1px solid #24283B', borderRadius: 20, padding: '36px 28px' }}>
+              <div style={{ fontSize: 10, letterSpacing: 3, color: '#6B7280', marginBottom: 14 }}>ROADMAP HUB LOGIN</div>
+              <div style={{ fontSize: 28, fontWeight: 800, marginBottom: 12 }}>Welcome back</div>
+              <div style={{ fontSize: 14, color: '#9CA3AF', lineHeight: 1.7, marginBottom: 24 }}>
+                Enter a name to save checklist progress in this browser. This is a lightweight profile for your roadmap progress.
+              </div>
+              <input
+                value={nameInput}
+                onChange={(e) => setNameInput(e.target.value)}
+                placeholder="Your name"
+                style={{ width: '100%', padding: '14px 16px', borderRadius: 12, border: '1px solid #2A2A3E', background: '#0D111B', color: '#E8E8F0', fontSize: 14, outline: 'none', marginBottom: 16 }}
+              />
+              <button
+                onClick={() => setUser(nameInput.trim())}
+                disabled={!nameInput.trim()}
+                style={{ width: '100%', padding: '14px 16px', borderRadius: 12, border: 'none', background: '#2563EB', color: '#fff', fontWeight: 700, cursor: nameInput.trim() ? 'pointer' : 'not-allowed' }}
+              >
+                Sign in
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      return (
+        <div style={{ minHeight: '100vh', background: '#0A0A0F', color: '#E8E8F0', padding: '20px 16px' }}>
+          <div style={{ maxWidth: 1080, margin: '0 auto' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: 24 }}>
+              <div>
+                <div style={{ fontSize: 10, letterSpacing: 3, color: '#6B7280', marginBottom: 6 }}>ROADMAP HUB</div>
+                <div style={{ fontSize: 32, fontWeight: 800, lineHeight: 1.05 }}>System Design + ML Plan</div>
+              </div>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+                <button onClick={() => setPage('home')} style={{ background: page === 'home' ? '#2563EB' : 'transparent', color: page === 'home' ? '#fff' : '#9CA3AF', border: page === 'home' ? 'none' : '1px solid #2A2A3E', borderRadius: 8, padding: '10px 14px', cursor: 'pointer' }}>Home</button>
+                <button onClick={() => setPage('system')} style={{ background: page === 'system' ? '#7C3AED' : 'transparent', color: page === 'system' ? '#fff' : '#9CA3AF', border: page === 'system' ? 'none' : '1px solid #2A2A3E', borderRadius: 8, padding: '10px 14px', cursor: 'pointer' }}>System Design</button>
+                <button onClick={() => setPage('ml')} style={{ background: page === 'ml' ? '#059669' : 'transparent', color: page === 'ml' ? '#fff' : '#9CA3AF', border: page === 'ml' ? 'none' : '1px solid #2A2A3E', borderRadius: 8, padding: '10px 14px', cursor: 'pointer' }}>ML Plan</button>
+                <button onClick={() => { setUser(''); setNameInput(''); setPage('home'); }} style={{ background: '#11131B', border: '1px solid #2A2A3E', borderRadius: 8, padding: '10px 14px', cursor: 'pointer', color: '#9CA3AF' }}>Sign out</button>
+              </div>
+            </div>
+
+            {page === 'home' && (
+              <div style={{ display: 'grid', gap: 18 }}>
+                <div style={{ background: '#11131B', border: '1px solid #24283B', borderRadius: 18, padding: 24 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: 18 }}>
+                    <div>
+                      <div style={{ fontSize: 11, letterSpacing: 2, color: '#6B7280', marginBottom: 6 }}>SYSTEM DESIGN</div>
+                      <div style={{ fontSize: 20, fontWeight: 800 }}>16-Week System Design Roadmap</div>
+                    </div>
+                    <button onClick={() => setPage('system')} style={{ background: '#7C3AED', border: 'none', borderRadius: 10, color: '#fff', padding: '12px 18px', fontWeight: 700, cursor: 'pointer' }}>Open System Design</button>
+                  </div>
+                  <div style={{ fontSize: 13, color: '#9CA3AF', lineHeight: 1.75 }}>
+                    High-level and low-level design learning in a single roadmap. Focus on HLD, LLD, case studies, and interview readiness.
+                  </div>
+                </div>
+                <div style={{ background: '#11131B', border: '1px solid #24283B', borderRadius: 18, padding: 24 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: 18 }}>
+                    <div>
+                      <div style={{ fontSize: 11, letterSpacing: 2, color: '#6B7280', marginBottom: 6 }}>ML PLAN</div>
+                      <div style={{ fontSize: 20, fontWeight: 800 }}>6-Month Focused ML Transition</div>
+                    </div>
+                    <button onClick={() => setPage('ml')} style={{ background: '#059669', border: 'none', borderRadius: 10, color: '#fff', padding: '12px 18px', fontWeight: 700, cursor: 'pointer' }}>Open ML Plan</button>
+                  </div>
+                  <div style={{ fontSize: 13, color: '#9CA3AF', lineHeight: 1.75 }}>
+                    Practical weekly milestones, project delivery, interview prep, and job search pacing for a strong ML engineering transition.
+                  </div>
+                </div>
+                <div style={{ background: '#11131B', border: '1px solid #24283B', borderRadius: 18, padding: 24 }}>
+                  <div style={{ fontSize: 11, letterSpacing: 2, color: '#6B7280', marginBottom: 12 }}>TOPICS COVERED</div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                    <div>
+                      <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 8 }}>System Design</div>
+                      <ul style={{ margin: 0, paddingLeft: 18, color: '#9CA3AF', lineHeight: 1.8, fontSize: 13 }}>
+                        <li>Scalability, load balancing, and distributed architecture</li>
+                        <li>Databases: SQL vs NoSQL, schema, indexing, partitioning</li>
+                        <li>Caching, APIs, rate limiting, versioning, and security</li>
+                        <li>Message queues, event-driven design, consistency models</li>
+                        <li>Monitoring, reliability, alerts, failure handling</li>
+                        <li>Case studies: fraud, recommendation, payments, search</li>
+                        <li>LLD deep dive: service layers, feature stores, model serving</li>
+                        <li>Interview prep: 60-min mocks, follow-ups, trade-offs</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 8 }}>ML Plan</div>
+                      <ul style={{ margin: 0, paddingLeft: 18, color: '#9CA3AF', lineHeight: 1.8, fontSize: 13 }}>
+                        <li>Resume, LinkedIn, GitHub, and target-company research</li>
+                        <li>ML theory refresh: ensemble methods, metrics, interpretability</li>
+                        <li>Project 1: data pipeline, model building, API serving</li>
+                        <li>Project 2: Kafka-powered real-time scoring pipeline</li>
+                        <li>Deployment: Docker, CI/CD, cloud hosting, monitoring</li>
+                        <li>Interview prep: LeetCode, system design, behavioral practice</li>
+                        <li>Job hunt: applications, company targeting, offer negotiation</li>
+                        <li>Buffer/contingency weeks for extended search or onboarding</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {page === 'system' && (
+              <div>
+                <button onClick={() => setPage('home')} style={{ marginBottom: 20, background: '#11131B', border: '1px solid #2A2A3E', color: '#E8E8F0', padding: '10px 14px', borderRadius: 10, cursor: 'pointer' }}>← Back to hub</button>
+                <SystemDesignRoadmap user={user} />
+              </div>
+            )}
+
+            {page === 'ml' && (
+              <div>
+                <button onClick={() => setPage('home')} style={{ marginBottom: 20, background: '#11131B', border: '1px solid #2A2A3E', color: '#E8E8F0', padding: '10px 14px', borderRadius: 10, cursor: 'pointer' }}>← Back to hub</button>
+                <FocusedRoadmap user={user} />
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
