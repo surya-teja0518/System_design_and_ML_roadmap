@@ -92,6 +92,14 @@
       const [nameInput, setNameInput] = useState('');
       const [statsUpdateTrigger, setStatsUpdateTrigger] = useState(0);
 
+      // GitHub Gist Sync State
+      const [gitToken, setGitToken] = useState(localStorage.getItem('roadmap_git_token') || '');
+      const [gistId, setGistId] = useState(localStorage.getItem('roadmap_gist_id') || '');
+      const [syncStatus, setSyncStatus] = useState('idle'); // 'idle', 'syncing', 'synced', 'error'
+      const [syncError, setSyncError] = useState('');
+      const [showSyncSettings, setShowSyncSettings] = useState(false);
+      const [tokenInput, setTokenInput] = useState(localStorage.getItem('roadmap_git_token') || '');
+
       // Persist user sign-in state
       useEffect(() => {
         if (user) {
@@ -169,6 +177,192 @@
           }
         };
       }, []);
+
+      // Pull progress from GitHub Gist and merge with local storage
+      const pullSync = async (token = gitToken, currentGistId = gistId) => {
+        if (!token || !user) return;
+        setSyncStatus('syncing');
+        setSyncError('');
+        try {
+          // 1. Verify token scopes and user
+          const userRes = await fetch('https://api.github.com/user', {
+            headers: { Authorization: `token ${token}` }
+          });
+          if (!userRes.ok) {
+            throw new Error('Invalid GitHub token. Please verify that your token is active.');
+          }
+
+          let targetGistId = currentGistId;
+
+          // 2. If Gist ID is missing, search gists list for an existing synapse gist
+          if (!targetGistId) {
+            const gistsRes = await fetch('https://api.github.com/gists', {
+              headers: { Authorization: `token ${token}` }
+            });
+            if (gistsRes.ok) {
+              const gists = await gistsRes.json();
+              const existingGist = gists.find(g => g.files && g.files['synapse_roadmap_progress.json']);
+              if (existingGist) {
+                targetGistId = existingGist.id;
+                setGistId(targetGistId);
+                localStorage.setItem('roadmap_gist_id', targetGistId);
+              }
+            }
+          }
+
+          // 3. If still no Gist ID, we will initialize a new private Gist
+          if (!targetGistId) {
+            const emptyPayload = { system: {}, ml: {}, python: {}, sql: {} };
+            const newGistId = await saveGistToGitHub(token, null, emptyPayload);
+            targetGistId = newGistId;
+            setGistId(targetGistId);
+            localStorage.setItem('roadmap_gist_id', targetGistId);
+            setSyncStatus('synced');
+            return;
+          }
+
+          // 4. Retrieve Gist files
+          const gistRes = await fetch(`https://api.github.com/gists/${targetGistId}`, {
+            headers: { 
+              Authorization: `token ${token}`,
+              'Cache-Control': 'no-cache'
+            }
+          });
+          if (!gistRes.ok) {
+            throw new Error('Could not access Gist. It might have been deleted.');
+          }
+          const gistData = await gistRes.json();
+          const contentStr = gistData.files['synapse_roadmap_progress.json']?.content;
+
+          if (contentStr) {
+            const remoteProgress = JSON.parse(contentStr);
+            const roadmaps = ['system', 'ml', 'python', 'sql'];
+            let mergedAny = false;
+
+            // Merge local and remote check lists
+            roadmaps.forEach(rId => {
+              const localKey = `${rId}-progress-${user}`;
+              const localSaved = localStorage.getItem(localKey);
+              const localChecked = localSaved ? JSON.parse(localSaved) : {};
+              const remoteChecked = remoteProgress[rId] || {};
+
+              // Safe union merge (keeps checked if true in local OR remote)
+              const merged = { ...localChecked };
+              Object.keys(remoteChecked).forEach(key => {
+                if (remoteChecked[key]) {
+                  merged[key] = true;
+                }
+              });
+
+              if (JSON.stringify(localChecked) !== JSON.stringify(merged)) {
+                localStorage.setItem(localKey, JSON.stringify(merged));
+                mergedAny = true;
+              }
+            });
+
+            if (mergedAny) {
+              setStatsUpdateTrigger(prev => prev + 1);
+              window.dispatchEvent(new Event('roadmapProgressUpdated'));
+            }
+          }
+          setSyncStatus('synced');
+        } catch (err) {
+          setSyncStatus('error');
+          setSyncError(err.message || 'Synchronization failed.');
+        }
+      };
+
+      // Helper to execute Gist PATCH/POST calls
+      const saveGistToGitHub = async (token, currentGistId, data) => {
+        const url = currentGistId ? `https://api.github.com/gists/${currentGistId}` : 'https://api.github.com/gists';
+        const method = currentGistId ? 'PATCH' : 'POST';
+        const body = {
+          description: 'Synapse Roadmap Progress Sync',
+          public: false,
+          files: {
+            'synapse_roadmap_progress.json': {
+              content: JSON.stringify(data, null, 2)
+            }
+          }
+        };
+
+        const res = await fetch(url, {
+          method,
+          headers: {
+            Authorization: `token ${token}`,
+            Accept: 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        });
+        if (!res.ok) {
+          throw new Error('Gist API update failed.');
+        }
+        const gist = await res.json();
+        return gist.id;
+      };
+
+      // Push local progress state to GitHub Gist
+      const pushSync = async () => {
+        if (!gitToken || !user) return;
+        setSyncStatus('syncing');
+        try {
+          const payload = {
+            system: JSON.parse(localStorage.getItem(`system-progress-${user}`) || '{}'),
+            ml: JSON.parse(localStorage.getItem(`ml-progress-${user}`) || '{}'),
+            python: JSON.parse(localStorage.getItem(`python-progress-${user}`) || '{}'),
+            sql: JSON.parse(localStorage.getItem(`sql-progress-${user}`) || '{}')
+          };
+          const newGistId = await saveGistToGitHub(gitToken, gistId, payload);
+          if (newGistId !== gistId) {
+            setGistId(newGistId);
+            localStorage.setItem('roadmap_gist_id', newGistId);
+          }
+          setSyncStatus('synced');
+        } catch (err) {
+          setSyncStatus('error');
+          setSyncError(err.message || 'Gist update upload failed.');
+        }
+      };
+
+      // Link new token and pull data
+      const handleLinkToken = async () => {
+        if (!tokenInput.trim()) return;
+        setSyncStatus('syncing');
+        try {
+          const cleanToken = tokenInput.trim();
+          localStorage.setItem('roadmap_git_token', cleanToken);
+          setGitToken(cleanToken);
+
+          // Clear Gist ID to trigger lookup/creation on fresh token link
+          localStorage.removeItem('roadmap_gist_id');
+          setGistId('');
+
+          await pullSync(cleanToken, '');
+        } catch (e) {
+          setSyncStatus('error');
+          setSyncError(e.message);
+        }
+      };
+
+      // Trigger automatic background push on changes (debounced by 2 seconds)
+      useEffect(() => {
+        if (!gitToken || !user || statsUpdateTrigger === 0) return;
+
+        setSyncStatus('syncing');
+        const delayDebounceFn = setTimeout(() => {
+          pushSync();
+        }, 2000);
+
+        return () => clearTimeout(delayDebounceFn);
+      }, [statsUpdateTrigger]);
+
+      // Pull progress data on load when logged in
+      useEffect(() => {
+        if (user && gitToken) {
+          pullSync(gitToken, gistId);
+        }
+      }, [user]);
 
       if (!user) {
         return (
@@ -394,7 +588,7 @@
                   border: '1px solid #1E2235',
                   borderRadius: 20,
                   padding: '24px 28px',
-                  marginBottom: 28,
+                  marginBottom: 20,
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
@@ -424,6 +618,150 @@
                       <div style={{ fontSize: 9, color: '#6B7280', fontWeight: 800, letterSpacing: 1, marginTop: 2 }}>TOTAL TASKS DONE</div>
                     </div>
                   </div>
+                </div>
+
+                {/* GitHub Gist Cloud Sync Settings Panel */}
+                <div style={{
+                  background: 'rgba(16, 18, 28, 0.4)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid #1E2235',
+                  borderRadius: 16,
+                  padding: '16px 20px',
+                  marginBottom: 28
+                }}>
+                  <div 
+                    onClick={() => setShowSyncSettings(!showSyncSettings)} 
+                    style={{ 
+                      display: 'flex', 
+                      justifyContent: 'space-between', 
+                      alignItems: 'center', 
+                      cursor: 'pointer',
+                      userSelect: 'none'
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <span style={{ fontSize: 16 }}>🔄</span>
+                      <span style={{ fontWeight: 800, fontSize: 14, color: '#FFF' }}>GitHub Gist Cloud Sync</span>
+                      {gitToken ? (
+                        <span style={{ 
+                          fontSize: 10, 
+                          background: syncStatus === 'synced' ? 'rgba(16, 185, 129, 0.15)' : syncStatus === 'syncing' ? 'rgba(245, 158, 11, 0.15)' : 'rgba(239, 68, 68, 0.15)',
+                          color: syncStatus === 'synced' ? '#34D399' : syncStatus === 'syncing' ? '#FBBF24' : '#FCA5A5',
+                          padding: '3px 8px', 
+                          borderRadius: 6,
+                          fontWeight: 800
+                        }}>
+                          {syncStatus === 'synced' ? '🟢 Synced' : syncStatus === 'syncing' ? '🟡 Syncing...' : '🔴 Error'}
+                        </span>
+                      ) : (
+                        <span style={{ fontSize: 10, background: '#1E2235', color: '#9CA3AF', padding: '3px 8px', borderRadius: 6, fontWeight: 800 }}>
+                          ⚪ Disconnected
+                        </span>
+                      )}
+                    </div>
+                    <span style={{ color: '#9CA3AF', transform: showSyncSettings ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s', fontSize: 12 }}>▼</span>
+                  </div>
+
+                  {showSyncSettings && (
+                    <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid #1E2235' }}>
+                      <p style={{ fontSize: 12.5, color: '#9CA3AF', lineHeight: 1.5, margin: '0 0 16px 0' }}>
+                        Synchronize your checklist progress across all your devices using a private GitHub Gist. 
+                        Generate a token with the <strong>gist</strong> scope under <a href="https://github.com/settings/tokens" target="_blank" rel="noopener noreferrer" style={{ color: '#3B82F6', textDecoration: 'none' }}>GitHub Settings ↗</a>.
+                      </p>
+                      
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center' }}>
+                        <input
+                          type="password"
+                          placeholder="GitHub Personal Access Token (ghp_...)"
+                          value={tokenInput}
+                          onChange={(e) => setTokenInput(e.target.value)}
+                          style={{
+                            flex: '1 1 300px',
+                            background: '#08090E',
+                            border: '1px solid #22273D',
+                            color: '#FFF',
+                            fontSize: 13,
+                            padding: '10px 14px',
+                            borderRadius: 10,
+                            outline: 'none'
+                          }}
+                        />
+                        <div style={{ display: 'flex', gap: 6 }}>
+                          <button
+                            onClick={handleLinkToken}
+                            disabled={!tokenInput.trim() || syncStatus === 'syncing'}
+                            style={{
+                              background: '#3B82F6',
+                              color: '#FFF',
+                              border: 'none',
+                              borderRadius: 10,
+                              padding: '10px 16px',
+                              fontSize: 12.5,
+                              fontWeight: 700,
+                              cursor: tokenInput.trim() ? 'pointer' : 'not-allowed',
+                              opacity: tokenInput.trim() ? 1 : 0.6
+                            }}
+                          >
+                            Link & Pull
+                          </button>
+                          {gitToken && (
+                            <>
+                              <button
+                                onClick={() => pullSync()}
+                                disabled={syncStatus === 'syncing'}
+                                style={{
+                                  background: '#161824',
+                                  color: '#FFF',
+                                  border: '1px solid #1E2235',
+                                  borderRadius: 10,
+                                  padding: '10px 16px',
+                                  fontSize: 12.5,
+                                  fontWeight: 700,
+                                  cursor: 'pointer'
+                                }}
+                              >
+                                Pull Force
+                              </button>
+                              <button
+                                onClick={() => {
+                                  localStorage.removeItem('roadmap_git_token');
+                                  localStorage.removeItem('roadmap_gist_id');
+                                  setGitToken('');
+                                  setGistId('');
+                                  setTokenInput('');
+                                  setSyncStatus('idle');
+                                }}
+                                style={{
+                                  background: 'rgba(239, 68, 68, 0.1)',
+                                  color: '#FCA5A5',
+                                  border: '1px solid rgba(239, 68, 68, 0.2)',
+                                  borderRadius: 10,
+                                  padding: '10px 16px',
+                                  fontSize: 12.5,
+                                  fontWeight: 700,
+                                  cursor: 'pointer'
+                                }}
+                              >
+                                Disconnect
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {syncError && (
+                        <div style={{ marginTop: 12, color: '#FCA5A5', fontSize: 12, padding: '8px 12px', background: 'rgba(239, 68, 68, 0.08)', borderRadius: 8, border: '1px solid rgba(239, 68, 68, 0.15)' }}>
+                          ⚠️ {syncError}
+                        </div>
+                      )}
+
+                      {gistId && (
+                        <div style={{ marginTop: 12, fontSize: 11, color: '#6B7280' }}>
+                          Gist ID: <a href={`https://gist.github.com/${gistId}`} target="_blank" rel="noopener noreferrer" style={{ color: '#3B82F6', textDecoration: 'underline' }}>{gistId} ↗</a>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 {/* Roadmaps Grid */}
