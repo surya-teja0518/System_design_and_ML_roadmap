@@ -689,6 +689,80 @@ window.RoadmapRenderer = function({ user, config }) {
                 </div>
               </div>
             ))}
+
+            {/* Curated Free Video Courses & Playlists */}
+            {config.videos && config.videos.length > 0 && (
+              <div style={{ 
+                marginTop: 20, 
+                background: "#10121C", 
+                border: "1px solid #1E2235", 
+                borderLeft: "4px solid #EF4444", 
+                borderRadius: 16, 
+                padding: 16,
+                boxShadow: "0 4px 20px rgba(239, 68, 68, 0.05)"
+              }}>
+                <div style={{ 
+                  fontSize: 12, 
+                  fontWeight: 900, 
+                  color: "#EF4444", 
+                  marginBottom: 12, 
+                  textTransform: "uppercase", 
+                  display: "flex", 
+                  alignItems: "center", 
+                  gap: 6 
+                }}>
+                  <span>🎬</span> Curated Free Video Courses & Playlists
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 10 }}>
+                  {config.videos.map((vid, idx) => (
+                    <a 
+                      key={idx} 
+                      href={vid.url} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      style={{
+                        background: "#161824",
+                        border: "1px solid #24293E",
+                        borderRadius: 10,
+                        padding: "12px 14px",
+                        color: "#FFF",
+                        textDecoration: "none",
+                        fontSize: 12.5,
+                        fontWeight: 700,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 10,
+                        transition: "all 0.2s ease"
+                      }}
+                      onMouseEnter={(e) => { 
+                        e.currentTarget.style.borderColor = "#EF4444"; 
+                        e.currentTarget.style.transform = "translateY(-1px)"; 
+                        e.currentTarget.style.background = "#1B1D2A";
+                      }}
+                      onMouseLeave={(e) => { 
+                        e.currentTarget.style.borderColor = "#24293E"; 
+                        e.currentTarget.style.transform = "translateY(0)"; 
+                        e.currentTarget.style.background = "#161824";
+                      }}
+                    >
+                      <span style={{ 
+                        color: "#FFF", 
+                        background: "#EF4444", 
+                        width: 24, 
+                        height: 24, 
+                        borderRadius: "50%", 
+                        display: "flex", 
+                        alignItems: "center", 
+                        justifyContent: "center", 
+                        fontSize: 11,
+                        flexShrink: 0
+                      }}>▶</span>
+                      <span>{vid.title}</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
             
           </div>
         )}

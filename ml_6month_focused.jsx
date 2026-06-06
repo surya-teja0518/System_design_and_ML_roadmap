@@ -542,6 +542,12 @@ window.FocusedRoadmap = function({ user }) {
         text: "Success in ML interviews relies on 3 pillars:\n1. **Coding (40%):** Data structures, SQL queries, clean formatting.\n2. **System Design (40%):** Data pipelines, model caching, serving latency budgets.\n3. **Behavioral (20%):** Demonstrating problem-solving and business impact.",
         color: "#10B981"
       }
+    ],
+    videos: [
+      { title: "StatQuest Machine Learning Videos", url: "https://www.youtube.com/@statquest" },
+      { title: "Andrew Ng Machine Learning Specialization", url: "https://www.youtube.com/playlist?list=PLkDaE6sC76KbS7FnBy5qPRGTe1wF9xL-M" },
+      { title: "PyTorch for Deep Learning Course", url: "https://www.youtube.com/watch?v=V_xro1bcAuA" },
+      { title: "DataTalksClub MLOps Zoomcamp Course", url: "https://github.com/DataTalksClub/mlops-zoomcamp" }
     ]
   };
 

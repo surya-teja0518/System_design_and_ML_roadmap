@@ -203,6 +203,12 @@ window.PythonRoadmap = function({ user }) {
         text: "Machine Learning is built in Python, but production code requires understanding resource limits. Understanding the **GIL** is critical when designing Kafka ingestion pipelines. Knowing how **NumPy vectorization** works prevents slow Python loops. Mastering **decorators** and **context managers** helps write clean model serving microservices.",
         color: "#FFD43B"
       }
+    ],
+    videos: [
+      { title: "Corey Schafer's Python OOP Playlist", url: "https://www.youtube.com/playlist?list=PL-osiE80TeTsqhIuOqKhDfiakN5c6F72_" },
+      { title: "Corey Schafer's Python Tutorials (General)", url: "https://www.youtube.com/playlist?list=PL-osiE80TeTt2d9bfVyTiXJA-UTHn6WwU" },
+      { title: "freeCodeCamp Intermediate Python Course", url: "https://www.youtube.com/watch?v=HGOBQPFzWKo" },
+      { title: "mcode Python Concurrency & Asyncio", url: "https://www.youtube.com/watch?v=BI0asHsW25s" }
     ]
   };
 

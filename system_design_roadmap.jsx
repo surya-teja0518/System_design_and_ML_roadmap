@@ -174,6 +174,12 @@ window.SystemDesignRoadmap = function({ user }) {
         text: "**Weeks 1-3:** While building Project 1, learn HLD fundamentals.\n\n**Weeks 4-9:** While building Projects 1-2, study case studies and early LLD.\n\n**Weeks 10-13:** While in interview prep, do integration & early practice cases.\n\n**Weeks 14-16:** While job hunting & interviewing, use Weeks 13-16 system design mocks as final prep.",
         color: "#10B981"
       }
+    ],
+    videos: [
+      { title: "freeCodeCamp System Design Course", url: "https://www.youtube.com/watch?v=m8Isk_y7UdU" },
+      { title: "Gaurav Sen's System Design Playlist", url: "https://www.youtube.com/playlist?list=PLMCXHnjXnJeMhs6tEyiKfFbnpY45t7zUM" },
+      { title: "Suren's Low-Level Design Patterns", url: "https://www.youtube.com/playlist?list=PL6W8aSzy-D37GvL4t2A9r79H54J40pU01" },
+      { title: "Alex Xu (ByteByteGo) Channel", url: "https://www.youtube.com/@ByteByteGo" }
     ]
   };
 

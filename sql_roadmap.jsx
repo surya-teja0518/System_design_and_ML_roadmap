@@ -195,6 +195,12 @@ window.SQLRoadmap = function({ user }) {
         text: "Database bottlenecks are the #1 cause of low system performance. Understanding **B-Tree indexes** helps you design high-throughput APIs. Knowing **transaction isolation levels** prevents double-payment bugs. In Machine Learning, feature stores require complex SQL queries for historical features and point-in-time correctness.",
         color: "#F97316"
       }
+    ],
+    videos: [
+      { title: "freeCodeCamp SQL & Databases Course", url: "https://www.youtube.com/watch?v=HXV3zeQKqGY" },
+      { title: "Alex The Analyst SQL Bootcamp", url: "https://www.youtube.com/playlist?list=PLUaB-1hjhk8GZO-j11uqF5U2n5pPz9mte" },
+      { title: "Luke Barousse SQL for Data Analysis", url: "https://www.youtube.com/watch?v=7S_tz1z_5bA" },
+      { title: "Kudvenkat SQL Server Transactions", url: "https://www.youtube.com/playlist?list=PL08903FB7ACA1C2FB" }
     ]
   };
 
