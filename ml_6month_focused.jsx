@@ -1,15 +1,24 @@
-const { useState, useEffect } = React;
-
 const mlWeeks = [
   {
     phase: "Setup & Resume",
     week: 1, title: "Resume Polish + Skills Audit",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["Resume v3: add ML bullets to CGI role (you already have this)", "Audit: what ML topics do you know cold? (list them)"] },
-      { day: "Wed", hrs: 2, tasks: ["LinkedIn profile complete: headline, about, featured section", "List target companies (top 10) — what do they ask in interviews?"] },
-      { day: "Fri", hrs: 2, tasks: ["GitHub profile cleanup: pinned repos, profile README", "Set up 2 project repos (empty) — Risk API + Kafka Pipeline"] },
-      { day: "Sun", hrs: 2, tasks: ["Research target company tech blogs — what ML problems do they solve?", "Plan your 2 projects in detail — design docs before code"] },
+      { day: "Mon", hrs: 2, tasks: [
+        "Resume v3: add ML bullets to your current roles showing concrete metrics (e.g. latency, business impact)",
+        "Audit: list down what ML topics you know cold and what gaps you need to fill (e.g. loss functions, evaluation metrics)"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "LinkedIn profile complete: headline (e.g., 'ML Engineer | Distributed Systems'), about section, and featured section",
+        "List top 10 target companies (e.g. Razorpay, CRED, Meesho) and check their engineering blogs to find what ML problems they solve: [Razorpay Engineering Blog](https://tech.razorpay.com/)"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "GitHub profile cleanup: pin your best repositories and write a profile README",
+        "Set up 2 empty project repositories on GitHub: one for the Risk Scoring API and one for the Kafka scoring pipeline"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Plan your 2 projects in detail: write design docs outlining feature inputs, model choices, and serving endpoints before coding"
+      ]}
     ]
   },
   {
@@ -17,10 +26,22 @@ const mlWeeks = [
     week: 2, title: "Quick ML Theory Refresh",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["StatQuest: Gradient Boosting (all 4 videos, 40 min total)", "Your understanding: can you explain XGBoost vs CatBoost trade-offs?"] },
-      { day: "Wed", hrs: 2, tasks: ["SHAP deep dive (20 min video + 20 min practicing on your old CGI work)", "Refresh: AUC-ROC, calibration, threshold tuning"] },
-      { day: "Fri", hrs: 2, tasks: ["LeetCode: 3x Easy array problems (30 min)", "Review: can you explain your evaluation metrics from CGI work in an interview?"] },
-      { day: "Sun", hrs: 2, tasks: ["Write down: 10 ML interview questions you should be able to answer cold", "Self-quiz: answer them from memory"] },
+      { day: "Mon", hrs: 2, tasks: [
+        "Watch StatQuest Gradient Boosting guides: [StatQuest Gradient Boosting (YouTube)](https://www.youtube.com/watch?v=3CC4N4z3GJc)",
+        "Summarize differences and trade-offs between XGBoost, LightGBM, and CatBoost"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "Study model interpretability using SHAP values: [SHAP Values Tutorial](https://christophm.github.io/interpretable-ml-book/shap.html)",
+        "Refresh core classification evaluation metrics: AUC-ROC, Precision-Recall, Calibration Curves, and Threshold Tuning"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "Solve 3 easy LeetCode array/string problems to build daily practice habits: [LeetCode](https://leetcode.com/)",
+        "Practice explaining evaluation metrics from your past projects as if in an interview"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Draft answers to 10 common ML engineering theory questions (e.g. handling class imbalance, overfitting prevention)",
+        "Self-quiz: write down the answers from memory and grade yourself"
+      ]}
     ]
   },
   {
@@ -28,10 +49,21 @@ const mlWeeks = [
     week: 3, title: "Interview Framework + LeetCode Start",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["Read: Chip Huyen ML System Design intro (30 min)", "Watch: Eugene Yan system design case study (30 min)"] },
-      { day: "Wed", hrs: 2, tasks: ["LeetCode: 4x Easy (arrays, hash map, strings) — 30 min", "Write down your STAR stories (5 total, 3 min each when spoken)"] },
-      { day: "Fri", hrs: 2, tasks: ["System Design practice: Fraud detection case (60 min)", "Draw architecture: you have 15 min to sketch the full system"] },
-      { day: "Sun", hrs: 2, tasks: ["Review: week 1-3, what's clear, what still feels fuzzy?", "Adjust plan if needed — flexibility is okay at this stage"] },
+      { day: "Mon", hrs: 2, tasks: [
+        "Read introductory chapters of ML System Design: [Chip Huyen ML System Design Blog](https://huyenchip.com/blog/)",
+        "Study ML engineering case studies on production architecture: [Eugene Yan Blog](https://eugeneyan.com/)"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "Solve 4 easy LeetCode problems (hash maps, strings, two pointers): [LeetCode](https://leetcode.com/)",
+        "Write down your behavioral STAR stories (5 scenarios: conflict, failure, scale, delivery, ownership)"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "Practice System Design: sketch the architecture of a real-time Fraud Detection system within 15 minutes",
+        "Refine your drawing using a virtual canvas: [Excalidraw](https://excalidraw.com/)"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Review Weeks 1-3 progress. Identify which theory areas are weak and budget time next week to address them"
+      ]}
     ]
   },
   {
@@ -39,10 +71,22 @@ const mlWeeks = [
     week: 4, title: "Project 1: Risk Scoring API — Setup",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["Set up GitHub repo: cookiecutter data science template", "Load dataset (Kaggle credit risk), initial EDA (30 min)"] },
-      { day: "Wed", hrs: 2, tasks: ["Feature engineering pipeline in sklearn (1 hr)", "Train XGBoost baseline model, log params/metrics to MLflow"] },
-      { day: "Fri", hrs: 2, tasks: ["Model evaluation: AUC, F1, calibration curve, SHAP summary plot", "Save best model to MLflow Model Registry"] },
-      { day: "Sun", hrs: 2, tasks: ["FastAPI skeleton: /predict, /health endpoints", "Test locally with curl — basic functionality working"] },
+      { day: "Mon", hrs: 2, tasks: [
+        "Set up GitHub repository using Cookiecutter template: [Cookiecutter Data Science Template](https://cookiecutter-data-science.drivendata.org/)",
+        "Download a credit risk dataset from Kaggle and perform initial Exploratory Data Analysis (EDA) in a Jupyter Notebook"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "Build a robust feature engineering pipeline using Scikit-Learn pipelines",
+        "Train an XGBoost baseline classifier and track parameters/metrics using MLflow locally: [MLflow Documentation](https://mlflow.org/)"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "Evaluate the model: plot ROC curve, Precision-Recall curve, SHAP summary plots, and check model calibration",
+        "Register the trained model in the MLflow Model Registry"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Create a FastAPI skeleton with `/predict` and `/health` endpoints: [FastAPI Getting Started](https://fastapi.tiangolo.com/)",
+        "Test local server responses using `curl` or FastAPI's auto-generated Swagger UI docs"
+      ]}
     ]
   },
   {
@@ -50,10 +94,22 @@ const mlWeeks = [
     week: 5, title: "Project 1: Serving + Containerization",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["FastAPI: load MLflow model, handle predictions, return JSON", "Pydantic validation: what fields are required, what's optional"] },
-      { day: "Wed", hrs: 2, tasks: ["Dockerfile: multi-stage build, non-root user", "Test Docker build locally — image runs, /predict works"] },
-      { day: "Fri", hrs: 2, tasks: ["GitHub Actions: basic CI/CD (tests + Docker build on push)", "Push Docker image to DockerHub"] },
-      { day: "Sun", hrs: 2, tasks: ["Deploy on Railway.app (free) — get live HTTPS endpoint URL", "Write README: what the project does, API docs, live URL"] },
+      { day: "Mon", hrs: 2, tasks: [
+        "Implement model loading and inference logic inside FastAPI, validating input payloads with Pydantic schemas",
+        "Ensure fast serialization/deserialization to minimize API response overhead"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "Write a multi-stage Dockerfile to compile dependencies and run the API under a non-root user",
+        "Build and run the Docker container locally, testing the `/predict` endpoint"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "Create a GitHub Actions workflow to run code linting and build tests on every code push",
+        "Push your validated Docker image to DockerHub or GitHub Container Registry"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Deploy the containerized API on a cloud provider like [Railway.app](https://railway.app/) or Render",
+        "Verify public accessibility, secure HTTPS endpoints, and document API contracts in the README"
+      ]}
     ]
   },
   {
@@ -61,22 +117,44 @@ const mlWeeks = [
     week: 6, title: "Project 1: Polish + Marketing",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["Code review pass: docstrings, clean code, no hardcoded secrets", "Add pytest: data validation test, model performance threshold test"] },
-      { day: "Wed", hrs: 2, tasks: ["Create architecture diagram (draw.io) — include in README", "Record 2-min Loom demo: show the API working end-to-end"] },
-      { day: "Fri", hrs: 2, tasks: ["Write blog post (Medium/Hashnode): 'Building a production ML API' (20 min writing + 20 min polish)", "LinkedIn post: link to GitHub + blog, show live API"] },
-      { day: "Sun", hrs: 2, tasks: ["Push everything to GitHub — this is Project 1 DONE", "Apply to 5 companies (start pipeline early)"] },
+      { day: "Mon", hrs: 2, tasks: [
+        "Refactor API code to enforce clean code, explicit typings, docstrings, and remove any secrets",
+        "Add unit tests using pytest for data parsing, validation rules, and model predictions: [pytest Guide](https://docs.pytest.org/)"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "Draw an architecture diagram of your API setup and include it in the README: [Excalidraw](https://excalidraw.com/)",
+        "Record a 2-minute video walkthrough (e.g. using Loom) explaining the architecture and demonstrating API calls"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "Write a technical blog post detailing how you built the production API (Medium/Hashnode)",
+        "Share a LinkedIn post summarizing the project with a link to the GitHub repo, blog post, and live API"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Submit Project 1. Apply to 5 target companies through job portals or warm referrals"
+      ]}
     ]
   },
-
   {
     phase: "Project 2",
     week: 7, title: "Project 2: Kafka ML Pipeline — Design",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["Design: Kafka producer → consumer → XGBoost → output topic", "Draw full architecture diagram with latency budget"] },
-      { day: "Wed", hrs: 2, tasks: ["Set up: Docker Compose with Kafka + Zookeeper locally", "Build Kafka producer: simulate transaction events (JSON)"] },
-      { day: "Fri", hrs: 2, tasks: ["Kafka consumer skeleton: consume events, deserialize, placeholder for scoring", "Test: produce 100 events, verify consumer receives them"] },
-      { day: "Sun", hrs: 2, tasks: ["Plan feature engineering: what 5 features will you engineer on events?", "Load your pre-trained XGBoost model from Project 1"] },
+      { day: "Mon", hrs: 2, tasks: [
+        "Design a streaming architecture: transaction simulator → Kafka producer → consumer scoring agent → output Kafka topic",
+        "Draft a latency budget diagram detailing the target time for each step in the pipeline"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "Spin up Kafka and Zookeeper locally using Docker Compose: [Docker Compose Overview](https://docs.docker.com/compose/)",
+        "Write a Python Kafka producer to simulate real-time JSON transaction streams at 10 events/sec"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "Create a Python Kafka consumer skeleton that reads events and logs them: [Kafka Python client](https://kafka-python.readthedocs.io/)",
+        "Verify message queue throughput by processing a test batch of 1,000 events"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Plan stateful feature aggregation rules (e.g. rolling sum of transaction amounts in the last 10 minutes)",
+        "Load the pre-trained XGBoost model artifact from Project 1 inside the consumer script"
+      ]}
     ]
   },
   {
@@ -84,10 +162,22 @@ const mlWeeks = [
     week: 8, title: "Project 2: Real-Time Scoring + Output",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["Implement feature engineering in consumer: transaction_amount_log, hour_of_day, merchant_risk_tier", "Score each event with XGBoost, get fraud probability"] },
-      { day: "Wed", hrs: 2, tasks: ["Output topic: produce scored events {transaction_id, fraud_prob, risk_tier}", "Dead letter queue: route errors to separate topic"] },
-      { day: "Fri", hrs: 2, tasks: ["Add Evidently monitoring: generate DataDriftReport every 500 events", "End-to-end test: 1000 events through full pipeline"] },
-      { day: "Sun", hrs: 2, tasks: ["Benchmark: measure throughput (events/sec) and per-event latency", "Document: architecture diagram, data flow, performance numbers"] },
+      { day: "Mon", hrs: 2, tasks: [
+        "Implement online feature engineering inside the consumer to calculate rolling metrics",
+        "Pass engineered features to the XGBoost model to compute fraud probabilities in under 20ms"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "Publish scored predictions `{transaction_id, score, decision}` to a downstream output Kafka topic",
+        "Implement a Dead Letter Queue (DLQ) topic to route and capture malformed JSON events safely"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "Integrate Evidently to monitor data and prediction drift on streaming batches: [Evidently AI Monitoring Docs](https://docs.evidentlyai.com/)",
+        "Execute a full end-to-end stress test with 10,000 transaction events"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Profile and measure throughput (records/sec) and average event latency from end to end",
+        "Add system metrics, deployment instructions, and pipeline design diagrams to the README"
+      ]}
     ]
   },
   {
@@ -95,22 +185,43 @@ const mlWeeks = [
     week: 9, title: "Project 2: GitHub + Marketing",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["GitHub repo: README with architecture diagram, how to run, performance metrics", "Docker Compose: everything in one `docker-compose up`"] },
-      { day: "Wed", hrs: 2, tasks: ["Code cleanup: docstrings, logging, error handling", "Add pytest: basic tests for feature engineering, model scoring"] },
-      { day: "Fri", hrs: 2, tasks: ["Blog post: 'Real-time ML inference with Kafka — architecture and learnings' (30 min)", "LinkedIn post: diagram + link to GitHub, emphasize the Kafka+ML angle"] },
-      { day: "Sun", hrs: 2, tasks: ["Push to GitHub — Project 2 DONE", "Apply to 5 more companies (total 10 applications)"] },
+      { day: "Mon", hrs: 2, tasks: [
+        "Polish the Project 2 repository: create a single `docker-compose.yml` to launch Kafka, producer, consumer, and dashboard with one command",
+        "Document step-by-step setup instructions for local development"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "Refactor stream consumer code: add logging, handle network drops, and write unit tests for the feature parsing module",
+        "Ensure proper environment variable management for Kafka bootstrap servers"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "Write a blog post titled 'Building a Real-Time ML Scoring Pipeline with Kafka and Python'",
+        "Post on LinkedIn with a demo GIF or architecture diagram, detailing how you managed stateful streaming metrics"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Submit Project 2. Apply to 5 more companies (totaling 10 applications in the pipeline)"
+      ]}
     ]
   },
-
   {
     phase: "Interview Prep",
     week: 10, title: "LeetCode Sprint I",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["LeetCode: 4x Medium (arrays, hash maps, two pointers) — aim for 20 min per problem", "Time yourself — build the clock discipline"] },
-      { day: "Wed", hrs: 2, tasks: ["LeetCode: 4x Medium (linked lists, stacks, trees) — 20 min each", "Review: what patterns did you miss? What's your weakest?"] },
-      { day: "Fri", hrs: 2, tasks: ["LeetCode: 4x Medium (graphs, DP intro) — 20 min each", "Practice explaining your approach BEFORE coding"] },
-      { day: "Sun", hrs: 2, tasks: ["Review the week: 12 problems done. Identify 2-3 patterns you need to drill.", "Plan next week"] },
+      { day: "Mon", hrs: 2, tasks: [
+        "Solve 4 LeetCode Medium problems on arrays, hashing, and sliding window. Aim to finish each within 25 minutes: [LeetCode](https://leetcode.com/)",
+        "Analyze time and space complexity for all solutions"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "Solve 4 LeetCode Medium problems on stacks, queues, and linked lists",
+        "Review key algorithms like binary search and quickselect"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "Solve 4 LeetCode Medium problems on trees and graphs (BFS / DFS)",
+        "Practice explaining your coding thought process aloud before writing code"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Identify recurring code patterns you struggle with (e.g. dynamic programming, backtracking) and write summary notes"
+      ]}
     ]
   },
   {
@@ -118,10 +229,21 @@ const mlWeeks = [
     week: 11, title: "System Design Sprint I",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["System Design case: Credit risk scoring (your domain expertise!)", "Design: data → features → model → serving → monitoring (60 min)"] },
-      { day: "Wed", hrs: 2, tasks: ["System Design case: Payment fraud detection (tie in Kafka + real-time)", "60 min: architecture, latency budget, how you'd deploy on OCP"] },
-      { day: "Fri", hrs: 2, tasks: ["LeetCode: 4x Medium (DP, mixed patterns) — 20 min each", "Behavioral: practice telling your STAR stories (5 total, 2 min each)"] },
-      { day: "Sun", hrs: 2, tasks: ["Review: are you thinking in terms of data pipeline → model → serving?", "Weak area: deepen it next week"] },
+      { day: "Mon", hrs: 2, tasks: [
+        "Perform a mock design of a credit scoring system, matching inputs, models, and latency SLAs",
+        "Outline data lineage from database transactions to offline feature generation"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "Practice designing a real-time fraud scoring architecture with event queue processing and feature stores",
+        "Write down trade-offs between batch inference (pre-calculated) and real-time API inference"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "Solve 4 LeetCode Medium problems under timed conditions",
+        "Record a 2-minute mock video answering behavioral questions (e.g., 'Tell me about a time you handled scale')"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Review your system design sketches. Identify bottlenecks in database reads or network latency, and read up on solutions"
+      ]}
     ]
   },
   {
@@ -129,10 +251,20 @@ const mlWeeks = [
     week: 12, title: "ML Theory + SQL Drill",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["ML Theory: write answers to 20 questions (no time limit, detailed)", "Topics: XGBoost internals, SHAP, class imbalance, calibration, AUC vs F1"] },
-      { day: "Wed", hrs: 2, tasks: ["SQL: 4x medium questions (window functions, CTEs, running totals)", "Use DataLemur (free)"] },
-      { day: "Fri", hrs: 2, tasks: ["LeetCode: 4x Medium (mixed hard patterns) — 20 min each", "Self-quiz: 10 ML questions rapid fire (5 min total, no notes)"] },
-      { day: "Sun", hrs: 2, tasks: ["Identify weak topic: is it probability, stats, SQL, or DP?", "Plan intensive drill for next week"] },
+      { day: "Mon", hrs: 2, tasks: [
+        "Review ML theory: write detailed answers to questions on regularization, loss functions, tree-boosting internals, and handling extreme class imbalance",
+        "Practice explaining SHAP/LIME interpretations for tabular classifiers"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "Solve 6 intermediate/advanced SQL queries (window functions, recursive CTEs, joins on nulls) on DataLemur: [DataLemur SQL Practice](https://datalemur.com/)"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "Solve 4 LeetCode Medium coding problems",
+        "Do a rapid-fire self-quiz: explain Bias-Variance trade-off and L1 vs L2 regularization in 2 minutes each"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Identify any lingering gaps in your SQL or ML theory foundation and allocate extra drill hours next week"
+      ]}
     ]
   },
   {
@@ -140,22 +272,42 @@ const mlWeeks = [
     week: 13, title: "Mock Interviews + Behavioral",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["Full mock: 2x LeetCode Medium (timed, 20 min each)", "Debrief: would a senior engineer be impressed?"] },
-      { day: "Wed", hrs: 2, tasks: ["Behavioral deep prep: write out all 5 STAR stories in detail", "Practice saying each story aloud (record yourself on Loom) — 2 min each"] },
-      { day: "Fri", hrs: 2, tasks: ["LeetCode: 2x Hard (30 min each) — harder patterns", "ML System Design: 1 new case (30 min) from your weak area"] },
-      { day: "Sun", hrs: 2, tasks: ["Week 13 review: how ready do you feel?", "Adjust Plan: if weak in an area, double down next week"] },
+      { day: "Mon", hrs: 2, tasks: [
+        "Execute a 45-minute timed mock coding session with a peer or on a mock platform: [Pramp Peer Mocks](https://www.pramp.com/)",
+        "Review feedback on code cleanliness and logical structure"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "Draft bulletproof STAR responses for your top 5 behavioral scenarios",
+        "Practice delivering responses in under 2 minutes. Watch for pacing, tone, and impact metrics"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "Solve 2 LeetCode Hard problems to test your algorithmic edge",
+        "Sketch out a machine learning recommendation system design (candidate generation -> ranking -> re-ranking)"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Assess overall readiness. Create a cheatsheet of your behavioral outlines, coding patterns, and system design templates"
+      ]}
     ]
   },
-
   {
     phase: "Job Hunt",
     week: 14, title: "Target Company Deep Dive + Applications",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["Pick 3 target companies (Razorpay, CRED, PhonePe, Zepto, Meesho)", "Deep research: read their engineering blogs, understand their ML stack"] },
-      { day: "Wed", hrs: 2, tasks: ["Tailor your resume for each company: emphasize relevant experience", "Apply to 10 companies (direct + referral DMs where possible)"] },
-      { day: "Fri", hrs: 2, tasks: ["LeetCode: 2x Medium (20 min each) — keep sharp", "System Design: practice cases relevant to target companies (fraud for payments, risk for lending)"] },
-      { day: "Sun", hrs: 2, tasks: ["Create job tracker in Notion: company, role, applied date, status, follow-up", "Follow up on Week 6 applications if no response"] },
+      { day: "Mon", hrs: 2, tasks: [
+        "Select 3 high-priority target companies. Read their engineering blogs, find their ML stack, and note their business model"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "Tailor your resume, cover letters, and GitHub profiles to align with the requirements of target companies",
+        "Submit 10 high-quality applications (with referrals if possible)"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "Solve 2 LeetCode Medium problems to keep your coding skills sharp",
+        "Review system design architecture patterns for the specific business domains of your target companies"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Create a Job Tracker spreadsheet to log company names, roles, dates applied, contacts, interview steps, and follow-ups"
+      ]}
     ]
   },
   {
@@ -163,10 +315,19 @@ const mlWeeks = [
     week: 15, title: "Interview Execution Begins",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["Any interviews scheduled? Deep prep for that company", "Research: what problems do they solve with ML?"] },
-      { day: "Wed", hrs: 2, tasks: ["Mock interview (Pramp or peer): full round (coding + system design)", "Debrief: what went well, what to improve"] },
-      { day: "Fri", hrs: 2, tasks: ["Apply to 10 more companies (total ~30)", "Practice 3 STAR stories out loud — record yourself"] },
-      { day: "Sun", hrs: 2, tasks: ["If you have interviews this week: review target company + practice system design", "If no interviews: keep applying, the pipeline fills eventually"] },
+      { day: "Mon", hrs: 2, tasks: [
+        "Prepare for initial recruiter screens and technical phone calls. Practice your elevator pitch"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "Conduct a full mock interview (coding + ML system design) on Pramp or with a mentor"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "Submit 10 more applications to keep your pipeline full",
+        "Practice explaining your Kafka streaming project (Project 2) out loud. Focus on state management and failure handling"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Review interview questions asked in the past week. Research and write down ideal solutions for any questions you struggled with"
+      ]}
     ]
   },
   {
@@ -174,10 +335,19 @@ const mlWeeks = [
     week: 16, title: "Active Interview Mode",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["Interview execution (if scheduled) OR mock interview (Pramp)", "Post-interview: write down every question asked, how you answered"] },
-      { day: "Wed", hrs: 2, tasks: ["LeetCode: 2x Medium — keep sharp during interview cycle", "Behavioral refinement: 2-3 STAR stories you'll tell this week"] },
-      { day: "Fri", hrs: 2, tasks: ["Apply to 5 more companies if needed", "Follow up on pending applications"] },
-      { day: "Sun", hrs: 2, tasks: ["Week review: interviews scheduled, offers coming, next steps?", "Rest: you've done the work"] },
+      { day: "Mon", hrs: 2, tasks: [
+        "Perform scheduled interviews. Take detailed notes of all questions asked immediately after each round"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "Solve 2 LeetCode Medium problems. Refine your system design template based on active interview feedback"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "Follow up on completed interviews. Reach out to hiring managers with brief thank-you notes",
+        "Submit 5 new applications to maintain pipeline momentum"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Conduct a retrospective on your performance in recent interviews. Adjust your preparation focus accordingly"
+      ]}
     ]
   },
   {
@@ -185,10 +355,19 @@ const mlWeeks = [
     week: 17, title: "Interview + Offer Phase",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["Interviews (likely multiple this week)", "Evaluate offers: total comp, team quality, growth opportunity"] },
-      { day: "Wed", hrs: 2, tasks: ["If offer received: evaluate framework (base + bonus + ESOPs)", "If still interviewing: keep momentum, apply to remaining targets"] },
-      { day: "Fri", hrs: 2, tasks: ["Salary negotiation (if offer): know your market rate, counter offer", "Continue interviews with other companies (don't stop at first offer)"] },
-      { day: "Sun", hrs: 2, tasks: ["Decision: best offer, best culture fit, best growth?", "Sign or negotiate further"] },
+      { day: "Mon", hrs: 2, tasks: [
+        "Execute final-round interviews. Focus on showing leadership, domain expertise, and system scaling competency"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "If you receive an offer, review the compensation package (base salary, bonuses, benefits, and equity / ESOPs)"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "Prepare negotiation strategies. Research market standards for senior/transitioning ML engineers in your region",
+        "Continue scheduled interviews with other companies to maximize leverage"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Compare active offers based on career growth, team culture, technical stack, and overall compensation"
+      ]}
     ]
   },
   {
@@ -196,10 +375,18 @@ const mlWeeks = [
     week: 18, title: "Buffer Week (Offer Negotiation / Final Prep)",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["Negotiate offers (if multiple)", "Ask for time to decide if needed"] },
-      { day: "Wed", hrs: 2, tasks: ["If no offers yet: apply to backup list + keep interviewing", "Mock interview: stay sharp"] },
-      { day: "Fri", hrs: 2, tasks: ["Offer accepted? Plan onboarding: tech stack, team, first projects", "If still in process: keep pushing"] },
-      { day: "Sun", hrs: 2, tasks: ["Week review: where are you?", "Celebrate or refocus — either way, you've done serious work"] },
+      { day: "Mon", hrs: 2, tasks: [
+        "Negotiate details of active offers. Seek written confirmation of final compensation terms"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "If still seeking offers: expand applications to secondary list of companies and schedule practice mocks"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "Upon accepting an offer, plan your onboarding roadmap: review company's codebase style and research internal projects"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Formulate a plan for transition/resignation from your current role"
+      ]}
     ]
   },
   {
@@ -207,22 +394,37 @@ const mlWeeks = [
     week: 19, title: "Buffer Week II",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["If offer signed: celebrate, prepare for Day 1", "If still interviewing: focused push on remaining companies"] },
-      { day: "Wed", hrs: 2, tasks: ["Prep: tech stack review for your new role", "Intro call with manager: ask what to prepare"] },
-      { day: "Fri", hrs: 2, tasks: ["Personal: rest, reflect on the 6-month journey", "LeetCode: 1-2 problems if you want (optional)"] },
-      { day: "Sun", hrs: 2, tasks: ["Reflect: you went from frustrated DBA to ML Engineer at a product company", "That's real. That's yours."] },
+      { day: "Mon", hrs: 2, tasks: [
+        "Finalize resignation hand-off documents and close pending tickets in your current job"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "Read up on the specific frameworks and cloud tooling used by your future employer"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "Take a complete break from technical practice. Rest and recharge before Day 1"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Reflect on your 6-month transition journey. Celebrate going from an analyst/DBA to a production ML Engineer!"
+      ]}
     ]
   },
-
   {
     phase: "Contingency",
     week: 20, title: "Contingency: Offer Not Yet / Plan Adjustment",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["If you don't have an offer by Week 20: expand target list", "Apply to startups, contract roles, adjacent roles (Analytics Engineer, Data Engineer with ML)"] },
-      { day: "Wed", hrs: 2, tasks: ["Revisit your projects: are they showcasing the right skills?", "Do another round of cold outreach on LinkedIn"] },
-      { day: "Fri", hrs: 2, tasks: ["LeetCode: 2x Medium (stay sharp)", "System Design: 1 new case (practice doesn't hurt)"] },
-      { day: "Sun", hrs: 2, tasks: ["Regroup: what's working, what's not?", "Adjust messaging or target list if needed"] },
+      { day: "Mon", hrs: 2, tasks: [
+        "If no offers are in hand by Week 20: expand application scope to startups, remote contract positions, and adjacent fields (e.g. Data Platform Engineer)"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "Re-evaluate your portfolio projects. Ask senior developers to review your repos for any code design red flags"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "Solve 3 LeetCode Medium problems. Run through a system design drill on a new case study"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Refine your outreach messages and resume hooks based on what caused drop-offs in the pipeline"
+      ]}
     ]
   },
   {
@@ -230,10 +432,18 @@ const mlWeeks = [
     week: 21, title: "Contingency: Extended Search",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["Apply to 10 more companies (Startups, Tier-2 companies)", "Look at AngelList/Wellfound for early-stage ML roles"] },
-      { day: "Wed", hrs: 2, tasks: ["Interview prep: refresh weak areas", "Mock interview: stay interview-ready"] },
-      { day: "Fri", hrs: 2, tasks: ["Networking: reach out to 5 ex-Cognizant colleagues in product", "Ask for referrals, advice, practice interviews"] },
-      { day: "Sun", hrs: 2, tasks: ["Review: what's different from Week 1?", "Your skills are real. The right opportunity will come."] },
+      { day: "Mon", hrs: 2, tasks: [
+        "Submit 15 applications to startups and tier-2 firms. Connect with hiring managers directly on LinkedIn"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "Practice coding and system design regularly to stay in interview shape. Treat job hunting as a full-time sprint"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "Ping your network for internal referrals. Look for roles with immediate hiring requirements"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Review feedback from recent screens. Adjust study priority to target areas where you were rejected"
+      ]}
     ]
   },
   {
@@ -241,10 +451,18 @@ const mlWeeks = [
     week: 22, title: "Contingency: Onboarding / Extended Search",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["If you have an offer: focus on onboarding", "If not: keep the search active but sustainable"] },
-      { day: "Wed", hrs: 2, tasks: ["Day 1 prep: review your new company's tech stack", "Or: continue interviews with momentum"] },
-      { day: "Fri", hrs: 2, tasks: ["Celebrate: you've built 2 projects, survived 6 months of 6-8 hrs/week discipline", "That's not nothing"] },
-      { day: "Sun", hrs: 2, tasks: ["Whatever comes next, you earned it."] },
+      { day: "Mon", hrs: 2, tasks: [
+        "If onboarding: focus on setting up your local dev workspace and understanding company guidelines"
+      ]},
+      { day: "Wed", hrs: 2, tasks: [
+        "If searching: continue submitting applications and attending scheduled interviews with persistent energy"
+      ]},
+      { day: "Fri", hrs: 2, tasks: [
+        "Document any technical challenges you encounter during onboarding or active interview loops"
+      ]},
+      { day: "Sun", hrs: 2, tasks: [
+        "Maintain a sustainable study schedule to prevent burnout. Consistency remains your biggest advantage"
+      ]}
     ]
   },
   {
@@ -252,10 +470,10 @@ const mlWeeks = [
     week: 23, title: "Week 23: Day 1 or Continued Search",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["Day 1 of your ML Engineer role OR keep applying", "Either way: you have the skills"] },
-      { day: "Wed", hrs: 2, tasks: ["Onboarding ramp or interview push — full focus"] },
-      { day: "Fri", hrs: 2, tasks: ["Setup or search — whatever's needed"] },
-      { day: "Sun", hrs: 2, tasks: ["Rest"] },
+      { day: "Mon", hrs: 2, tasks: ["Onboarding setup or application sprint — stay focused on the task at hand"] },
+      { day: "Wed", hrs: 2, tasks: ["Deep dive into the team codebase or mock interview practice"] },
+      { day: "Fri", hrs: 2, tasks: ["Discuss early goals with your manager, or follow up on submitted applications"] },
+      { day: "Sun", hrs: 2, tasks: ["Rest and clear your head. Keep your momentum steady"] }
     ]
   },
   {
@@ -263,10 +481,10 @@ const mlWeeks = [
     week: 24, title: "Week 24: Onboarded or Still Searching",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["First week as ML Engineer or final push of applications"] },
-      { day: "Wed", hrs: 2, tasks: ["Learning the codebase or interview prep"] },
-      { day: "Fri", hrs: 2, tasks: ["Settling in or staying persistent"] },
-      { day: "Sun", hrs: 2, tasks: ["You did 6 months of deliberate, sustained effort. That's character."] },
+      { day: "Mon", hrs: 2, tasks: ["First code reviews in new role OR submitting applications to new openings"] },
+      { day: "Wed", hrs: 2, tasks: ["Understand internal data pipelines, or complete daily LeetCode practice"] },
+      { day: "Fri", hrs: 2, tasks: ["Clarify technical architecture with seniors, or send follow-up DMs to recruiters"] },
+      { day: "Sun", hrs: 2, tasks: ["Review your 6-month growth. Your capability is significantly higher than day 1"] }
     ]
   },
   {
@@ -274,10 +492,10 @@ const mlWeeks = [
     week: 25, title: "Week 25: Momentum",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["Full focus: onboarding or search"] },
-      { day: "Wed", hrs: 2, tasks: ["Build or apply"] },
-      { day: "Fri", hrs: 2, tasks: ["Contribute or interview"] },
-      { day: "Sun", hrs: 2, tasks: ["This is just the beginning."] },
+      { day: "Mon", hrs: 2, tasks: ["Pick up first major feature ticket, or attend interview loops with new companies"] },
+      { day: "Wed", hrs: 2, tasks: ["Write tests for your new features, or run system design mocks"] },
+      { day: "Fri", hrs: 2, tasks: ["Deliver your first pull request, or evaluate backup contract offers"] },
+      { day: "Sun", hrs: 2, tasks: ["Prepare notes for upcoming weekly reviews"] }
     ]
   },
   {
@@ -285,161 +503,47 @@ const mlWeeks = [
     week: 26, title: "Week 26: End of 6 Months",
     hrs: 8,
     days: [
-      { day: "Mon", hrs: 2, tasks: ["Reflect on the 6-month journey"] },
-      { day: "Wed", hrs: 2, tasks: ["What you built, what you learned, where you are"] },
-      { day: "Fri", hrs: 2, tasks: ["Next chapter: Day 1 at a product company or Day N of continued effort"] },
-      { day: "Sun", hrs: 2, tasks: ["Either way: you earned this. Own it."] },
+      { day: "Mon", hrs: 2, tasks: ["Evaluate your accomplishments over the full 26-week cycle"] },
+      { day: "Wed", hrs: 2, tasks: ["Organize and document what you built, noting key learnings and next career milestones"] },
+      { day: "Fri", hrs: 2, tasks: ["Celebrate the transition: you've built the skills, projects, and landed the role!"] },
+      { day: "Sun", hrs: 2, tasks: ["Set new 6-month goals for production performance and system architecture"] }
     ]
-  },
+  }
 ];
 
-function FocusedRoadmap({ user }) {
-  const [activeWeek, setActiveWeek] = useState(0);
-  const [expandedWeek, setExpandedWeek] = useState(null);
-  const [checked, setChecked] = useState({});
+window.mlWeeks = mlWeeks;
 
-  const progressKey = `ml-progress-${user || 'guest'}`;
-
-  useEffect(() => {
-    const saved = localStorage.getItem(progressKey);
-    if (saved) {
-      try {
-        setChecked(JSON.parse(saved));
-      } catch (e) {
-        setChecked({});
+window.FocusedRoadmap = function({ user }) {
+  const config = {
+    id: "ml",
+    title: "6-Month Focused ML Transition",
+    subtitle: "Practical Milestones to ML Engineer",
+    tagline: "Synapse · Machine Learning Track",
+    description: "Budgeting 6-8 hours/week, this roadmap bypasses long theoretical paths to focus on 2 high-impact projects, structured coding sprints, and practical interview execution.",
+    accentColor: "#059669",
+    weeks: mlWeeks,
+    phases: [
+      { phase: "Setup & Resume", weeks: "1-3", desc: "Polish resume, quick ML refresh, LeetCode start" },
+      { phase: "Project 1", weeks: "4-6", desc: "Build, deploy, market Risk Scoring API" },
+      { phase: "Project 2", weeks: "7-9", desc: "Build, deploy, market Kafka ML Pipeline (your differentiator)" },
+      { phase: "Interview Prep", weeks: "10-13", desc: "LeetCode sprint, system design, behavioral, mock interviews" },
+      { phase: "Job Hunt", weeks: "14-17", desc: "Apply, interview, negotiate offers" },
+      { phase: "Buffer", weeks: "18-19", desc: "Offer negotiation or continued search" },
+      { phase: "Contingency", weeks: "20-26", desc: "Extended job search or onboarding ramp" }
+    ],
+    insights: [
+      {
+        title: "💡 Practical Transition Strategy",
+        text: "Weeks 1-3 establish your profile. Week 4 starts Project 1, letting you **start applying in Week 6** when the API is live. Project 2 (Kafka streaming) runs in parallel with early screens. Weeks 10-13 prepare you for core technical loops. By Week 17, you are fully prepared and actively interviewing.",
+        color: "#F59E0B"
+      },
+      {
+        title: "🔗 ML Engineer Core Requirements",
+        text: "Success in ML interviews relies on 3 pillars:\n1. **Coding (40%):** Data structures, SQL queries, clean formatting.\n2. **System Design (40%):** Data pipelines, model caching, serving latency budgets.\n3. **Behavioral (20%):** Demonstrating problem-solving and business impact.",
+        color: "#10B981"
       }
-    }
-  }, [progressKey]);
-
-  const toggleChecked = (id) => {
-    const next = { ...checked, [id]: !checked[id] };
-    setChecked(next);
-    localStorage.setItem(progressKey, JSON.stringify(next));
+    ]
   };
 
-  const completedCount = Object.values(checked).filter(Boolean).length;
-  const totalCount = mlWeeks.reduce((sum, week) => sum + week.days.reduce((inner, d) => inner + d.tasks.length, 0), 0);
-
-  const currentWeek = mlWeeks[activeWeek];
-  const phaseColor = {
-    "Setup & Resume": "#2563EB",
-    "Project 1": "#059669",
-    "Project 2": "#7C3AED",
-    "Interview Prep": "#DC2626",
-    "Job Hunt": "#F59E0B",
-    "Buffer": "#10B981",
-    "Contingency": "#6366F1"
-  };
-
-  const color = phaseColor[currentWeek.phase];
-
-  return (
-    <div style={{ fontFamily: "'DM Sans','Segoe UI',sans-serif", background: "#0A0A0F", minHeight: "100vh", color: "#E8E8F0", padding: "20px 16px" }}>
-      <div style={{ maxWidth: 900, margin: "0 auto" }}>
-
-        {/* Header */}
-        <div style={{ marginBottom: 24 }}>
-          <div style={{ fontSize: 10, letterSpacing: 3, color: "#6B7280", marginBottom: 6 }}>SYNAPSE · 6-MONTH FOCUSED ROADMAP</div>
-          <div style={{ fontSize: 24, fontWeight: 800, marginBottom: 8 }}>ML Engineer Transition<br/><span style={{ color: "#6B7280", fontSize: 14, fontWeight: 400 }}>6-8 hrs/week · 26 weeks · 2 projects + interviews</span></div>
-          <div style={{ fontSize: 13, color: "#9CA3AF", lineHeight: 1.7 }}>
-            <strong>The reality:</strong> You have 1-2 hours per day. That's ~6-8 hours per week. In 6 months, that's ~192 hours total. Focus ruthlessly: 2 killer projects + interview readiness. Skip the fluff. Get hired. Then go deeper.
-          </div>
-          <div style={{ fontSize: 12, color: "#9CA3AF", marginTop: 12 }}>
-            Checklist progress for <strong style={{ color: "#fff" }}>{user}</strong>: {completedCount}/{totalCount} tasks completed.
-          </div>
-        </div>
-
-        {/* Week selector */}
-        <div style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 11, letterSpacing: 2, color: "#6B7280", fontWeight: 700, marginBottom: 10 }}>WEEKS 1–26</div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(13, 1fr)", gap: 4 }}>
-            {mlWeeks.map((w, i) => (
-              <button key={i} onClick={() => { setActiveWeek(i); setExpandedWeek(null); }}
-                style={{
-                  background: activeWeek === i ? phaseColor[w.phase] : "#1A1A2E",
-                  border: activeWeek === i ? `2px solid ${phaseColor[w.phase]}` : "1px solid #2A2A3E",
-                  borderRadius: 6,
-                  padding: "8px 6px",
-                  cursor: "pointer",
-                  color: activeWeek === i ? "#fff" : "#6B7280",
-                  fontSize: 9,
-                  fontWeight: 700,
-                  textAlign: "center",
-                  lineHeight: 1.3
-                }}>
-                W{i + 1}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Current week detail */}
-        <div style={{ background: "#1A1A2E", border: `1px solid ${color}44`, borderLeft: `4px solid ${color}`, borderRadius: 12, padding: 20, marginBottom: 16 }}>
-          <div style={{ marginBottom: 12 }}>
-            <div style={{ fontSize: 11, letterSpacing: 2, color: color, fontWeight: 700, marginBottom: 4 }}>{currentWeek.phase} · {currentWeek.hrs}h</div>
-            <div style={{ fontSize: 20, fontWeight: 800, marginBottom: 2 }}>Week {currentWeek.week}: {currentWeek.title}</div>
-            <div style={{ fontSize: 12, color: "#9CA3AF" }}>~{Math.round(currentWeek.hrs / 5)} hr per day average</div>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12 }}>
-            {currentWeek.days.map((d, i) => (
-              <div key={i} style={{ background: "#0F0F13", borderRadius: 8, padding: 12, border: "1px solid #2A2A3E" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
-                  <span style={{ fontWeight: 700, color: color, fontSize: 13 }}>{d.day}</span>
-                  <span style={{ fontSize: 11, color: "#6B7280" }}>{d.hrs}h</span>
-                </div>
-                {d.tasks.map((task, j) => (
-                  <div key={j} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 6, lineHeight: 1.4, paddingLeft: 16, position: 'relative', color: '#D1D5DB', fontSize: 12 }}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <input type="checkbox" checked={checked[`ml-${currentWeek.week}-${i}-${j}`] || false} onChange={() => toggleChecked(`ml-${currentWeek.week}-${i}-${j}`)} style={{ width: 14, height: 14 }} />
-                      <span>{task}</span>
-                    </label>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-
-          <div style={{ marginTop: 16, padding: 12, background: "#0F0F13", borderRadius: 8, fontSize: 12, color: "#9CA3AF", borderLeft: `3px solid ${color}` }}>
-            <strong style={{ color: color }}>Focus:</strong> This week, what's the ONE thing that matters most? Finish it. Don't spread thin.
-          </div>
-        </div>
-
-        {/* Phase breakdown */}
-        <div style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 11, letterSpacing: 2, color: "#6B7280", fontWeight: 700, marginBottom: 12 }}>ROADMAP STRUCTURE</div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 10 }}>
-            {[
-              { phase: "Setup & Resume", weeks: "1-3", color: "#2563EB", desc: "Polish resume, quick ML refresh, LeetCode start" },
-              { phase: "Project 1", weeks: "4-6", color: "#059669", desc: "Build, deploy, market Risk Scoring API" },
-              { phase: "Project 2", weeks: "7-9", color: "#7C3AED", desc: "Build, deploy, market Kafka ML Pipeline (your differentiator)" },
-              { phase: "Interview Prep", weeks: "10-13", color: "#DC2626", desc: "LeetCode sprint, system design, behavioral, mock interviews" },
-              { phase: "Job Hunt", weeks: "14-17", color: "#F59E0B", desc: "Apply, interview, negotiate offers" },
-              { phase: "Buffer", weeks: "18-19", color: "#10B981", desc: "Offer negotiation or continued search" },
-              { phase: "Contingency", weeks: "20-26", color: "#6366F1", desc: "Extended job search or onboarding ramp" },
-            ].map((p, i) => (
-              <div key={i} style={{ background: "#1A1A2E", border: `1px solid ${p.color}33`, borderLeft: `4px solid ${p.color}`, borderRadius: 10, padding: 12 }}>
-                <div style={{ fontWeight: 700, color: p.color, fontSize: 12, marginBottom: 4 }}>{p.phase} · Weeks {p.weeks}</div>
-                <div style={{ fontSize: 12, color: "#9CA3AF" }}>{p.desc}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Key insight */}
-        <div style={{ background: "#1A1A2E", border: "1px solid #2A2A3E", borderLeft: "4px solid #F59E0B", borderRadius: 12, padding: 16, marginBottom: 16 }}>
-          <div style={{ fontSize: 12, color: "#9CA3AF", lineHeight: 1.8 }}>
-            <strong style={{ color: "#F59E0B" }}>Strategy:</strong> Weeks 1-3 are not wasted. They polish your foundation and let you START applying in Week 6 when Project 1 is live. Weeks 10-13 are interview prep in parallel with job hunting (Weeks 14-17). By Week 17, you've applied to 30+ companies and had multiple interviews. If no offer by Week 18, you pivot — maybe a different role, maybe an internal move, maybe a contract gig. But you have a 6-month plan that accounts for reality.
-          </div>
-        </div>
-
-        {/* SYNAPSE note */}
-        <div style={{ background: "#1A1A2E", border: "1px solid #DC262633", borderLeft: "4px solid #DC2626", borderRadius: 12, padding: 14 }}>
-          <div style={{ fontSize: 12, color: "#FCA5A5", lineHeight: 1.7 }}>
-            <strong style={{ color: "#DC2626" }}>SYNAPSE:</strong> 6-8 hours per week is tight. But here's the honest truth: it's MORE than most people are willing to do. Most people talk about career transitions. You're actually building the projects and getting hired. That's the difference between talking and doing. Finish Week 6, deploy Project 1, and you're in the top 1% of ML candidates already. The second project makes you unstoppable.
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+  return <window.RoadmapRenderer user={user} config={config} />;
+};

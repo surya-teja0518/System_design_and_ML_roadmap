@@ -1,13 +1,73 @@
-﻿<!doctype html>
+<!doctype html>
 <html>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Roadmap Hub — System Design + ML Plan</title>
+  <title>Synapse Roadmap Hub — Dev Career Transition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
   <style>
-    html, body, #root { height: 100%; margin: 0; }
-    body { background: #0A0A0F; color: #E8E8F0; font-family: 'DM Sans', 'Segoe UI', sans-serif; }
-    button { font: inherit; }
+    /* Premium Global CSS variables and styling */
+    :root {
+      --bg-main: #050508;
+      --bg-card: #10121C;
+      --border-color: #1E2235;
+      --text-main: #E8E8F0;
+      --text-muted: #9CA3AF;
+      --primary: #3B82F6;
+      --primary-glow: rgba(59, 130, 246, 0.15);
+    }
+    
+    html, body, #root { 
+      height: 100%; 
+      margin: 0; 
+      background: var(--bg-main); 
+      color: var(--text-main);
+      font-family: 'DM Sans', 'Segoe UI', sans-serif;
+      scroll-behavior: smooth;
+    }
+    
+    button { 
+      font: inherit; 
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    input {
+      font: inherit;
+      transition: all 0.25s ease;
+    }
+
+    /* Keyframe animations for glowing background elements */
+    @keyframes pulse-glow {
+      0%, 100% { transform: scale(1) translate(0px, 0px); opacity: 0.2; }
+      50% { transform: scale(1.2) translate(15px, -15px); opacity: 0.35; }
+    }
+
+    .glow-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      z-index: 0;
+      pointer-events: none;
+      animation: pulse-glow 12s infinite alternate ease-in-out;
+    }
+    
+    /* Scrollbar customization */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #08090E;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1E2235;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #2D334E;
+    }
   </style>
   <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
@@ -16,16 +76,23 @@
 <body>
   <div id="root"></div>
 
-  <script type="text/babel" src="./system_design_roadmap.jsx?v=3"></script>
-  <script type="text/babel" src="./ml_6month_focused.jsx?v=3"></script>
+  <!-- Shared Rendering Engine and Roadmap Components loaded in order -->
+  <script type="text/babel" src="./roadmap_shared.jsx?v=4"></script>
+  <script type="text/babel" src="./system_design_roadmap.jsx?v=4"></script>
+  <script type="text/babel" src="./ml_6month_focused.jsx?v=4"></script>
+  <script type="text/babel" src="./python_roadmap.jsx?v=4"></script>
+  <script type="text/babel" src="./sql_roadmap.jsx?v=4"></script>
+
   <script type="text/babel">
-    const { useState, useEffect } = React;
+    const { useState, useEffect, useMemo } = React;
 
     function App() {
       const [page, setPage] = useState('home');
       const [user, setUser] = useState(localStorage.getItem('roadmapUser') || '');
       const [nameInput, setNameInput] = useState('');
+      const [statsUpdateTrigger, setStatsUpdateTrigger] = useState(0);
 
+      // Persist user sign-in state
       useEffect(() => {
         if (user) {
           localStorage.setItem('roadmapUser', user);
@@ -34,27 +101,170 @@
         }
       }, [user]);
 
+      // Re-trigger stats updates when localstorage changes (like checking off items in sub-views)
+      useEffect(() => {
+        const handleStorageChange = () => {
+          setStatsUpdateTrigger(prev => prev + 1);
+        };
+        window.addEventListener('storage', handleStorageChange);
+        // Custom event dispatcher from the sub-renderer
+        window.addEventListener('roadmapProgressUpdated', handleStorageChange);
+        
+        return () => {
+          window.removeEventListener('storage', handleStorageChange);
+          window.removeEventListener('roadmapProgressUpdated', handleStorageChange);
+        };
+      }, []);
+
+      // Dynamic completion calculation helper for home screen dashboard cards
+      const roadmapStats = useMemo(() => {
+        if (!user) return {};
+
+        const getStats = (id, weeksArray) => {
+          if (!weeksArray) return { percent: 0, completed: 0, total: 0 };
+          const progressKey = `${id}-progress-${user}`;
+          const saved = localStorage.getItem(progressKey);
+          const checked = saved ? JSON.parse(saved) : {};
+          let total = 0;
+          let completed = 0;
+
+          weeksArray.forEach((week) => {
+            if (week.topics) {
+              week.topics.forEach((t, i) => {
+                total++;
+                if (checked[`${id}-${week.week}-${i}`]) completed++;
+              });
+            } else if (week.days) {
+              week.days.forEach((d, dayIndex) => {
+                d.tasks.forEach((task, taskIndex) => {
+                  total++;
+                  if (checked[`${id}-${week.week}-${dayIndex}-${taskIndex}`]) completed++;
+                });
+              });
+            }
+          });
+
+          return {
+            percent: total > 0 ? Math.round((completed / total) * 100) : 0,
+            completed,
+            total
+          };
+        };
+
+        return {
+          system: getStats('system', window.systemWeeks),
+          ml: getStats('ml', window.mlWeeks),
+          python: getStats('python', window.pythonWeeks),
+          sql: getStats('sql', window.sqlWeeks)
+        };
+      }, [user, statsUpdateTrigger, page]); // Update stats when returning to Home page
+
+      // Intercept localStorage calls in window to dispatch custom events (so checking boxes syncs in real-time)
+      useEffect(() => {
+        const originalSetItem = localStorage.setItem;
+        localStorage.setItem = function(key, value) {
+          originalSetItem.apply(this, arguments);
+          if (key.includes('-progress-')) {
+            window.dispatchEvent(new Event('roadmapProgressUpdated'));
+          }
+        };
+      }, []);
+
       if (!user) {
         return (
-          <div style={{ minHeight: '100vh', background: '#0A0A0F', color: '#E8E8F0', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
-            <div style={{ width: '100%', maxWidth: 540, textAlign: 'center', background: '#11131B', border: '1px solid #24283B', borderRadius: 20, padding: '36px 28px' }}>
-              <div style={{ fontSize: 10, letterSpacing: 3, color: '#6B7280', marginBottom: 14 }}>ROADMAP HUB LOGIN</div>
-              <div style={{ fontSize: 28, fontWeight: 800, marginBottom: 12 }}>Welcome back</div>
-              <div style={{ fontSize: 14, color: '#9CA3AF', lineHeight: 1.7, marginBottom: 24 }}>
-                Enter a name to save checklist progress in this browser. This is a lightweight profile for your roadmap progress.
+          <div style={{ 
+            minHeight: '100vh', 
+            background: '#050508', 
+            color: '#E8E8F0', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            padding: '24px',
+            position: 'relative',
+            overflow: 'hidden'
+          }}>
+            {/* Background glowing orbs */}
+            <div className="glow-orb" style={{ top: '15%', left: '10%', width: 250, height: 250, background: '#7C3AED' }} />
+            <div className="glow-orb" style={{ bottom: '15%', right: '10%', width: 300, height: 300, background: '#2563EB' }} />
+
+            <div style={{ 
+              width: '100%', 
+              maxWidth: 480, 
+              textAlign: 'center', 
+              background: 'rgba(16, 18, 28, 0.75)', 
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(30, 34, 53, 0.8)', 
+              borderRadius: 24, 
+              padding: '44px 36px',
+              boxShadow: '0 20px 50px rgba(0, 0, 0, 0.5)',
+              position: 'relative',
+              zIndex: 1
+            }}>
+              <div style={{ 
+                fontSize: 10, 
+                letterSpacing: 4, 
+                color: '#3B82F6', 
+                marginBottom: 16, 
+                fontWeight: 900,
+                textTransform: 'uppercase'
+              }}>
+                Synapse Portal
               </div>
-              <input
-                value={nameInput}
-                onChange={(e) => setNameInput(e.target.value)}
-                placeholder="Your name"
-                style={{ width: '100%', padding: '14px 16px', borderRadius: 12, border: '1px solid #2A2A3E', background: '#0D111B', color: '#E8E8F0', fontSize: 14, outline: 'none', marginBottom: 16 }}
-              />
+              <h2 style={{ fontSize: 30, fontWeight: 900, marginBottom: 12, color: '#FFF' }}>Begin Your Journey</h2>
+              <p style={{ fontSize: 13.5, color: '#9CA3AF', lineHeight: 1.6, marginBottom: 28 }}>
+                Enter your name to initialize a personalized career transition dashboard. Progress is stored securely in your browser's local cache.
+              </p>
+              
+              <div style={{ position: 'relative', marginBottom: 20 }}>
+                <input
+                  type="text"
+                  value={nameInput}
+                  onChange={(e) => setNameInput(e.target.value)}
+                  placeholder="Enter your name"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && nameInput.trim()) {
+                      setUser(nameInput.trim());
+                    }
+                  }}
+                  style={{ 
+                    width: '100%', 
+                    padding: '16px 20px', 
+                    borderRadius: 12, 
+                    border: '1px solid #22273D', 
+                    background: '#08090E', 
+                    color: '#FFF', 
+                    fontSize: 14, 
+                    outline: 'none',
+                    boxSizing: 'border-box'
+                  }}
+                  onFocus={(e) => e.target.style.borderColor = '#3B82F6'}
+                  onBlur={(e) => e.target.style.borderColor = '#22273D'}
+                />
+              </div>
+
               <button
                 onClick={() => setUser(nameInput.trim())}
                 disabled={!nameInput.trim()}
-                style={{ width: '100%', padding: '14px 16px', borderRadius: 12, border: 'none', background: '#2563EB', color: '#fff', fontWeight: 700, cursor: nameInput.trim() ? 'pointer' : 'not-allowed' }}
+                style={{ 
+                  width: '100%', 
+                  padding: '16px 20px', 
+                  borderRadius: 12, 
+                  border: 'none', 
+                  background: nameInput.trim() ? 'linear-gradient(90deg, #2563EB 0%, #7C3AED 100%)' : '#1A1C28', 
+                  color: nameInput.trim() ? '#FFF' : '#4B5563', 
+                  fontWeight: 800, 
+                  cursor: nameInput.trim() ? 'pointer' : 'not-allowed',
+                  boxShadow: nameInput.trim() ? '0 4px 15px rgba(59, 130, 246, 0.4)' : 'none',
+                  transform: nameInput.trim() ? 'scale(1)' : 'none'
+                }}
+                onMouseEnter={(e) => {
+                  if (nameInput.trim()) e.target.style.transform = 'translateY(-1px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                }}
               >
-                Sign in
+                Sign In
               </button>
             </div>
           </div>
@@ -62,94 +272,488 @@
       }
 
       return (
-        <div style={{ minHeight: '100vh', background: '#0A0A0F', color: '#E8E8F0', padding: '20px 16px' }}>
+        <div style={{ minHeight: '100vh', background: '#050508', color: '#E8E8F0', padding: '16px' }}>
           <div style={{ maxWidth: 1080, margin: '0 auto' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: 24 }}>
+            
+            {/* Main Header / Top Navigation bar */}
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'space-between', 
+              flexWrap: 'wrap', 
+              gap: 16, 
+              padding: '16px 0',
+              borderBottom: '1px solid #10121C',
+              marginBottom: 24 
+            }}>
               <div>
-                <div style={{ fontSize: 10, letterSpacing: 3, color: '#6B7280', marginBottom: 6 }}>ROADMAP HUB</div>
-                <div style={{ fontSize: 32, fontWeight: 800, lineHeight: 1.05 }}>System Design + ML Plan</div>
+                <div style={{ fontSize: 9, letterSpacing: 3, color: '#3B82F6', marginBottom: 4, fontWeight: 900 }}>SYNAPSE HUB</div>
+                <div style={{ fontSize: 24, fontWeight: 900, letterSpacing: -0.5, color: '#FFF' }}>transition_dashboard</div>
               </div>
-              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
-                <button onClick={() => setPage('home')} style={{ background: page === 'home' ? '#2563EB' : 'transparent', color: page === 'home' ? '#fff' : '#9CA3AF', border: page === 'home' ? 'none' : '1px solid #2A2A3E', borderRadius: 8, padding: '10px 14px', cursor: 'pointer' }}>Home</button>
-                <button onClick={() => setPage('system')} style={{ background: page === 'system' ? '#7C3AED' : 'transparent', color: page === 'system' ? '#fff' : '#9CA3AF', border: page === 'system' ? 'none' : '1px solid #2A2A3E', borderRadius: 8, padding: '10px 14px', cursor: 'pointer' }}>System Design</button>
-                <button onClick={() => setPage('ml')} style={{ background: page === 'ml' ? '#059669' : 'transparent', color: page === 'ml' ? '#fff' : '#9CA3AF', border: page === 'ml' ? 'none' : '1px solid #2A2A3E', borderRadius: 8, padding: '10px 14px', cursor: 'pointer' }}>ML Plan</button>
-                <button onClick={() => { setUser(''); setNameInput(''); setPage('home'); }} style={{ background: '#11131B', border: '1px solid #2A2A3E', borderRadius: 8, padding: '10px 14px', cursor: 'pointer', color: '#9CA3AF' }}>Sign out</button>
+              
+              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
+                <button 
+                  onClick={() => setPage('home')} 
+                  style={{ 
+                    background: page === 'home' ? 'rgba(59, 130, 246, 0.1)' : 'transparent', 
+                    color: page === 'home' ? '#3B82F6' : '#9CA3AF', 
+                    border: page === 'home' ? '1px solid #3B82F6' : '1px solid #1E2235', 
+                    borderRadius: 10, 
+                    padding: '8px 14px', 
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: 'pointer' 
+                  }}
+                >
+                  Dashboard
+                </button>
+                <button 
+                  onClick={() => setPage('system')} 
+                  style={{ 
+                    background: page === 'system' ? 'rgba(124, 58, 237, 0.1)' : 'transparent', 
+                    color: page === 'system' ? '#A78BFA' : '#9CA3AF', 
+                    border: page === 'system' ? '1px solid #7C3AED' : '1px solid #1E2235', 
+                    borderRadius: 10, 
+                    padding: '8px 14px', 
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: 'pointer' 
+                  }}
+                >
+                  System Design
+                </button>
+                <button 
+                  onClick={() => setPage('ml')} 
+                  style={{ 
+                    background: page === 'ml' ? 'rgba(5, 150, 105, 0.1)' : 'transparent', 
+                    color: page === 'ml' ? '#34D399' : '#9CA3AF', 
+                    border: page === 'ml' ? '1px solid #059669' : '1px solid #1E2235', 
+                    borderRadius: 10, 
+                    padding: '8px 14px', 
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: 'pointer' 
+                  }}
+                >
+                  ML Plan
+                </button>
+                <button 
+                  onClick={() => setPage('python')} 
+                  style={{ 
+                    background: page === 'python' ? 'rgba(55, 118, 171, 0.15)' : 'transparent', 
+                    color: page === 'python' ? '#60A5FA' : '#9CA3AF', 
+                    border: page === 'python' ? '1px solid #3776AB' : '1px solid #1E2235', 
+                    borderRadius: 10, 
+                    padding: '8px 14px', 
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: 'pointer' 
+                  }}
+                >
+                  Python
+                </button>
+                <button 
+                  onClick={() => setPage('sql')} 
+                  style={{ 
+                    background: page === 'sql' ? 'rgba(2, 132, 199, 0.15)' : 'transparent', 
+                    color: page === 'sql' ? '#38BDF8' : '#9CA3AF', 
+                    border: page === 'sql' ? '1px solid #0284C7' : '1px solid #1E2235', 
+                    borderRadius: 10, 
+                    padding: '8px 14px', 
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: 'pointer' 
+                  }}
+                >
+                  SQL
+                </button>
+                <button 
+                  onClick={() => { setUser(''); setNameInput(''); setPage('home'); }} 
+                  style={{ 
+                    background: '#161824', 
+                    border: '1px solid #1E2235', 
+                    borderRadius: 10, 
+                    padding: '8px 14px', 
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: 'pointer', 
+                    color: '#EF4444' 
+                  }}
+                >
+                  Sign Out
+                </button>
               </div>
             </div>
 
+            {/* Main Pages router */}
             {page === 'home' && (
-              <div style={{ display: 'grid', gap: 18 }}>
-                <div style={{ background: '#11131B', border: '1px solid #24283B', borderRadius: 18, padding: 24 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: 18 }}>
-                    <div>
-                      <div style={{ fontSize: 11, letterSpacing: 2, color: '#6B7280', marginBottom: 6 }}>SYSTEM DESIGN</div>
-                      <div style={{ fontSize: 20, fontWeight: 800 }}>16-Week System Design Roadmap</div>
-                    </div>
-                    <button onClick={() => setPage('system')} style={{ background: '#7C3AED', border: 'none', borderRadius: 10, color: '#fff', padding: '12px 18px', fontWeight: 700, cursor: 'pointer' }}>Open System Design</button>
+              <div>
+                {/* Greeting Panel */}
+                <div style={{
+                  background: 'linear-gradient(90deg, #11131F 0%, #08090E 100%)',
+                  border: '1px solid #1E2235',
+                  borderRadius: 20,
+                  padding: '24px 28px',
+                  marginBottom: 28,
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                  gap: 16
+                }}>
+                  <div>
+                    <h2 style={{ fontSize: 24, fontWeight: 900, margin: '0 0 6px 0', color: '#FFF' }}>
+                      Welcome back, {user} 👋
+                    </h2>
+                    <p style={{ fontSize: 13, color: '#9CA3AF', margin: 0 }}>
+                      Here is an overview of your active roadmaps and career transition metrics. Keep pushing forward!
+                    </p>
                   </div>
-                  <div style={{ fontSize: 13, color: '#9CA3AF', lineHeight: 1.75 }}>
-                    High-level and low-level design learning in a single roadmap. Focus on HLD, LLD, case studies, and interview readiness.
+                  
+                  {/* Global progress indicator */}
+                  <div style={{ display: 'flex', gap: 12 }}>
+                    <div style={{ background: '#161824', border: '1px solid #24293E', borderRadius: 12, padding: '10px 16px', textAlign: 'center' }}>
+                      <div style={{ fontSize: 18, fontWeight: 900, color: '#FFF' }}>
+                        {
+                          ((roadmapStats.system?.completed || 0) + 
+                           (roadmapStats.ml?.completed || 0) + 
+                           (roadmapStats.python?.completed || 0) + 
+                           (roadmapStats.sql?.completed || 0))
+                        }
+                      </div>
+                      <div style={{ fontSize: 9, color: '#6B7280', fontWeight: 800, letterSpacing: 1, marginTop: 2 }}>TOTAL TASKS DONE</div>
+                    </div>
                   </div>
                 </div>
-                <div style={{ background: '#11131B', border: '1px solid #24283B', borderRadius: 18, padding: 24 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: 18 }}>
+
+                {/* Roadmaps Grid */}
+                <div style={{ 
+                  display: 'grid', 
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(460px, 1fr))', 
+                  gap: 20,
+                  marginBottom: 28 
+                }}>
+                  
+                  {/* System Design Card */}
+                  <div style={{ 
+                    background: '#10121C', 
+                    border: '1px solid #1E2235', 
+                    borderRadius: 20, 
+                    padding: 24,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{
+                      position: 'absolute',
+                      top: 0, right: 0, width: 90, height: 90,
+                      background: 'linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, transparent 100%)',
+                      borderBottomLeftRadius: '100%'
+                    }}></div>
                     <div>
-                      <div style={{ fontSize: 11, letterSpacing: 2, color: '#6B7280', marginBottom: 6 }}>ML PLAN</div>
-                      <div style={{ fontSize: 20, fontWeight: 800 }}>6-Month Focused ML Transition</div>
-                    </div>
-                    <button onClick={() => setPage('ml')} style={{ background: '#059669', border: 'none', borderRadius: 10, color: '#fff', padding: '12px 18px', fontWeight: 700, cursor: 'pointer' }}>Open ML Plan</button>
-                  </div>
-                  <div style={{ fontSize: 13, color: '#9CA3AF', lineHeight: 1.75 }}>
-                    Practical weekly milestones, project delivery, interview prep, and job search pacing for a strong ML engineering transition.
-                  </div>
-                </div>
-                <div style={{ background: '#11131B', border: '1px solid #24283B', borderRadius: 18, padding: 24 }}>
-                  <div style={{ fontSize: 11, letterSpacing: 2, color: '#6B7280', marginBottom: 12 }}>TOPICS COVERED</div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                    <div>
-                      <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 8 }}>System Design</div>
-                      <ul style={{ margin: 0, paddingLeft: 18, color: '#9CA3AF', lineHeight: 1.8, fontSize: 13 }}>
-                        <li>Scalability, load balancing, and distributed architecture</li>
-                        <li>Databases: SQL vs NoSQL, schema, indexing, partitioning</li>
-                        <li>Caching, APIs, rate limiting, versioning, and security</li>
-                        <li>Message queues, event-driven design, consistency models</li>
-                        <li>Monitoring, reliability, alerts, failure handling</li>
-                        <li>Case studies: fraud, recommendation, payments, search</li>
-                        <li>LLD deep dive: service layers, feature stores, model serving</li>
-                        <li>Interview prep: 60-min mocks, follow-ups, trade-offs</li>
-                      </ul>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                        <span style={{ fontSize: 9, letterSpacing: 2, color: '#A78BFA', fontWeight: 900, textTransform: 'uppercase', background: 'rgba(124, 58, 237, 0.1)', padding: '4px 8px', borderRadius: 6 }}>SYSTEM DESIGN</span>
+                        <span style={{ fontSize: 11, color: '#6B7280', fontWeight: 700 }}>16 Weeks · ~30h</span>
+                      </div>
+                      <h3 style={{ fontSize: 18, fontWeight: 800, margin: '0 0 10px 0', color: '#FFF' }}>System Design (HLD + LLD)</h3>
+                      <p style={{ fontSize: 12.5, color: '#9CA3AF', lineHeight: 1.6, margin: '0 0 20px 0' }}>
+                        Parallel study covering distributed database sharding, caching architectures (HLD) and class service layers, API rate-limiting rules (LLD).
+                      </p>
                     </div>
                     <div>
-                      <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 8 }}>ML Plan</div>
-                      <ul style={{ margin: 0, paddingLeft: 18, color: '#9CA3AF', lineHeight: 1.8, fontSize: 13 }}>
-                        <li>Resume, LinkedIn, GitHub, and target-company research</li>
-                        <li>ML theory refresh: ensemble methods, metrics, interpretability</li>
-                        <li>Project 1: data pipeline, model building, API serving</li>
-                        <li>Project 2: Kafka-powered real-time scoring pipeline</li>
-                        <li>Deployment: Docker, CI/CD, cloud hosting, monitoring</li>
-                        <li>Interview prep: LeetCode, system design, behavioral practice</li>
-                        <li>Job hunt: applications, company targeting, offer negotiation</li>
-                        <li>Buffer/contingency weeks for extended search or onboarding</li>
-                      </ul>
+                      {/* Progress bar */}
+                      <div style={{ marginBottom: 16 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 800, marginBottom: 6 }}>
+                          <span style={{ color: '#6B7280' }}>Progress</span>
+                          <span style={{ color: '#A78BFA' }}>{roadmapStats.system?.percent || 0}%</span>
+                        </div>
+                        <div style={{ height: 6, background: '#1E2235', borderRadius: 3, overflow: 'hidden' }}>
+                          <div style={{ width: `${roadmapStats.system?.percent || 0}%`, height: '100%', background: '#7C3AED', borderRadius: 3, transition: 'width 0.4s ease' }} />
+                        </div>
+                      </div>
+                      <button 
+                        onClick={() => setPage('system')} 
+                        style={{ 
+                          width: '100%', 
+                          background: '#7C3AED', 
+                          border: 'none', 
+                          borderRadius: 10, 
+                          color: '#FFF', 
+                          padding: '12px', 
+                          fontWeight: 700, 
+                          cursor: 'pointer',
+                          boxShadow: '0 4px 10px rgba(124, 58, 237, 0.2)'
+                        }}
+                      >
+                        Open System Design Roadmap
+                      </button>
                     </div>
                   </div>
+
+                  {/* ML Plan Card */}
+                  <div style={{ 
+                    background: '#10121C', 
+                    border: '1px solid #1E2235', 
+                    borderRadius: 20, 
+                    padding: 24,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{
+                      position: 'absolute',
+                      top: 0, right: 0, width: 90, height: 90,
+                      background: 'linear-gradient(135deg, rgba(5, 150, 105, 0.1) 0%, transparent 100%)',
+                      borderBottomLeftRadius: '100%'
+                    }}></div>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                        <span style={{ fontSize: 9, letterSpacing: 2, color: '#34D399', fontWeight: 900, textTransform: 'uppercase', background: 'rgba(5, 150, 105, 0.1)', padding: '4px 8px', borderRadius: 6 }}>MACHINE LEARNING</span>
+                        <span style={{ fontSize: 11, color: '#6B7280', fontWeight: 700 }}>26 Weeks · ~192h</span>
+                      </div>
+                      <h3 style={{ fontSize: 18, fontWeight: 800, margin: '0 0 10px 0', color: '#FFF' }}>6-Month ML Transition</h3>
+                      <p style={{ fontSize: 12.5, color: '#9CA3AF', lineHeight: 1.6, margin: '0 0 20px 0' }}>
+                        Hands-on transition track covering resume updates, API model deployment, real-time Kafka scoring pipelines, and job hunt pacing.
+                      </p>
+                    </div>
+                    <div>
+                      {/* Progress bar */}
+                      <div style={{ marginBottom: 16 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 800, marginBottom: 6 }}>
+                          <span style={{ color: '#6B7280' }}>Progress</span>
+                          <span style={{ color: '#34D399' }}>{roadmapStats.ml?.percent || 0}%</span>
+                        </div>
+                        <div style={{ height: 6, background: '#1E2235', borderRadius: 3, overflow: 'hidden' }}>
+                          <div style={{ width: `${roadmapStats.ml?.percent || 0}%`, height: '100%', background: '#059669', borderRadius: 3, transition: 'width 0.4s ease' }} />
+                        </div>
+                      </div>
+                      <button 
+                        onClick={() => setPage('ml')} 
+                        style={{ 
+                          width: '100%', 
+                          background: '#059669', 
+                          border: 'none', 
+                          borderRadius: 10, 
+                          color: '#FFF', 
+                          padding: '12px', 
+                          fontWeight: 700, 
+                          cursor: 'pointer',
+                          boxShadow: '0 4px 10px rgba(5, 150, 105, 0.2)'
+                        }}
+                      >
+                        Open ML Plan Roadmap
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Python Card */}
+                  <div style={{ 
+                    background: '#10121C', 
+                    border: '1px solid #1E2235', 
+                    borderRadius: 20, 
+                    padding: 24,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{
+                      position: 'absolute',
+                      top: 0, right: 0, width: 90, height: 90,
+                      background: 'linear-gradient(135deg, rgba(55, 118, 171, 0.1) 0%, transparent 100%)',
+                      borderBottomLeftRadius: '100%'
+                    }}></div>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                        <span style={{ fontSize: 9, letterSpacing: 2, color: '#60A5FA', fontWeight: 900, textTransform: 'uppercase', background: 'rgba(55, 118, 171, 0.1)', padding: '4px 8px', borderRadius: 6 }}>LANGUAGE TRACK</span>
+                        <span style={{ fontSize: 11, color: '#6B7280', fontWeight: 700 }}>8 Weeks · ~48h</span>
+                      </div>
+                      <h3 style={{ fontSize: 18, fontWeight: 800, margin: '0 0 10px 0', color: '#FFF' }}>Python Mastery Roadmap</h3>
+                      <p style={{ fontSize: 12.5, color: '#9CA3AF', lineHeight: 1.6, margin: '0 0 20px 0' }}>
+                        Deep dive from syntax internals and the GIL to decorators, context managers, async programming, NumPy array operations, and testing.
+                      </p>
+                    </div>
+                    <div>
+                      {/* Progress bar */}
+                      <div style={{ marginBottom: 16 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 800, marginBottom: 6 }}>
+                          <span style={{ color: '#6B7280' }}>Progress</span>
+                          <span style={{ color: '#60A5FA' }}>{roadmapStats.python?.percent || 0}%</span>
+                        </div>
+                        <div style={{ height: 6, background: '#1E2235', borderRadius: 3, overflow: 'hidden' }}>
+                          <div style={{ width: `${roadmapStats.python?.percent || 0}%`, height: '100%', background: '#3776AB', borderRadius: 3, transition: 'width 0.4s ease' }} />
+                        </div>
+                      </div>
+                      <button 
+                        onClick={() => setPage('python')} 
+                        style={{ 
+                          width: '100%', 
+                          background: '#3776AB', 
+                          border: 'none', 
+                          borderRadius: 10, 
+                          color: '#FFF', 
+                          padding: '12px', 
+                          fontWeight: 700, 
+                          cursor: 'pointer',
+                          boxShadow: '0 4px 10px rgba(55, 118, 171, 0.3)'
+                        }}
+                      >
+                        Open Python Roadmap
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* SQL Card */}
+                  <div style={{ 
+                    background: '#10121C', 
+                    border: '1px solid #1E2235', 
+                    borderRadius: 20, 
+                    padding: 24,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{
+                      position: 'absolute',
+                      top: 0, right: 0, width: 90, height: 90,
+                      background: 'linear-gradient(135deg, rgba(2, 132, 199, 0.1) 0%, transparent 100%)',
+                      borderBottomLeftRadius: '100%'
+                    }}></div>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                        <span style={{ fontSize: 9, letterSpacing: 2, color: '#38BDF8', fontWeight: 900, textTransform: 'uppercase', background: 'rgba(2, 132, 199, 0.1)', padding: '4px 8px', borderRadius: 6 }}>DATABASE TRACK</span>
+                        <span style={{ fontSize: 11, color: '#6B7280', fontWeight: 700 }}>8 Weeks · ~48h</span>
+                      </div>
+                      <h3 style={{ fontSize: 18, fontWeight: 800, margin: '0 0 10px 0', color: '#FFF' }}>SQL & Database Tuning</h3>
+                      <p style={{ fontSize: 12.5, color: '#9CA3AF', lineHeight: 1.6, margin: '0 0 20px 0' }}>
+                        From joins and CTE subqueries to window analytics functions, index engineering, transaction locking bounds, and query optimizations.
+                      </p>
+                    </div>
+                    <div>
+                      {/* Progress bar */}
+                      <div style={{ marginBottom: 16 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 800, marginBottom: 6 }}>
+                          <span style={{ color: '#6B7280' }}>Progress</span>
+                          <span style={{ color: '#38BDF8' }}>{roadmapStats.sql?.percent || 0}%</span>
+                        </div>
+                        <div style={{ height: 6, background: '#1E2235', borderRadius: 3, overflow: 'hidden' }}>
+                          <div style={{ width: `${roadmapStats.sql?.percent || 0}%`, height: '100%', background: '#0284C7', borderRadius: 3, transition: 'width 0.4s ease' }} />
+                        </div>
+                      </div>
+                      <button 
+                        onClick={() => setPage('sql')} 
+                        style={{ 
+                          width: '100%', 
+                          background: '#0284C7', 
+                          border: 'none', 
+                          borderRadius: 10, 
+                          color: '#FFF', 
+                          padding: '12px', 
+                          fontWeight: 700, 
+                          cursor: 'pointer',
+                          boxShadow: '0 4px 10px rgba(2, 132, 199, 0.3)'
+                        }}
+                      >
+                        Open SQL Roadmap
+                      </button>
+                    </div>
+                  </div>
+
                 </div>
               </div>
             )}
 
             {page === 'system' && (
               <div>
-                <button onClick={() => setPage('home')} style={{ marginBottom: 20, background: '#11131B', border: '1px solid #2A2A3E', color: '#E8E8F0', padding: '10px 14px', borderRadius: 10, cursor: 'pointer' }}>← Back to hub</button>
+                <button 
+                  onClick={() => setPage('home')} 
+                  style={{ 
+                    marginBottom: 16, 
+                    background: '#10121C', 
+                    border: '1px solid #1E2235', 
+                    color: '#E8E8F0', 
+                    padding: '10px 16px', 
+                    borderRadius: 10, 
+                    cursor: 'pointer',
+                    fontWeight: 700
+                  }}
+                >
+                  ← Back to Dashboard
+                </button>
                 <SystemDesignRoadmap user={user} />
               </div>
             )}
 
             {page === 'ml' && (
               <div>
-                <button onClick={() => setPage('home')} style={{ marginBottom: 20, background: '#11131B', border: '1px solid #2A2A3E', color: '#E8E8F0', padding: '10px 14px', borderRadius: 10, cursor: 'pointer' }}>← Back to hub</button>
+                <button 
+                  onClick={() => setPage('home')} 
+                  style={{ 
+                    marginBottom: 16, 
+                    background: '#10121C', 
+                    border: '1px solid #1E2235', 
+                    color: '#E8E8F0', 
+                    padding: '10px 16px', 
+                    borderRadius: 10, 
+                    cursor: 'pointer',
+                    fontWeight: 700
+                  }}
+                >
+                  ← Back to Dashboard
+                </button>
                 <FocusedRoadmap user={user} />
               </div>
             )}
+
+            {page === 'python' && (
+              <div>
+                <button 
+                  onClick={() => setPage('home')} 
+                  style={{ 
+                    marginBottom: 16, 
+                    background: '#10121C', 
+                    border: '1px solid #1E2235', 
+                    color: '#E8E8F0', 
+                    padding: '10px 16px', 
+                    borderRadius: 10, 
+                    cursor: 'pointer',
+                    fontWeight: 700
+                  }}
+                >
+                  ← Back to Dashboard
+                </button>
+                <PythonRoadmap user={user} />
+              </div>
+            )}
+
+            {page === 'sql' && (
+              <div>
+                <button 
+                  onClick={() => setPage('home')} 
+                  style={{ 
+                    marginBottom: 16, 
+                    background: '#10121C', 
+                    border: '1px solid #1E2235', 
+                    color: '#E8E8F0', 
+                    padding: '10px 16px', 
+                    borderRadius: 10, 
+                    cursor: 'pointer',
+                    fontWeight: 700
+                  }}
+                >
+                  ← Back to Dashboard
+                </button>
+                <SQLRoadmap user={user} />
+              </div>
+            )}
+
           </div>
         </div>
       );
