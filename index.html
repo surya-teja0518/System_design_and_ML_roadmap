@@ -222,10 +222,9 @@
           }
 
           // 4. Retrieve Gist files
-          const gistRes = await fetch(`https://api.github.com/gists/${targetGistId}`, {
+          const gistRes = await fetch(`https://api.github.com/gists/${targetGistId}?t=${Date.now()}`, {
             headers: { 
-              Authorization: `token ${token}`,
-              'Cache-Control': 'no-cache'
+              Authorization: `token ${token}`
             }
           });
           if (!gistRes.ok) {
