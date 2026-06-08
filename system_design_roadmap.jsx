@@ -113,7 +113,7 @@ const systemWeeks = [
       { day: "Mon", hrs: 1.5, topic: "Full 60-min mock: Design real-time fraud detection end-to-end", resources: ["[Excalidraw Whiteboard](https://excalidraw.com/)", "[Pramp Peer Mocks](https://www.pramp.com/)"], hld: "HLD", lld: "LLD" },
       { day: "Wed", hrs: 1, topic: "Deep dive: Your architecture — be ready to defend every choice", resources: ["[Architecture Trade-off Analysis](https://en.wikipedia.org/wiki/Architecture_trade-off_analysis_method)"], lld: "LLD" },
       { day: "Fri", hrs: 1, topic: "LLD follow-up questions: how do you version models, handle feature drift, scale to 10k TPS?", resources: ["[Model Drift & Versioning Guide](https://www.evidentlyai.com/blog/machine-learning-model-drift)"], lld: "LLD" },
-      { day: "Sun", hrs: 1, topic: "Reflect: what questions tripped you up? Double down on those areas", resources: [], hld: "HLD", lld: "LLD" },
+      { day: "Sun", hrs: 1, topic: "Reflect: what questions tripped you up? Double down on those areas", resources: ["[System Design Primer Guide](https://github.com/donnemartin/system-design-primer)"], hld: "HLD", lld: "LLD" },
     ]
   },
   {
@@ -140,7 +140,7 @@ const systemWeeks = [
       { day: "Mon", hrs: 1.5, topic: "Mock: Design a system relevant to your target company (Razorpay: payments, CRED: credit scoring, Zepto: inventory)", resources: ["[Excalidraw Whiteboard](https://excalidraw.com/)"], hld: "HLD", lld: "LLD" },
       { day: "Wed", hrs: 1, topic: "Mock: Design a machine learning system (training pipeline + serving)", resources: ["[Designing Machine Learning Systems Book](https://www.oreilly.com/library/view/designing-machine-learning/9781098107956/)"], hld: "HLD", lld: "LLD" },
       { day: "Fri", hrs: 1, topic: "Practice: follow-up questions deep dive (why this database, how do you scale, what if X fails)", resources: ["[ByteByteGo System Design followups](https://bytebytego.com/)"], hld: "HLD", lld: "LLD" },
-      { day: "Sun", hrs: 1, topic: "Reflection: which system design cases are you most confident in? Which need work?", resources: [], hld: "HLD", lld: "LLD" },
+      { day: "Sun", hrs: 1, topic: "Reflection: which system design cases are you most confident in? Which need work?", resources: ["[System Design Primer Guide](https://github.com/donnemartin/system-design-primer)"], hld: "HLD", lld: "LLD" },
     ]
   },
 ];

@@ -10,11 +10,11 @@ const dlWeeks = [
         "Understand backpropagation mathematics and the chain rule under the hood: [3Blue1Brown Backpropagation](https://www.youtube.com/watch?v=Ilg3gGewQ5U)"
       ]},
       { day: "Wed", hrs: 1.5, tasks: [
-        "Study loss functions (MSE, Cross-Entropy) and optimization algorithms (SGD, Adam, RMSprop)",
+        "Study loss functions (MSE, Cross-Entropy) and optimization algorithms (SGD, Adam, RMSprop): [freeCodeCamp Optimizers Guide](https://www.freecodecamp.org/news/optimizers-in-deep-learning/)",
         "Master PyTorch basics: Tensors, autograd, and building models using `nn.Module`: [PyTorch Basics Tutorial](https://pytorch.org/tutorials/beginner/basics/intro.html)"
       ]},
       { day: "Fri", hrs: 1.5, tasks: [
-        "Write a training loop in PyTorch with dataset loading, forward pass, loss calculation, backprop, and optimizer step"
+        "Write a training loop in PyTorch with dataset loading, forward pass, loss calculation, backprop, and optimizer step: [PyTorch Training Loop Guide](https://pytorch.org/tutorials/beginner/pytorch_with_examples.html)"
       ]},
       { day: "Sun", hrs: 1.5, tasks: [
         "Train a custom MLP on the MNIST dataset and evaluate its accuracy: [PyTorch MNIST Training Example](https://github.com/pytorch/examples/tree/main/mnist)"
@@ -137,7 +137,7 @@ const dlWeeks = [
         "Learn text chunking strategies, metadata filtering, and semantic query expansions using LangChain or LlamaIndex: [LangChain Academy](https://academy.langchain.com/)"
       ]},
       { day: "Sun", hrs: 1.5, tasks: [
-        "Build a local RAG pipeline querying your personal PDF collection with a vector store"
+        "Build a local RAG pipeline querying your personal PDF collection with a vector store: [freeCodeCamp RAG Tutorial](https://www.freecodecamp.org/news/build-a-rag-pipeline-with-llamaindex/)"
       ]}
     ]
   },

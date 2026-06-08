@@ -16,7 +16,7 @@ const mlopsWeeks = [
         "Write a python script downloading, cleaning, and storing tabular data as Parquet: [PyArrow Getting Started](https://arrow.apache.org/docs/python/index.html)"
       ]},
       { day: "Sun", hrs: 1.5, tasks: [
-        "Practice schema design for ingestion logs, comparing row-based vs column-based read speeds"
+        "Practice schema design for ingestion logs, comparing row-based vs column-based read speeds: [GeeksforGeeks Row vs Column Oriented Databases](https://www.geeksforgeeks.org/row-oriented-vs-column-oriented-databases/)"
       ]}
     ]
   },
@@ -56,7 +56,7 @@ const mlopsWeeks = [
         "Implement task dependencies, scheduling, triggers, retries, and slack error notifications: [Airflow Tasks Scheduling](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dags.html)"
       ]},
       { day: "Sun", hrs: 1.5, tasks: [
-        "Build an orchestration pipeline that pulls data, triggers feature engineering, and updates a storage partition"
+        "Build an orchestration pipeline that pulls data, triggers feature engineering, and updates a storage partition: [freeCodeCamp Airflow Tutorial](https://www.freecodecamp.org/news/apache-airflow-guide/)"
       ]}
     ]
   },
@@ -136,7 +136,7 @@ const mlopsWeeks = [
         "Learn Apache Kafka, partitions, topics, and real-time streaming feature ingestion: [Confluent Kafka Python Developer Guide](https://developer.confluent.io/get-started/python/)"
       ]},
       { day: "Sun", hrs: 1.5, tasks: [
-        "Build a feature ingestion pipeline extracting from Kafka and loading features into Feast Redis"
+        "Build a feature ingestion pipeline extracting from Kafka and loading features into Feast Redis: [Feast Real-time Ingestion Guide](https://docs.feast.dev/tutorials/real-time-feature-ingestion-with-spark-and-kafka)"
       ]}
     ]
   },
@@ -156,7 +156,7 @@ const mlopsWeeks = [
         "Implement CI/CD workflows for training verification and integration tests using GitHub Actions: [Iterative CML Getting Started](https://cml.dev/)"
       ]},
       { day: "Sun", hrs: 1.5, tasks: [
-        "Perform a full MLOps mock system review: design a secure, automated retraining loop"
+        "Perform a full MLOps mock system review: design a secure, automated retraining loop: [MLOps Zoomcamp Mock Design](https://github.com/DataTalksClub/mlops-zoomcamp)"
       ]}
     ]
   }

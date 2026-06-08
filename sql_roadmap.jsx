@@ -11,7 +11,7 @@ const sqlWeeks = [
       ]},
       { day: "Wed", hrs: 1.5, tasks: [
         "Study conditional filtering with WHERE, AND/OR/NOT, and comparison operators: [SQLBolt Lesson 2: Queries with constraints](https://sqlbolt.com/lesson/select_queries_with_constraints)",
-        "Use LIKE, IN, BETWEEN, and IS NULL for pattern and range filtering"
+        "Use LIKE, IN, BETWEEN, and IS NULL for pattern and range filtering: [W3Schools SQL LIKE](https://www.w3schools.com/sql/sql_like.asp)"
       ]},
       { day: "Fri", hrs: 1.5, tasks: [
         "Learn to sort query output using ORDER BY (ASC / DESC) and avoid null sorting bugs: [SQLBolt Lesson 3: Queries with constraints pt. 2](https://sqlbolt.com/lesson/select_queries_with_constraints_pt_2)"
@@ -51,7 +51,7 @@ const sqlWeeks = [
     days: [
       { day: "Mon", hrs: 1.5, tasks: [
         "Understand subqueries inside SELECT, FROM, and WHERE clauses: [SQLBolt Lesson 15: Subqueries](https://sqlbolt.com/lesson/subqueries)",
-        "Study correlated subqueries vs non-correlated subqueries and their performance impact"
+        "Study correlated subqueries vs non-correlated subqueries and their performance impact: [GeeksforGeeks Correlated Subqueries](https://www.geeksforgeeks.org/sql-correlated-subqueries/)"
       ]},
       { day: "Wed", hrs: 1.5, tasks: [
         "Master Common Table Expressions (CTEs) using the WITH clause for readable queries: [Mode Analytics CTEs](https://mode.com/sql-tutorial/sql-common-table-expressions/)"
@@ -78,7 +78,7 @@ const sqlWeeks = [
         "Learn value window functions: LEAD, LAG, FIRST_VALUE, and LAST_VALUE: [GeeksforGeeks LEAD and LAG](https://www.geeksforgeeks.org/lead-and-lag-analytial-functions-in-sql/)"
       ]},
       { day: "Fri", hrs: 1.5, tasks: [
-        "Study running totals, moving averages, and window frame specifications (ROWS/RANGE BETWEEN)"
+        "Study running totals, moving averages, and window frame specifications (ROWS/RANGE BETWEEN): [GeeksforGeeks SQL Window Frame](https://www.geeksforgeeks.org/sql-server-window-frame-groups-rows-range/)"
       ]},
       { day: "Sun", hrs: 1.5, tasks: [
         "Solve 5 window function problems on [DataLemur (Free SQL questions)](https://datalemur.com/questions)"
@@ -93,7 +93,7 @@ const sqlWeeks = [
     days: [
       { day: "Mon", hrs: 1.5, tasks: [
         "Study database normalization rules (1NF, 2NF, 3NF, BCNF): [GeeksforGeeks Normalization in Databases](https://www.geeksforgeeks.org/dbms-normalization-1nf-2nf-3nf-bcnf/)",
-        "Understand anomalies (insert, update, delete) and why we normalize schemas"
+        "Understand anomalies (insert, update, delete) and why we normalize schemas: [GeeksforGeeks Anomalies in Relational Model](https://www.geeksforgeeks.org/anomalies-in-relational-model-dbms/)"
       ]},
       { day: "Wed", hrs: 1.5, tasks: [
         "Learn database constraints (PRIMARY KEY, FOREIGN KEY, UNIQUE, CHECK, NOT NULL): [W3Schools SQL Constraints](https://www.w3schools.com/sql/sql_constraints.asp)"
@@ -123,7 +123,7 @@ const sqlWeeks = [
         "Study query optimization: avoiding SELECT *, indexing joins, subquery vs join speed, partition pruning: [SQLShack Query Optimization Tips](https://www.sqlshack.com/sql-query-optimization-techniques-and-tips/)"
       ]},
       { day: "Sun", hrs: 1.5, tasks: [
-        "Analyze a slow query execution plan, create an index, and verify the performance improvement"
+        "Analyze a slow query execution plan, create an index, and verify the performance improvement: [GeeksforGeeks SQL Query Optimization](https://www.geeksforgeeks.org/how-to-optimize-sql-queries/)"
       ]}
     ]
   },
@@ -135,17 +135,17 @@ const sqlWeeks = [
     days: [
       { day: "Mon", hrs: 1.5, tasks: [
         "Understand database Transactions and ACID properties: [GeeksforGeeks ACID Properties in DBMS](https://www.geeksforgeeks.org/acid-properties-in-dbms/)",
-        "Learn write/commit/rollback operations in transactions: [W3Schools SQL Transactions](https://www.w3schools.com/sql/)"
+        "Learn write/commit/rollback operations in transactions: [W3Schools SQL Commit & Rollback](https://www.w3schools.com/sql/sql_ref_commit.asp)"
       ]},
       { day: "Wed", hrs: 1.5, tasks: [
         "Study Transaction Isolation Levels (Read Uncommitted, Read Committed, Repeatable Read, Serializable): [PostgreSQL Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html)",
-        "Learn concurrency read anomalies: Dirty Reads, Non-Repeatable Reads, Phantom Reads"
+        "Learn concurrency read anomalies: Dirty Reads, Non-Repeatable Reads, Phantom Reads: [GeeksforGeeks Concurrency Anomalies](https://www.geeksforgeeks.org/concurrency-problems-in-dbms-transactions/)"
       ]},
       { day: "Fri", hrs: 1.5, tasks: [
         "Understand database locks (Shared vs Exclusive), row-level locks, and deadlocks: [GeeksforGeeks Concurrency Control](https://www.geeksforgeeks.org/concurrency-control-in-dbms/)"
       ]},
       { day: "Sun", hrs: 1.5, tasks: [
-        "Write a transaction script with error checking to simulate a secure bank transfer"
+        "Write a transaction script with error checking to simulate a secure bank transfer: [GeeksforGeeks SQL Transactions](https://www.geeksforgeeks.org/sql-transactions/)"
       ]}
     ]
   },
@@ -157,16 +157,16 @@ const sqlWeeks = [
     days: [
       { day: "Mon", hrs: 1.5, tasks: [
         "Compare SQL vs NoSQL: Document, Key-Value, Columnar, and Graph Databases: [MongoDB SQL vs NoSQL Comparison](https://www.mongodb.com/nosql-explained/nosql-vs-sql)",
-        "Understand scaling trade-offs (sharding, replication, eventual consistency)"
+        "Understand scaling trade-offs (sharding, replication, eventual consistency): [GeeksforGeeks Database Sharding](https://www.geeksforgeeks.org/database-sharding-a-system-design-concept/)"
       ]},
       { day: "Wed", hrs: 1.5, tasks: [
         "Practice medium and hard SQL interview questions (retention rate, rolling averages, consecutive active days): [DataLemur SQL Interview Questions](https://datalemur.com/questions)"
       ]},
       { day: "Fri", hrs: 1.5, tasks: [
-        "Solve 4 hard SQL queries under 20-minute time constraints"
+        "Solve 4 hard SQL queries under 20-minute time constraints: [DataLemur SQL Practice](https://datalemur.com/)"
       ]},
       { day: "Sun", hrs: 1.5, tasks: [
-        "Perform a full mock SQL interview covering window functions, CTEs, and query tuning"
+        "Perform a full mock SQL interview covering window functions, CTEs, and query tuning: [freeCodeCamp SQL Mock Interview Prep](https://www.freecodecamp.org/news/sql-interview-questions/)"
       ]}
     ]
   }

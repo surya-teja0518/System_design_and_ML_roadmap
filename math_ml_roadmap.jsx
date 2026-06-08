@@ -7,15 +7,15 @@ const mathWeeks = [
     days: [
       { day: "Mon", hrs: 1.5, tasks: [
         "Learn vectors, vector spaces, linear combinations, span, and basis vectors: [3Blue1Brown Linear Algebra Chapter 1](https://www.youtube.com/watch?v=fNk_zzaMoEs)",
-        "Understand dot product, projections, and geometric intuition behind vector calculations"
+        "Understand dot product, projections, and geometric intuition behind vector calculations: [3Blue1Brown Dot Products](https://www.youtube.com/watch?v=LyGKycYT2v0)"
       ]},
       { day: "Wed", hrs: 1.5, tasks: [
         "Master linear transformations, matrix-vector multiplication, and determinants: [3Blue1Brown Matrix Transformations](https://www.youtube.com/watch?v=XkY2DOUCWMU)",
-        "Understand shear, rotation, scaling, and how matrices act as functions"
+        "Understand shear, rotation, scaling, and how matrices act as functions: [3Blue1Brown Linear Transformations](https://www.youtube.com/watch?v=kYB8IZa5AuE)"
       ]},
       { day: "Fri", hrs: 1.5, tasks: [
         "Study inverse matrices, column space, null space, and systems of equations: [3Blue1Brown Inverse Matrices](https://www.youtube.com/watch?v=uQhTuRlWMxA)",
-        "Learn rank, linear independence, and span of matrix columns"
+        "Learn rank, linear independence, and span of matrix columns: [3Blue1Brown Span & Linear Dependence](https://www.youtube.com/watch?v=k7RM-ot2SnY)"
       ]},
       { day: "Sun", hrs: 1.5, tasks: [
         "Master eigenvalues, eigenvectors, and the intuition behind Singular Value Decomposition (SVD): [3Blue1Brown Eigenvectors & Eigenvalues](https://www.youtube.com/watch?v=PFDu9oVAE-g)"
@@ -30,14 +30,14 @@ const mathWeeks = [
     days: [
       { day: "Mon", hrs: 1.5, tasks: [
         "Review derivatives, limits, and derivative rules (power, product, quotient rules): [3Blue1Brown Calculus Chapter 1](https://www.youtube.com/watch?v=WUvTyaaNkzM)",
-        "Study the geometric meaning of tangents and instantaneous rate of change"
+        "Study the geometric meaning of tangents and instantaneous rate of change: [3Blue1Brown Derivative Visualized](https://www.youtube.com/watch?v=9vKqVkJX2T0)"
       ]},
       { day: "Wed", hrs: 1.5, tasks: [
         "Master the chain rule and derivatives of exponentials and logarithmic functions: [3Blue1Brown Chain Rule](https://www.youtube.com/watch?v=YG15m2VwSjA)"
       ]},
       { day: "Fri", hrs: 1.5, tasks: [
         "Learn partial derivatives, gradients, directional derivatives, and the Jacobian matrix: [Khan Academy Partial Derivatives](https://www.khanacademy.org/math/multivariable-calculus/multivariable-derivatives/partial-derivatives/v/partial-derivatives-introduction)",
-        "Understand how the gradient points in the direction of steepest ascent"
+        "Understand how the gradient points in the direction of steepest ascent: [Khan Academy Gradients Steepest Ascent](https://www.khanacademy.org/math/multivariable-calculus/multivariable-derivatives/gradient-and-directional-derivatives/v/gradient-direction-of-steepest-ascent)"
       ]},
       { day: "Sun", hrs: 1.5, tasks: [
         "Master Gradient Descent optimization, learning rates, local/global minima, and convergence: [3Blue1Brown Gradient Descent](https://www.youtube.com/watch?v=IHZwWFHWa-w)"
@@ -52,14 +52,14 @@ const mathWeeks = [
     days: [
       { day: "Mon", hrs: 1.5, tasks: [
         "Review probability basics, sample spaces, joint probability, and conditional probability: [Khan Academy Conditional Probability](https://www.khanacademy.org/math/ap-statistics/probability-ap/stats-conditional-probability/v/bayes-theorem-visualized)",
-        "Master Bayes' Theorem and its applications in Bayesian inference"
+        "Master Bayes' Theorem and its applications in Bayesian inference: [GeeksforGeeks Bayes Theorem](https://www.geeksforgeeks.org/bayes-theorem-in-probability/)"
       ]},
       { day: "Wed", hrs: 1.5, tasks: [
         "Study random variables, expected values, variance, covariance, and correlation coefficient: [Khan Academy Random Variables](https://www.khanacademy.org/math/statistics-probability/random-variables-hot-spot)"
       ]},
       { day: "Fri", hrs: 1.5, tasks: [
         "Master discrete and continuous probability distributions (Normal, Binomial, Bernoulli, Poisson): [Khan Academy Normal Distribution](https://www.khanacademy.org/math/statistics-probability/modeling-distributions-of-data)",
-        "Understand the Central Limit Theorem (CLT) and why it matters in real-world data"
+        "Understand the Central Limit Theorem (CLT) and why it matters in real-world data: [Khan Academy Central Limit Theorem](https://www.khanacademy.org/math/ap-statistics/sampling-distributions-ap/central-limit-theorem-ap/v/central-limit-theorem)"
       ]},
       { day: "Sun", hrs: 1.5, tasks: [
         "Learn Maximum Likelihood Estimation (MLE), hypothesis testing, p-values, and confidence intervals: [StatQuest Hypothesis Testing](https://www.youtube.com/watch?v=0oc49DyA3hU)"
@@ -77,7 +77,7 @@ const mathWeeks = [
       ]},
       { day: "Wed", hrs: 1.5, tasks: [
         "Study overfitting, underfitting, L1 regularization (Lasso), and L2 regularization (Ridge): [StatQuest Regularization](https://www.youtube.com/watch?v=Q81RR3yKn30)",
-        "Understand how penalty terms affect weights and feature selection"
+        "Understand how penalty terms affect weights and feature selection: [StatQuest Lasso & Ridge Regularization](https://www.youtube.com/watch?v=NGf0lhErNyY)"
       ]},
       { day: "Fri", hrs: 1.5, tasks: [
         "Master Logistic Regression, the sigmoid function, log odds, and cross-entropy loss: [StatQuest Logistic Regression](https://www.youtube.com/watch?v=yIYKR4sgzI8)"

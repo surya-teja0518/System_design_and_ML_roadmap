@@ -11,11 +11,11 @@ const pythonWeeks = [
       ]},
       { day: "Wed", hrs: 1.5, tasks: [
         "Master control flow (if/else, for/while loops, break/continue): [Python Docs Control Flow](https://docs.python.org/3/tutorial/controlflow.html)",
-        "Understand basic function definition, return values, and default arguments"
+        "Understand basic function definition, return values, and default arguments: [W3Schools Python Functions](https://www.w3schools.com/python/python_functions.asp)"
       ]},
       { day: "Fri", hrs: 1.5, tasks: [
         "Read about Python Global Interpreter Lock (GIL) and CPU-bound limitations: [Real Python GIL Guide](https://realpython.com/python-gil/)",
-        "Write short scripts testing Python scoping rules (Local, Enclosing, Global, Built-in)"
+        "Write short scripts testing Python scoping rules (Local, Enclosing, Global, Built-in): [Real Python Scopes & LEGB Rule](https://realpython.com/python-scope-legb-rule/)"
       ]},
       { day: "Sun", hrs: 1.5, tasks: [
         "Practice exercises on variables, conditional logic, and simple loops: [GeeksforGeeks Basic Python exercises](https://www.geeksforgeeks.org/python-programming-examples/)"
@@ -34,7 +34,7 @@ const pythonWeeks = [
       ]},
       { day: "Wed", hrs: 1.5, tasks: [
         "Study dictionaries, hash maps under the hood, and sets: [Real Python Dictionaries](https://realpython.com/python-dicts/)",
-        "Implement set operations (union, intersection, difference) and dictionary lookups"
+        "Implement set operations (union, intersection, difference) and dictionary lookups: [W3Schools Python Sets](https://www.w3schools.com/python/python_sets.asp)"
       ]},
       { day: "Fri", hrs: 1.5, tasks: [
         "Understand Time and Space Complexity (Big O Notation) for Python structures: [freeCodeCamp Big O Notation Guide](https://www.freecodecamp.org/news/big-o-notation-why-it-matters-and-why-it-doesnt-1674c8502648/)"
@@ -56,11 +56,11 @@ const pythonWeeks = [
       ]},
       { day: "Wed", hrs: 1.5, tasks: [
         "Study list, set, and dictionary comprehensions: [Real Python List Comprehensions](https://realpython.com/list-comprehension-python/)",
-        "Practice rewriting nested loops as concise comprehensions"
+        "Practice rewriting nested loops as concise comprehensions: [GeeksforGeeks Nested List Comprehensions](https://www.geeksforgeeks.org/nested-list-comprehensions-in-python/)"
       ]},
       { day: "Fri", hrs: 1.5, tasks: [
         "Understand Iterators, Iterables, and Generators using `yield`: [Real Python Generators](https://realpython.com/introduction-to-python-generators/)",
-        "Write custom generator functions to handle memory-efficient large data streams"
+        "Write custom generator functions to handle memory-efficient large data streams: [GeeksforGeeks Generator Functions](https://www.geeksforgeeks.org/generators-in-python/)"
       ]},
       { day: "Sun", hrs: 1.5, tasks: [
         "Solve 3 medium LeetCode exercises focusing on custom iterators or string preprocessing: [LeetCode](https://leetcode.com/)"
@@ -75,11 +75,11 @@ const pythonWeeks = [
     days: [
       { day: "Mon", hrs: 1.5, tasks: [
         "Learn Python classes, instance attributes, class attributes, and methods: [Real Python OOP in Python](https://realpython.com/python3-object-oriented-programming/)",
-        "Understand the difference between `__init__`, `__new__`, and variable scoping inside classes"
+        "Understand the difference between `__init__`, `__new__`, and variable scoping inside classes: [Real Python __new__ vs __init__](https://realpython.com/python-new-vs-init/)"
       ]},
       { day: "Wed", hrs: 1.5, tasks: [
         "Master Single/Multiple Inheritance, Method Resolution Order (MRO), and `super()`: [GeeksforGeeks Inheritance](https://www.geeksforgeeks.org/inheritance-in-python/)",
-        "Study polymorphism and method overriding in subclassing"
+        "Study polymorphism and method overriding in subclassing: [W3Schools Python Polymorphism](https://www.w3schools.com/python/python_polymorphism.asp)"
       ]},
       { day: "Fri", hrs: 1.5, tasks: [
         "Explore Magic (Dunder) Methods (`__str__`, `__repr__`, `__len__`, `__getitem__`): [Real Python Operator Overloading](https://realpython.com/operator-overloading-python/)"
@@ -97,11 +97,11 @@ const pythonWeeks = [
     days: [
       { day: "Mon", hrs: 1.5, tasks: [
         "Understand decorators, closure concepts, and wrapping functions: [Real Python Decorators Guide](https://realpython.com/primer-on-python-decorators/)",
-        "Write custom decorators with arguments and class-based decorators"
+        "Write custom decorators with arguments and class-based decorators: [GeeksforGeeks Decorators with Arguments](https://www.geeksforgeeks.org/decorators-with-arguments-in-python/)"
       ]},
       { day: "Wed", hrs: 1.5, tasks: [
         "Master context managers (`with` statements) and `__enter__` / `__exit__` hooks: [Real Python Context Managers](https://realpython.com/python-with-statement/)",
-        "Create a class-based context manager for handling file streams or database connections"
+        "Create a class-based context manager for handling file streams or database connections: [GeeksforGeeks Context Manager](https://www.geeksforgeeks.org/context-manager-in-python/)"
       ]},
       { day: "Fri", hrs: 1.5, tasks: [
         "Study custom exception handling and exception chaining: [Real Python Custom Exceptions](https://realpython.com/python-custom-exceptions/)",
@@ -120,11 +120,11 @@ const pythonWeeks = [
     days: [
       { day: "Mon", hrs: 1.5, tasks: [
         "Understand CPU-bound vs I/O-bound tasks and how they relate to the GIL: [Real Python Threading vs Multiprocessing](https://realpython.com/python-concurrency/)",
-        "Implement basic multi-threading and multi-processing using `concurrent.futures`"
+        "Implement basic multi-threading and multi-processing using `concurrent.futures`: [Real Python ThreadPoolExecutor](https://realpython.com/python-threadpoolexecutor/)"
       ]},
       { day: "Wed", hrs: 1.5, tasks: [
         "Learn asynchronous programming, event loop concept, `async` and `await`: [Real Python Asyncio Guide](https://realpython.com/async-io-python/)",
-        "Use `asyncio.gather` to execute multiple asynchronous API fetches concurrently"
+        "Use `asyncio.gather` to execute multiple asynchronous API fetches concurrently: [Real Python Asyncio gather](https://realpython.com/async-io-python/#using-asyncio-gather)"
       ]},
       { day: "Fri", hrs: 1.5, tasks: [
         "Explore process and thread pools, and asynchronous event loops under heavy loads: [Python Docs ThreadPoolExecutor](https://docs.python.org/3/library/concurrent.futures.html)"
@@ -142,11 +142,11 @@ const pythonWeeks = [
     days: [
       { day: "Mon", hrs: 1.5, tasks: [
         "Understand vectorization and array programming with NumPy: [Real Python NumPy Guide](https://realpython.com/numpy-tutorial/)",
-        "Practice NumPy slicing, masking, and element-wise calculations"
+        "Practice NumPy slicing, masking, and element-wise calculations: [W3Schools NumPy Array Slicing](https://www.w3schools.com/python/numpy/numpy_array_slicing.asp)"
       ]},
       { day: "Wed", hrs: 1.5, tasks: [
         "Master Pandas DataFrames, indices, group-by, and merge operations: [Pandas Getting Started Guide](https://pandas.pydata.org/docs/getting_started/index.html)",
-        "Optimize memory consumption of large CSV datasets using dtypes and chunking"
+        "Optimize memory consumption of large CSV datasets using dtypes and chunking: [Real Python Fast Pandas](https://realpython.com/fast-flexible-pandas/)"
       ]},
       { day: "Fri", hrs: 1.5, tasks: [
         "Use `cProfile` and `timeit` to profile and measure execution bottlenecks: [Python Docs Profiler](https://docs.python.org/3/library/profile.html)"
@@ -164,7 +164,7 @@ const pythonWeeks = [
     days: [
       { day: "Mon", hrs: 1.5, tasks: [
         "Learn Python testing using `pytest`, fixtures, and parameterization: [Real Python Pytest Guide](https://realpython.com/pytest-python-testing/)",
-        "Write comprehensive unit tests for a feature engineering module"
+        "Write comprehensive unit tests for a feature engineering module: [Real Python Pytest Fixtures](https://realpython.com/pytest-python-testing/#fixtures-managing-state-and-dependencies)"
       ]},
       { day: "Wed", hrs: 1.5, tasks: [
         "Master virtual environments (`venv`, `poetry` or `pipenv`): [Real Python virtualenv Guide](https://realpython.com/python-virtual-environments-a-primer/)",
