@@ -931,7 +931,10 @@
                     );
                   })}
                 </div>
-                    {page === 'role-detail' && (() => {
+              </div>
+            )}
+
+            {page === 'role-detail' && (() => {
               const activeRole = careerRoles.find(r => r.id === activeRoleId);
               if (!activeRole) return null;
 
