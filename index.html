@@ -82,6 +82,9 @@
   <script type="text/babel" src="./ml_6month_focused.jsx?v=4"></script>
   <script type="text/babel" src="./python_roadmap.jsx?v=4"></script>
   <script type="text/babel" src="./sql_roadmap.jsx?v=4"></script>
+  <script type="text/babel" src="./math_ml_roadmap.jsx?v=4"></script>
+  <script type="text/babel" src="./deep_learning_roadmap.jsx?v=4"></script>
+  <script type="text/babel" src="./mlops_roadmap.jsx?v=4"></script>
 
   <script type="text/babel">
     const { useState, useEffect, useMemo } = React;
@@ -163,7 +166,10 @@
           system: getStats('system', window.systemWeeks),
           ml: getStats('ml', window.mlWeeks),
           python: getStats('python', window.pythonWeeks),
-          sql: getStats('sql', window.sqlWeeks)
+          sql: getStats('sql', window.sqlWeeks),
+          math: getStats('math', window.mathWeeks),
+          dl: getStats('dl', window.dlWeeks),
+          mlops: getStats('mlops', window.mlopsWeeks)
         };
       }, [user, statsUpdateTrigger, page]); // Update stats when returning to Home page
 
@@ -212,7 +218,7 @@
 
           // 3. If still no Gist ID, we will initialize a new private Gist
           if (!targetGistId) {
-            const emptyPayload = { system: {}, ml: {}, python: {}, sql: {} };
+            const emptyPayload = { system: {}, ml: {}, python: {}, sql: {}, math: {}, dl: {}, mlops: {} };
             const newGistId = await saveGistToGitHub(token, null, emptyPayload);
             targetGistId = newGistId;
             setGistId(targetGistId);
@@ -235,7 +241,7 @@
 
           if (contentStr) {
             const remoteProgress = JSON.parse(contentStr);
-            const roadmaps = ['system', 'ml', 'python', 'sql'];
+            const roadmaps = ['system', 'ml', 'python', 'sql', 'math', 'dl', 'mlops'];
             let mergedAny = false;
 
             // Merge local and remote check lists
@@ -310,7 +316,10 @@
             system: JSON.parse(localStorage.getItem(`system-progress-${user}`) || '{}'),
             ml: JSON.parse(localStorage.getItem(`ml-progress-${user}`) || '{}'),
             python: JSON.parse(localStorage.getItem(`python-progress-${user}`) || '{}'),
-            sql: JSON.parse(localStorage.getItem(`sql-progress-${user}`) || '{}')
+            sql: JSON.parse(localStorage.getItem(`sql-progress-${user}`) || '{}'),
+            math: JSON.parse(localStorage.getItem(`math-progress-${user}`) || '{}'),
+            dl: JSON.parse(localStorage.getItem(`dl-progress-${user}`) || '{}'),
+            mlops: JSON.parse(localStorage.getItem(`mlops-progress-${user}`) || '{}')
           };
           const newGistId = await saveGistToGitHub(gitToken, gistId, payload);
           if (newGistId !== gistId) {
@@ -561,6 +570,51 @@
                   SQL
                 </button>
                 <button 
+                  onClick={() => setPage('math')} 
+                  style={{ 
+                    background: page === 'math' ? 'rgba(245, 158, 11, 0.15)' : 'transparent', 
+                    color: page === 'math' ? '#FBBF24' : '#9CA3AF', 
+                    border: page === 'math' ? '1px solid #F59E0B' : '1px solid #1E2235', 
+                    borderRadius: 10, 
+                    padding: '8px 14px', 
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: 'pointer' 
+                  }}
+                >
+                  Math & Stats
+                </button>
+                <button 
+                  onClick={() => setPage('dl')} 
+                  style={{ 
+                    background: page === 'dl' ? 'rgba(139, 92, 246, 0.15)' : 'transparent', 
+                    color: page === 'dl' ? '#A78BFA' : '#9CA3AF', 
+                    border: page === 'dl' ? '1px solid #8B5CF6' : '1px solid #1E2235', 
+                    borderRadius: 10, 
+                    padding: '8px 14px', 
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: 'pointer' 
+                  }}
+                >
+                  Deep Learning
+                </button>
+                <button 
+                  onClick={() => setPage('mlops')} 
+                  style={{ 
+                    background: page === 'mlops' ? 'rgba(16, 185, 129, 0.15)' : 'transparent', 
+                    color: page === 'mlops' ? '#34D399' : '#9CA3AF', 
+                    border: page === 'mlops' ? '1px solid #10B981' : '1px solid #1E2235', 
+                    borderRadius: 10, 
+                    padding: '8px 14px', 
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: 'pointer' 
+                  }}
+                >
+                  MLOps
+                </button>
+                <button 
                   onClick={() => { setUser(''); setNameInput(''); setPage('home'); }} 
                   style={{ 
                     background: '#161824', 
@@ -611,7 +665,10 @@
                           ((roadmapStats.system?.completed || 0) + 
                            (roadmapStats.ml?.completed || 0) + 
                            (roadmapStats.python?.completed || 0) + 
-                           (roadmapStats.sql?.completed || 0))
+                           (roadmapStats.sql?.completed || 0) +
+                           (roadmapStats.math?.completed || 0) +
+                           (roadmapStats.dl?.completed || 0) +
+                           (roadmapStats.mlops?.completed || 0))
                         }
                       </div>
                       <div style={{ fontSize: 9, color: '#6B7280', fontWeight: 800, letterSpacing: 1, marginTop: 2 }}>TOTAL TASKS DONE</div>
@@ -1003,6 +1060,180 @@
                     </div>
                   </div>
 
+                  {/* Math & Stats Card */}
+                  <div style={{ 
+                    background: '#10121C', 
+                    border: '1px solid #1E2235', 
+                    borderRadius: 20, 
+                    padding: 24,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{
+                      position: 'absolute',
+                      top: 0, right: 0, width: 90, height: 90,
+                      background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, transparent 100%)',
+                      borderBottomLeftRadius: '100%'
+                    }}></div>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                        <span style={{ fontSize: 9, letterSpacing: 2, color: '#FBBF24', fontWeight: 900, textTransform: 'uppercase', background: 'rgba(245, 158, 11, 0.1)', padding: '4px 8px', borderRadius: 6 }}>THEORY TRACK</span>
+                        <span style={{ fontSize: 11, color: '#6B7280', fontWeight: 700 }}>8 Weeks · ~48h</span>
+                      </div>
+                      <h3 style={{ fontSize: 18, fontWeight: 800, margin: '0 0 10px 0', color: '#FFF' }}>Math & Classical ML</h3>
+                      <p style={{ fontSize: 12.5, color: '#9CA3AF', lineHeight: 1.6, margin: '0 0 20px 0' }}>
+                        Linear algebra vectors/matrices, multivariable calculus optimization, Bayes statistics, regularizations, SVMs, PCA, and decision forest boosts.
+                      </p>
+                    </div>
+                    <div>
+                      {/* Progress bar */}
+                      <div style={{ marginBottom: 16 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 800, marginBottom: 6 }}>
+                          <span style={{ color: '#6B7280' }}>Progress</span>
+                          <span style={{ color: '#FBBF24' }}>{roadmapStats.math?.percent || 0}%</span>
+                        </div>
+                        <div style={{ height: 6, background: '#1E2235', borderRadius: 3, overflow: 'hidden' }}>
+                          <div style={{ width: `${roadmapStats.math?.percent || 0}%`, height: '100%', background: '#F59E0B', borderRadius: 3, transition: 'width 0.4s ease' }} />
+                        </div>
+                      </div>
+                      <button 
+                        onClick={() => setPage('math')} 
+                        style={{ 
+                          width: '100%', 
+                          background: '#F59E0B', 
+                          border: 'none', 
+                          borderRadius: 10, 
+                          color: '#FFF', 
+                          padding: '12px', 
+                          fontWeight: 700, 
+                          cursor: 'pointer',
+                          boxShadow: '0 4px 10px rgba(245, 158, 11, 0.3)'
+                        }}
+                      >
+                        Open Math & Stats Roadmap
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Deep Learning Card */}
+                  <div style={{ 
+                    background: '#10121C', 
+                    border: '1px solid #1E2235', 
+                    borderRadius: 20, 
+                    padding: 24,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{
+                      position: 'absolute',
+                      top: 0, right: 0, width: 90, height: 90,
+                      background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, transparent 100%)',
+                      borderBottomLeftRadius: '100%'
+                    }}></div>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                        <span style={{ fontSize: 9, letterSpacing: 2, color: '#A78BFA', fontWeight: 900, textTransform: 'uppercase', background: 'rgba(139, 92, 246, 0.1)', padding: '4px 8px', borderRadius: 6 }}>DEEP LEARNING TRACK</span>
+                        <span style={{ fontSize: 11, color: '#6B7280', fontWeight: 700 }}>8 Weeks · ~48h</span>
+                      </div>
+                      <h3 style={{ fontSize: 18, fontWeight: 800, margin: '0 0 10px 0', color: '#FFF' }}>Deep Learning & LLMs</h3>
+                      <p style={{ fontSize: 12.5, color: '#9CA3AF', lineHeight: 1.6, margin: '0 0 20px 0' }}>
+                        PyTorch tensors/autograd, CNN image filters, RNN sequences, self-attention, pre-training LLMs, LoRA fine-tuning, RAG, and agent loops.
+                      </p>
+                    </div>
+                    <div>
+                      {/* Progress bar */}
+                      <div style={{ marginBottom: 16 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 800, marginBottom: 6 }}>
+                          <span style={{ color: '#6B7280' }}>Progress</span>
+                          <span style={{ color: '#A78BFA' }}>{roadmapStats.dl?.percent || 0}%</span>
+                        </div>
+                        <div style={{ height: 6, background: '#1E2235', borderRadius: 3, overflow: 'hidden' }}>
+                          <div style={{ width: `${roadmapStats.dl?.percent || 0}%`, height: '100%', background: '#8B5CF6', borderRadius: 3, transition: 'width 0.4s ease' }} />
+                        </div>
+                      </div>
+                      <button 
+                        onClick={() => setPage('dl')} 
+                        style={{ 
+                          width: '100%', 
+                          background: '#8B5CF6', 
+                          border: 'none', 
+                          borderRadius: 10, 
+                          color: '#FFF', 
+                          padding: '12px', 
+                          fontWeight: 700, 
+                          cursor: 'pointer',
+                          boxShadow: '0 4px 10px rgba(139, 92, 246, 0.3)'
+                        }}
+                      >
+                        Open Deep Learning Roadmap
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* MLOps Card */}
+                  <div style={{ 
+                    background: '#10121C', 
+                    border: '1px solid #1E2235', 
+                    borderRadius: 20, 
+                    padding: 24,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{
+                      position: 'absolute',
+                      top: 0, right: 0, width: 90, height: 90,
+                      background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, transparent 100%)',
+                      borderBottomLeftRadius: '100%'
+                    }}></div>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                        <span style={{ fontSize: 9, letterSpacing: 2, color: '#34D399', fontWeight: 900, textTransform: 'uppercase', background: 'rgba(16, 185, 129, 0.1)', padding: '4px 8px', borderRadius: 6 }}>ENGINEERING TRACK</span>
+                        <span style={{ fontSize: 11, color: '#6B7280', fontWeight: 700 }}>8 Weeks · ~48h</span>
+                      </div>
+                      <h3 style={{ fontSize: 18, fontWeight: 800, margin: '0 0 10px 0', color: '#FFF' }}>MLOps & Data Engineering</h3>
+                      <p style={{ fontSize: 12.5, color: '#9CA3AF', lineHeight: 1.6, margin: '0 0 20px 0' }}>
+                        Distributed PySpark frames, Airflow DAG orchestrations, MLflow registry logs, Docker multi-stage builds, Triton serves, and Feast online Materializations.
+                      </p>
+                    </div>
+                    <div>
+                      {/* Progress bar */}
+                      <div style={{ marginBottom: 16 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 800, marginBottom: 6 }}>
+                          <span style={{ color: '#6B7280' }}>Progress</span>
+                          <span style={{ color: '#34D399' }}>{roadmapStats.mlops?.percent || 0}%</span>
+                        </div>
+                        <div style={{ height: 6, background: '#1E2235', borderRadius: 3, overflow: 'hidden' }}>
+                          <div style={{ width: `${roadmapStats.mlops?.percent || 0}%`, height: '100%', background: '#10B981', borderRadius: 3, transition: 'width 0.4s ease' }} />
+                        </div>
+                      </div>
+                      <button 
+                        onClick={() => setPage('mlops')} 
+                        style={{ 
+                          width: '100%', 
+                          background: '#10B981', 
+                          border: 'none', 
+                          borderRadius: 10, 
+                          color: '#FFF', 
+                          padding: '12px', 
+                          fontWeight: 700, 
+                          cursor: 'pointer',
+                          boxShadow: '0 4px 10px rgba(16, 185, 129, 0.3)'
+                        }}
+                      >
+                        Open MLOps Roadmap
+                      </button>
+                    </div>
+                  </div>
+
                 </div>
               </div>
             )}
@@ -1088,6 +1319,69 @@
                   ← Back to Dashboard
                 </button>
                 <SQLRoadmap user={user} />
+              </div>
+            )}
+
+            {page === 'math' && (
+              <div>
+                <button 
+                  onClick={() => setPage('home')} 
+                  style={{ 
+                    marginBottom: 16, 
+                    background: '#10121C', 
+                    border: '1px solid #1E2235', 
+                    color: '#E8E8F0', 
+                    padding: '10px 16px', 
+                    borderRadius: 10, 
+                    cursor: 'pointer',
+                    fontWeight: 700
+                  }}
+                >
+                  ← Back to Dashboard
+                </button>
+                <MathMLRoadmap user={user} />
+              </div>
+            )}
+
+            {page === 'dl' && (
+              <div>
+                <button 
+                  onClick={() => setPage('home')} 
+                  style={{ 
+                    marginBottom: 16, 
+                    background: '#10121C', 
+                    border: '1px solid #1E2235', 
+                    color: '#E8E8F0', 
+                    padding: '10px 16px', 
+                    borderRadius: 10, 
+                    cursor: 'pointer',
+                    fontWeight: 700
+                  }}
+                >
+                  ← Back to Dashboard
+                </button>
+                <DeepLearningRoadmap user={user} />
+              </div>
+            )}
+
+            {page === 'mlops' && (
+              <div>
+                <button 
+                  onClick={() => setPage('home')} 
+                  style={{ 
+                    marginBottom: 16, 
+                    background: '#10121C', 
+                    border: '1px solid #1E2235', 
+                    color: '#E8E8F0', 
+                    padding: '10px 16px', 
+                    borderRadius: 10, 
+                    cursor: 'pointer',
+                    fontWeight: 700
+                  }}
+                >
+                  ← Back to Dashboard
+                </button>
+                <MLOpsRoadmap user={user} />
               </div>
             )}
 
