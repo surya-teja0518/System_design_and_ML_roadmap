@@ -85,15 +85,133 @@
   <script type="text/babel" src="./math_ml_roadmap.jsx?v=4"></script>
   <script type="text/babel" src="./deep_learning_roadmap.jsx?v=4"></script>
   <script type="text/babel" src="./mlops_roadmap.jsx?v=4"></script>
+  <script type="text/babel" src="./java_fullstack_roadmap.jsx?v=4"></script>
+  <script type="text/babel" src="./frontend_fullstack_roadmap.jsx?v=4"></script>
+  <script type="text/babel" src="./devops_roadmap.jsx?v=4"></script>
 
   <script type="text/babel">
-    const { useState, useEffect, useMemo } = React;
+    const careerRoles = [
+      {
+        id: "ai_ml",
+        title: "AI/ML Engineer",
+        desc: "Build models, design neural networks, train transformers/LLMs, and scale distributed MLOps production systems.",
+        color: "#8B5CF6", // Purple
+        bgColor: "rgba(139, 92, 246, 0.1)",
+        borderGlow: "0 4px 15px rgba(139, 92, 246, 0.2)",
+        modules: ["math", "dl", "mlops", "ml"],
+        materials: [
+          { title: "Andrej Karpathy's Neural Networks: Zero to Hero", url: "https://www.youtube.com/playlist?list=PLAqhIrjkxbuWI23v9cThsA9GvCAUbhyKy" },
+          { title: "Stanford CS224n NLP Lectures", url: "https://www.youtube.com/playlist?list=PLoROMvodv4rOFznDyHyWgspRMCVUdCcRY" },
+          { title: "StatQuest Machine Learning Basics", url: "https://www.youtube.com/playlist?list=PLMCXHnjXnJeND0K13O4z4L5t5pG02Pnb1" },
+          { title: "DataTalksClub Data Engineering Zoomcamp", url: "https://github.com/DataTalksClub/data-engineering-zoomcamp" }
+        ]
+      },
+      {
+        id: "sde",
+        title: "Software Development Engineer (SDE)",
+        desc: "Master algorithms, scale microservices, optimize SQL queries, and design robust architectures.",
+        color: "#3B82F6", // Blue
+        bgColor: "rgba(59, 130, 246, 0.1)",
+        borderGlow: "0 4px 15px rgba(59, 130, 246, 0.2)",
+        modules: ["python", "sql", "system"],
+        materials: [
+          { title: "System Design Primer", url: "https://github.com/donnemartin/system-design-primer" },
+          { title: "LeetCode & DSA Patterns (NeetCode)", url: "https://neetcode.io/" },
+          { title: "SQLBolt - Interactive SQL", url: "https://sqlbolt.com/" }
+        ]
+      },
+      {
+        id: "data_eng",
+        title: "Data Engineer",
+        desc: "Design ETL/ELT pipelines, manage distributed big data, orchestrate tasks, and maintain warehouses.",
+        color: "#10B981", // Green
+        bgColor: "rgba(16, 185, 129, 0.1)",
+        borderGlow: "0 4px 15px rgba(16, 185, 129, 0.2)",
+        modules: ["python", "sql", "mlops"],
+        materials: [
+          { title: "DataTalksClub Data Engineering Zoomcamp", url: "https://github.com/DataTalksClub/data-engineering-zoomcamp" },
+          { title: "Apache Spark Guide", url: "https://spark.apache.org/docs/latest/sql-programming-guide.html" },
+          { title: "Astronomer Airflow Academy", url: "https://www.astronomer.io/academy/" }
+        ]
+      },
+      {
+        id: "data_analyst",
+        title: "Data Analyst",
+        desc: "Analyze business metrics, build interactive dashboards, master SQL queries, and perform stats analysis.",
+        color: "#06B6D4", // Cyan
+        bgColor: "rgba(6, 182, 212, 0.1)",
+        borderGlow: "0 4px 15px rgba(6, 182, 212, 0.2)",
+        modules: ["sql", "python", "math"],
+        materials: [
+          { title: "Alex The Analyst Roadmap (YouTube)", url: "https://www.youtube.com/playlist?list=PLUaB-1hjhk8G759nF56C7L6vWOC2tD7Tf" },
+          { title: "Mode Analytics SQL & Python Tutorial", url: "https://mode.com/sql-tutorial/" },
+          { title: "Khan Academy Statistics", url: "https://www.khanacademy.org/math/statistics-probability" }
+        ]
+      },
+      {
+        id: "data_scientist",
+        title: "Data Scientist",
+        desc: "Formulate statistical experiments, design classical ML pipelines, extract data insights, and solve business problems.",
+        color: "#F59E0B", // Orange
+        bgColor: "rgba(245, 158, 11, 0.1)",
+        borderGlow: "0 4px 15px rgba(245, 158, 11, 0.2)",
+        modules: ["math", "ml", "python", "sql"],
+        materials: [
+          { title: "StatQuest ML Playlist", url: "https://www.youtube.com/playlist?list=PLMCXHnjXnJeMprCsz1zCoM9O1XqPzT_V4" },
+          { title: "Kettle ML System Design Notebooks", url: "https://github.com/chiphuyen/machine-learning-systems-design" },
+          { title: "Python for Data Analysis Book", url: "https://wesmckinney.com/book/" }
+        ]
+      },
+      {
+        id: "java_fs",
+        title: "Full Stack Developer (Java)",
+        desc: "Develop robust enterprise apps with Core Java, Spring Boot microservices, security filters, and databases.",
+        color: "#EC4899", // Pink
+        bgColor: "rgba(236, 72, 153, 0.1)",
+        borderGlow: "0 4px 15px rgba(236, 72, 153, 0.2)",
+        modules: ["java", "sql"],
+        materials: [
+          { title: "Programming with Mosh Java Course", url: "https://www.youtube.com/watch?v=eIrMbLyXSZs" },
+          { title: "Amigoscode Spring Boot Course", url: "https://www.youtube.com/watch?v=9SGDpanrc8U" },
+          { title: "Java Guides Spring Security & JWT", url: "https://www.youtube.com/watch?v=KxqlJblhzfI" }
+        ]
+      },
+      {
+        id: "frontend_fs",
+        title: "Full Stack Engineer (React/Angular)",
+        desc: "Design responsive frontends using React component hooks, Angular DI routers, state libraries, and databases.",
+        color: "#D946EF", // Fuchsia
+        bgColor: "rgba(217, 70, 239, 0.1)",
+        borderGlow: "0 4px 15px rgba(217, 70, 239, 0.2)",
+        modules: ["frontend", "sql"],
+        materials: [
+          { title: "Programming with Mosh React Course", url: "https://www.youtube.com/watch?v=Ke90Tje7VS0" },
+          { title: "Codevolution Angular Course", url: "https://www.youtube.com/watch?v=3qBXWUpoPHo" },
+          { title: "freeCodeCamp TypeScript Tutorial", url: "https://www.youtube.com/watch?v=gp5H0Vw39yw" }
+        ]
+      },
+      {
+        id: "devops",
+        title: "DevOps Engineer",
+        desc: "Automate infrastructure with Docker/Kubernetes, write Terraform configs, run CI/CD, and monitor systems.",
+        color: "#EF4444", // Red
+        bgColor: "rgba(239, 68, 68, 0.1)",
+        borderGlow: "0 4px 15px rgba(239, 68, 68, 0.2)",
+        modules: ["devops", "system", "sql"],
+        materials: [
+          { title: "TechWorld with Nana DevOps Course", url: "https://www.youtube.com/playlist?list=PLdpzxOOAlwvI0O4PeKVV1-yJoX2AqIWuf" },
+          { title: "freeCodeCamp Terraform Tutorial", url: "https://www.youtube.com/watch?v=SLB_c_ayRCo" },
+          { title: "Jeff Geerling Ansible series", url: "https://www.youtube.com/playlist?list=PL2_OBreMn7FqZkvMYt6ATFfCbWy7zFiXI" }
+        ]
+      }
+    ];
 
     function App() {
       const [page, setPage] = useState('home');
       const [user, setUser] = useState(localStorage.getItem('roadmapUser') || '');
       const [nameInput, setNameInput] = useState('');
       const [statsUpdateTrigger, setStatsUpdateTrigger] = useState(0);
+      const [activeRoleId, setActiveRoleId] = useState(null);
 
       // GitHub Gist Sync State
       const [gitToken, setGitToken] = useState(localStorage.getItem('roadmap_git_token') || '');
@@ -169,7 +287,10 @@
           sql: getStats('sql', window.sqlWeeks),
           math: getStats('math', window.mathWeeks),
           dl: getStats('dl', window.dlWeeks),
-          mlops: getStats('mlops', window.mlopsWeeks)
+          mlops: getStats('mlops', window.mlopsWeeks),
+          java: getStats('java', window.javaWeeks),
+          frontend: getStats('frontend', window.frontendWeeks),
+          devops: getStats('devops', window.devopsWeeks)
         };
       }, [user, statsUpdateTrigger, page]); // Update stats when returning to Home page
 
@@ -218,7 +339,7 @@
 
           // 3. If still no Gist ID, we will initialize a new private Gist
           if (!targetGistId) {
-            const emptyPayload = { system: {}, ml: {}, python: {}, sql: {}, math: {}, dl: {}, mlops: {} };
+            const emptyPayload = { system: {}, ml: {}, python: {}, sql: {}, math: {}, dl: {}, mlops: {}, java: {}, frontend: {}, devops: {} };
             const newGistId = await saveGistToGitHub(token, null, emptyPayload);
             targetGistId = newGistId;
             setGistId(targetGistId);
@@ -241,7 +362,7 @@
 
           if (contentStr) {
             const remoteProgress = JSON.parse(contentStr);
-            const roadmaps = ['system', 'ml', 'python', 'sql', 'math', 'dl', 'mlops'];
+            const roadmaps = ['system', 'ml', 'python', 'sql', 'math', 'dl', 'mlops', 'java', 'frontend', 'devops'];
             let mergedAny = false;
 
             // Merge local and remote check lists
@@ -319,7 +440,10 @@
             sql: JSON.parse(localStorage.getItem(`sql-progress-${user}`) || '{}'),
             math: JSON.parse(localStorage.getItem(`math-progress-${user}`) || '{}'),
             dl: JSON.parse(localStorage.getItem(`dl-progress-${user}`) || '{}'),
-            mlops: JSON.parse(localStorage.getItem(`mlops-progress-${user}`) || '{}')
+            mlops: JSON.parse(localStorage.getItem(`mlops-progress-${user}`) || '{}'),
+            java: JSON.parse(localStorage.getItem(`java-progress-${user}`) || '{}'),
+            frontend: JSON.parse(localStorage.getItem(`frontend-progress-${user}`) || '{}'),
+            devops: JSON.parse(localStorage.getItem(`devops-progress-${user}`) || '{}')
           };
           const newGistId = await saveGistToGitHub(gitToken, gistId, payload);
           if (newGistId !== gistId) {
@@ -495,7 +619,7 @@
               
               <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
                 <button 
-                  onClick={() => setPage('home')} 
+                  onClick={() => { setActiveRoleId(null); setPage('home'); }} 
                   style={{ 
                     background: page === 'home' ? 'rgba(59, 130, 246, 0.1)' : 'transparent', 
                     color: page === 'home' ? '#3B82F6' : '#9CA3AF', 
@@ -509,113 +633,26 @@
                 >
                   Dashboard
                 </button>
+                {careerRoles.map(role => (
+                  <button 
+                    key={role.id}
+                    onClick={() => { setActiveRoleId(role.id); setPage('role-detail'); }} 
+                    style={{ 
+                      background: (page === 'role-detail' && activeRoleId === role.id) ? `${role.bgColor}` : 'transparent', 
+                      color: (page === 'role-detail' && activeRoleId === role.id) ? role.color : '#9CA3AF', 
+                      border: (page === 'role-detail' && activeRoleId === role.id) ? `1px solid ${role.color}` : '1px solid #1E2235', 
+                      borderRadius: 10, 
+                      padding: '8px 14px', 
+                      fontSize: 13,
+                      fontWeight: 700,
+                      cursor: 'pointer' 
+                    }}
+                  >
+                    {role.title.replace('Software Development Engineer ', '').replace('Full Stack ', '')}
+                  </button>
+                ))}
                 <button 
-                  onClick={() => setPage('system')} 
-                  style={{ 
-                    background: page === 'system' ? 'rgba(124, 58, 237, 0.1)' : 'transparent', 
-                    color: page === 'system' ? '#A78BFA' : '#9CA3AF', 
-                    border: page === 'system' ? '1px solid #7C3AED' : '1px solid #1E2235', 
-                    borderRadius: 10, 
-                    padding: '8px 14px', 
-                    fontSize: 13,
-                    fontWeight: 700,
-                    cursor: 'pointer' 
-                  }}
-                >
-                  System Design
-                </button>
-                <button 
-                  onClick={() => setPage('ml')} 
-                  style={{ 
-                    background: page === 'ml' ? 'rgba(5, 150, 105, 0.1)' : 'transparent', 
-                    color: page === 'ml' ? '#34D399' : '#9CA3AF', 
-                    border: page === 'ml' ? '1px solid #059669' : '1px solid #1E2235', 
-                    borderRadius: 10, 
-                    padding: '8px 14px', 
-                    fontSize: 13,
-                    fontWeight: 700,
-                    cursor: 'pointer' 
-                  }}
-                >
-                  ML Plan
-                </button>
-                <button 
-                  onClick={() => setPage('python')} 
-                  style={{ 
-                    background: page === 'python' ? 'rgba(55, 118, 171, 0.15)' : 'transparent', 
-                    color: page === 'python' ? '#60A5FA' : '#9CA3AF', 
-                    border: page === 'python' ? '1px solid #3776AB' : '1px solid #1E2235', 
-                    borderRadius: 10, 
-                    padding: '8px 14px', 
-                    fontSize: 13,
-                    fontWeight: 700,
-                    cursor: 'pointer' 
-                  }}
-                >
-                  Python
-                </button>
-                <button 
-                  onClick={() => setPage('sql')} 
-                  style={{ 
-                    background: page === 'sql' ? 'rgba(2, 132, 199, 0.15)' : 'transparent', 
-                    color: page === 'sql' ? '#38BDF8' : '#9CA3AF', 
-                    border: page === 'sql' ? '1px solid #0284C7' : '1px solid #1E2235', 
-                    borderRadius: 10, 
-                    padding: '8px 14px', 
-                    fontSize: 13,
-                    fontWeight: 700,
-                    cursor: 'pointer' 
-                  }}
-                >
-                  SQL
-                </button>
-                <button 
-                  onClick={() => setPage('math')} 
-                  style={{ 
-                    background: page === 'math' ? 'rgba(245, 158, 11, 0.15)' : 'transparent', 
-                    color: page === 'math' ? '#FBBF24' : '#9CA3AF', 
-                    border: page === 'math' ? '1px solid #F59E0B' : '1px solid #1E2235', 
-                    borderRadius: 10, 
-                    padding: '8px 14px', 
-                    fontSize: 13,
-                    fontWeight: 700,
-                    cursor: 'pointer' 
-                  }}
-                >
-                  Math & Stats
-                </button>
-                <button 
-                  onClick={() => setPage('dl')} 
-                  style={{ 
-                    background: page === 'dl' ? 'rgba(139, 92, 246, 0.15)' : 'transparent', 
-                    color: page === 'dl' ? '#A78BFA' : '#9CA3AF', 
-                    border: page === 'dl' ? '1px solid #8B5CF6' : '1px solid #1E2235', 
-                    borderRadius: 10, 
-                    padding: '8px 14px', 
-                    fontSize: 13,
-                    fontWeight: 700,
-                    cursor: 'pointer' 
-                  }}
-                >
-                  Deep Learning
-                </button>
-                <button 
-                  onClick={() => setPage('mlops')} 
-                  style={{ 
-                    background: page === 'mlops' ? 'rgba(16, 185, 129, 0.15)' : 'transparent', 
-                    color: page === 'mlops' ? '#34D399' : '#9CA3AF', 
-                    border: page === 'mlops' ? '1px solid #10B981' : '1px solid #1E2235', 
-                    borderRadius: 10, 
-                    padding: '8px 14px', 
-                    fontSize: 13,
-                    fontWeight: 700,
-                    cursor: 'pointer' 
-                  }}
-                >
-                  MLOps
-                </button>
-                <button 
-                  onClick={() => { setUser(''); setNameInput(''); setPage('home'); }} 
+                  onClick={() => { setUser(''); setNameInput(''); setPage('home'); setActiveRoleId(null); }} 
                   style={{ 
                     background: '#161824', 
                     border: '1px solid #1E2235', 
@@ -623,8 +660,8 @@
                     padding: '8px 14px', 
                     fontSize: 13,
                     fontWeight: 700,
-                    cursor: 'pointer', 
-                    color: '#EF4444' 
+                    cursor: 'pointer',
+                    color: '#EF4444'
                   }}
                 >
                   Sign Out
@@ -662,13 +699,9 @@
                     <div style={{ background: '#161824', border: '1px solid #24293E', borderRadius: 12, padding: '10px 16px', textAlign: 'center' }}>
                       <div style={{ fontSize: 18, fontWeight: 900, color: '#FFF' }}>
                         {
-                          ((roadmapStats.system?.completed || 0) + 
-                           (roadmapStats.ml?.completed || 0) + 
-                           (roadmapStats.python?.completed || 0) + 
-                           (roadmapStats.sql?.completed || 0) +
-                           (roadmapStats.math?.completed || 0) +
-                           (roadmapStats.dl?.completed || 0) +
-                           (roadmapStats.mlops?.completed || 0))
+                          Object.keys(roadmapStats).reduce((acc, key) => {
+                            return acc + (roadmapStats[key]?.completed || 0);
+                          }, 0)
                         }
                       </div>
                       <div style={{ fontSize: 9, color: '#6B7280', fontWeight: 800, letterSpacing: 1, marginTop: 2 }}>TOTAL TASKS DONE</div>
@@ -820,428 +853,298 @@
                   )}
                 </div>
 
-                {/* Roadmaps Grid */}
+                {/* Career Paths Grid */}
                 <div style={{ 
                   display: 'grid', 
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(460px, 1fr))', 
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', 
                   gap: 20,
                   marginBottom: 28 
                 }}>
-                  
-                  {/* System Design Card */}
-                  <div style={{ 
-                    background: '#10121C', 
-                    border: '1px solid #1E2235', 
-                    borderRadius: 20, 
-                    padding: 24,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    position: 'relative',
-                    overflow: 'hidden'
-                  }}>
-                    <div style={{
-                      position: 'absolute',
-                      top: 0, right: 0, width: 90, height: 90,
-                      background: 'linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, transparent 100%)',
-                      borderBottomLeftRadius: '100%'
-                    }}></div>
-                    <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                        <span style={{ fontSize: 9, letterSpacing: 2, color: '#A78BFA', fontWeight: 900, textTransform: 'uppercase', background: 'rgba(124, 58, 237, 0.1)', padding: '4px 8px', borderRadius: 6 }}>SYSTEM DESIGN</span>
-                        <span style={{ fontSize: 11, color: '#6B7280', fontWeight: 700 }}>16 Weeks · ~30h</span>
-                      </div>
-                      <h3 style={{ fontSize: 18, fontWeight: 800, margin: '0 0 10px 0', color: '#FFF' }}>System Design (HLD + LLD)</h3>
-                      <p style={{ fontSize: 12.5, color: '#9CA3AF', lineHeight: 1.6, margin: '0 0 20px 0' }}>
-                        Parallel study covering distributed database sharding, caching architectures (HLD) and class service layers, API rate-limiting rules (LLD).
-                      </p>
-                    </div>
-                    <div>
-                      {/* Progress bar */}
-                      <div style={{ marginBottom: 16 }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 800, marginBottom: 6 }}>
-                          <span style={{ color: '#6B7280' }}>Progress</span>
-                          <span style={{ color: '#A78BFA' }}>{roadmapStats.system?.percent || 0}%</span>
-                        </div>
-                        <div style={{ height: 6, background: '#1E2235', borderRadius: 3, overflow: 'hidden' }}>
-                          <div style={{ width: `${roadmapStats.system?.percent || 0}%`, height: '100%', background: '#7C3AED', borderRadius: 3, transition: 'width 0.4s ease' }} />
-                        </div>
-                      </div>
-                      <button 
-                        onClick={() => setPage('system')} 
+                  {careerRoles.map(role => {
+                    let sum = 0;
+                    role.modules.forEach(m => {
+                      sum += roadmapStats[m]?.percent || 0;
+                    });
+                    const roleProgress = Math.round(sum / role.modules.length) || 0;
+
+                    return (
+                      <div 
+                        key={role.id}
                         style={{ 
-                          width: '100%', 
-                          background: '#7C3AED', 
-                          border: 'none', 
-                          borderRadius: 10, 
-                          color: '#FFF', 
-                          padding: '12px', 
-                          fontWeight: 700, 
-                          cursor: 'pointer',
-                          boxShadow: '0 4px 10px rgba(124, 58, 237, 0.2)'
+                          background: '#10121C', 
+                          border: '1px solid #1E2235', 
+                          borderRadius: 20, 
+                          padding: 24,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'space-between',
+                          position: 'relative',
+                          overflow: 'hidden',
+                          transition: 'all 0.3s ease'
                         }}
                       >
-                        Open System Design Roadmap
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* ML Plan Card */}
-                  <div style={{ 
-                    background: '#10121C', 
-                    border: '1px solid #1E2235', 
-                    borderRadius: 20, 
-                    padding: 24,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    position: 'relative',
-                    overflow: 'hidden'
-                  }}>
-                    <div style={{
-                      position: 'absolute',
-                      top: 0, right: 0, width: 90, height: 90,
-                      background: 'linear-gradient(135deg, rgba(5, 150, 105, 0.1) 0%, transparent 100%)',
-                      borderBottomLeftRadius: '100%'
-                    }}></div>
-                    <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                        <span style={{ fontSize: 9, letterSpacing: 2, color: '#34D399', fontWeight: 900, textTransform: 'uppercase', background: 'rgba(5, 150, 105, 0.1)', padding: '4px 8px', borderRadius: 6 }}>MACHINE LEARNING</span>
-                        <span style={{ fontSize: 11, color: '#6B7280', fontWeight: 700 }}>26 Weeks · ~192h</span>
-                      </div>
-                      <h3 style={{ fontSize: 18, fontWeight: 800, margin: '0 0 10px 0', color: '#FFF' }}>6-Month ML Transition</h3>
-                      <p style={{ fontSize: 12.5, color: '#9CA3AF', lineHeight: 1.6, margin: '0 0 20px 0' }}>
-                        Hands-on transition track covering resume updates, API model deployment, real-time Kafka scoring pipelines, and job hunt pacing.
-                      </p>
-                    </div>
-                    <div>
-                      {/* Progress bar */}
-                      <div style={{ marginBottom: 16 }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 800, marginBottom: 6 }}>
-                          <span style={{ color: '#6B7280' }}>Progress</span>
-                          <span style={{ color: '#34D399' }}>{roadmapStats.ml?.percent || 0}%</span>
+                        <div style={{
+                          position: 'absolute',
+                          top: 0, right: 0, width: 80, height: 80,
+                          background: `linear-gradient(135deg, ${role.bgColor} 0%, transparent 100%)`,
+                          borderBottomLeftRadius: '100%'
+                        }}></div>
+                        <div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                            <span style={{ fontSize: 9, letterSpacing: 2, color: role.color, fontWeight: 900, textTransform: 'uppercase', background: role.bgColor, padding: '4px 8px', borderRadius: 6 }}>CAREER PATH</span>
+                            <span style={{ fontSize: 11, color: '#6B7280', fontWeight: 700 }}>{role.modules.length} Modules</span>
+                          </div>
+                          <h3 style={{ fontSize: 17, fontWeight: 800, margin: '0 0 10px 0', color: '#FFF' }}>{role.title}</h3>
+                          <p style={{ fontSize: 12.5, color: '#9CA3AF', lineHeight: 1.6, margin: '0 0 20px 0' }}>
+                            {role.desc}
+                          </p>
                         </div>
-                        <div style={{ height: 6, background: '#1E2235', borderRadius: 3, overflow: 'hidden' }}>
-                          <div style={{ width: `${roadmapStats.ml?.percent || 0}%`, height: '100%', background: '#059669', borderRadius: 3, transition: 'width 0.4s ease' }} />
-                        </div>
-                      </div>
-                      <button 
-                        onClick={() => setPage('ml')} 
-                        style={{ 
-                          width: '100%', 
-                          background: '#059669', 
-                          border: 'none', 
-                          borderRadius: 10, 
-                          color: '#FFF', 
-                          padding: '12px', 
-                          fontWeight: 700, 
-                          cursor: 'pointer',
-                          boxShadow: '0 4px 10px rgba(5, 150, 105, 0.2)'
-                        }}
-                      >
-                        Open ML Plan Roadmap
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Python Card */}
-                  <div style={{ 
-                    background: '#10121C', 
-                    border: '1px solid #1E2235', 
-                    borderRadius: 20, 
-                    padding: 24,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    position: 'relative',
-                    overflow: 'hidden'
-                  }}>
-                    <div style={{
-                      position: 'absolute',
-                      top: 0, right: 0, width: 90, height: 90,
-                      background: 'linear-gradient(135deg, rgba(55, 118, 171, 0.1) 0%, transparent 100%)',
-                      borderBottomLeftRadius: '100%'
-                    }}></div>
-                    <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                        <span style={{ fontSize: 9, letterSpacing: 2, color: '#60A5FA', fontWeight: 900, textTransform: 'uppercase', background: 'rgba(55, 118, 171, 0.1)', padding: '4px 8px', borderRadius: 6 }}>LANGUAGE TRACK</span>
-                        <span style={{ fontSize: 11, color: '#6B7280', fontWeight: 700 }}>8 Weeks · ~48h</span>
-                      </div>
-                      <h3 style={{ fontSize: 18, fontWeight: 800, margin: '0 0 10px 0', color: '#FFF' }}>Python Mastery Roadmap</h3>
-                      <p style={{ fontSize: 12.5, color: '#9CA3AF', lineHeight: 1.6, margin: '0 0 20px 0' }}>
-                        Deep dive from syntax internals and the GIL to decorators, context managers, async programming, NumPy array operations, and testing.
-                      </p>
-                    </div>
-                    <div>
-                      {/* Progress bar */}
-                      <div style={{ marginBottom: 16 }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 800, marginBottom: 6 }}>
-                          <span style={{ color: '#6B7280' }}>Progress</span>
-                          <span style={{ color: '#60A5FA' }}>{roadmapStats.python?.percent || 0}%</span>
-                        </div>
-                        <div style={{ height: 6, background: '#1E2235', borderRadius: 3, overflow: 'hidden' }}>
-                          <div style={{ width: `${roadmapStats.python?.percent || 0}%`, height: '100%', background: '#3776AB', borderRadius: 3, transition: 'width 0.4s ease' }} />
+                        <div>
+                          {/* Progress bar */}
+                          <div style={{ marginBottom: 16 }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 800, marginBottom: 6 }}>
+                              <span style={{ color: '#6B7280' }}>Overall Progress</span>
+                              <span style={{ color: role.color }}>{roleProgress}%</span>
+                            </div>
+                            <div style={{ height: 6, background: '#1E2235', borderRadius: 3, overflow: 'hidden' }}>
+                              <div style={{ width: `${roleProgress}%`, height: '100%', background: role.color, borderRadius: 3, transition: 'width 0.4s ease' }} />
+                            </div>
+                          </div>
+                          <button 
+                            onClick={() => { setActiveRoleId(role.id); setPage('role-detail'); }} 
+                            style={{ 
+                              width: '100%', 
+                              background: role.color, 
+                              border: 'none', 
+                              borderRadius: 10, 
+                              color: '#FFF', 
+                              padding: '12px', 
+                              fontWeight: 700, 
+                              cursor: 'pointer',
+                              boxShadow: `0 4px 10px ${role.bgColor}`
+                            }}
+                          >
+                            View Career Path
+                          </button>
                         </div>
                       </div>
-                      <button 
-                        onClick={() => setPage('python')} 
-                        style={{ 
-                          width: '100%', 
-                          background: '#3776AB', 
-                          border: 'none', 
-                          borderRadius: 10, 
-                          color: '#FFF', 
-                          padding: '12px', 
-                          fontWeight: 700, 
-                          cursor: 'pointer',
-                          boxShadow: '0 4px 10px rgba(55, 118, 171, 0.3)'
-                        }}
-                      >
-                        Open Python Roadmap
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* SQL Card */}
-                  <div style={{ 
-                    background: '#10121C', 
-                    border: '1px solid #1E2235', 
-                    borderRadius: 20, 
-                    padding: 24,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    position: 'relative',
-                    overflow: 'hidden'
-                  }}>
-                    <div style={{
-                      position: 'absolute',
-                      top: 0, right: 0, width: 90, height: 90,
-                      background: 'linear-gradient(135deg, rgba(2, 132, 199, 0.1) 0%, transparent 100%)',
-                      borderBottomLeftRadius: '100%'
-                    }}></div>
-                    <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                        <span style={{ fontSize: 9, letterSpacing: 2, color: '#38BDF8', fontWeight: 900, textTransform: 'uppercase', background: 'rgba(2, 132, 199, 0.1)', padding: '4px 8px', borderRadius: 6 }}>DATABASE TRACK</span>
-                        <span style={{ fontSize: 11, color: '#6B7280', fontWeight: 700 }}>8 Weeks · ~48h</span>
-                      </div>
-                      <h3 style={{ fontSize: 18, fontWeight: 800, margin: '0 0 10px 0', color: '#FFF' }}>SQL & Database Tuning</h3>
-                      <p style={{ fontSize: 12.5, color: '#9CA3AF', lineHeight: 1.6, margin: '0 0 20px 0' }}>
-                        From joins and CTE subqueries to window analytics functions, index engineering, transaction locking bounds, and query optimizations.
-                      </p>
-                    </div>
-                    <div>
-                      {/* Progress bar */}
-                      <div style={{ marginBottom: 16 }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 800, marginBottom: 6 }}>
-                          <span style={{ color: '#6B7280' }}>Progress</span>
-                          <span style={{ color: '#38BDF8' }}>{roadmapStats.sql?.percent || 0}%</span>
-                        </div>
-                        <div style={{ height: 6, background: '#1E2235', borderRadius: 3, overflow: 'hidden' }}>
-                          <div style={{ width: `${roadmapStats.sql?.percent || 0}%`, height: '100%', background: '#0284C7', borderRadius: 3, transition: 'width 0.4s ease' }} />
-                        </div>
-                      </div>
-                      <button 
-                        onClick={() => setPage('sql')} 
-                        style={{ 
-                          width: '100%', 
-                          background: '#0284C7', 
-                          border: 'none', 
-                          borderRadius: 10, 
-                          color: '#FFF', 
-                          padding: '12px', 
-                          fontWeight: 700, 
-                          cursor: 'pointer',
-                          boxShadow: '0 4px 10px rgba(2, 132, 199, 0.3)'
-                        }}
-                      >
-                        Open SQL Roadmap
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Math & Stats Card */}
-                  <div style={{ 
-                    background: '#10121C', 
-                    border: '1px solid #1E2235', 
-                    borderRadius: 20, 
-                    padding: 24,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    position: 'relative',
-                    overflow: 'hidden'
-                  }}>
-                    <div style={{
-                      position: 'absolute',
-                      top: 0, right: 0, width: 90, height: 90,
-                      background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, transparent 100%)',
-                      borderBottomLeftRadius: '100%'
-                    }}></div>
-                    <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                        <span style={{ fontSize: 9, letterSpacing: 2, color: '#FBBF24', fontWeight: 900, textTransform: 'uppercase', background: 'rgba(245, 158, 11, 0.1)', padding: '4px 8px', borderRadius: 6 }}>THEORY TRACK</span>
-                        <span style={{ fontSize: 11, color: '#6B7280', fontWeight: 700 }}>8 Weeks · ~48h</span>
-                      </div>
-                      <h3 style={{ fontSize: 18, fontWeight: 800, margin: '0 0 10px 0', color: '#FFF' }}>Math & Classical ML</h3>
-                      <p style={{ fontSize: 12.5, color: '#9CA3AF', lineHeight: 1.6, margin: '0 0 20px 0' }}>
-                        Linear algebra vectors/matrices, multivariable calculus optimization, Bayes statistics, regularizations, SVMs, PCA, and decision forest boosts.
-                      </p>
-                    </div>
-                    <div>
-                      {/* Progress bar */}
-                      <div style={{ marginBottom: 16 }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 800, marginBottom: 6 }}>
-                          <span style={{ color: '#6B7280' }}>Progress</span>
-                          <span style={{ color: '#FBBF24' }}>{roadmapStats.math?.percent || 0}%</span>
-                        </div>
-                        <div style={{ height: 6, background: '#1E2235', borderRadius: 3, overflow: 'hidden' }}>
-                          <div style={{ width: `${roadmapStats.math?.percent || 0}%`, height: '100%', background: '#F59E0B', borderRadius: 3, transition: 'width 0.4s ease' }} />
-                        </div>
-                      </div>
-                      <button 
-                        onClick={() => setPage('math')} 
-                        style={{ 
-                          width: '100%', 
-                          background: '#F59E0B', 
-                          border: 'none', 
-                          borderRadius: 10, 
-                          color: '#FFF', 
-                          padding: '12px', 
-                          fontWeight: 700, 
-                          cursor: 'pointer',
-                          boxShadow: '0 4px 10px rgba(245, 158, 11, 0.3)'
-                        }}
-                      >
-                        Open Math & Stats Roadmap
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Deep Learning Card */}
-                  <div style={{ 
-                    background: '#10121C', 
-                    border: '1px solid #1E2235', 
-                    borderRadius: 20, 
-                    padding: 24,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    position: 'relative',
-                    overflow: 'hidden'
-                  }}>
-                    <div style={{
-                      position: 'absolute',
-                      top: 0, right: 0, width: 90, height: 90,
-                      background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, transparent 100%)',
-                      borderBottomLeftRadius: '100%'
-                    }}></div>
-                    <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                        <span style={{ fontSize: 9, letterSpacing: 2, color: '#A78BFA', fontWeight: 900, textTransform: 'uppercase', background: 'rgba(139, 92, 246, 0.1)', padding: '4px 8px', borderRadius: 6 }}>DEEP LEARNING TRACK</span>
-                        <span style={{ fontSize: 11, color: '#6B7280', fontWeight: 700 }}>8 Weeks · ~48h</span>
-                      </div>
-                      <h3 style={{ fontSize: 18, fontWeight: 800, margin: '0 0 10px 0', color: '#FFF' }}>Deep Learning & LLMs</h3>
-                      <p style={{ fontSize: 12.5, color: '#9CA3AF', lineHeight: 1.6, margin: '0 0 20px 0' }}>
-                        PyTorch tensors/autograd, CNN image filters, RNN sequences, self-attention, pre-training LLMs, LoRA fine-tuning, RAG, and agent loops.
-                      </p>
-                    </div>
-                    <div>
-                      {/* Progress bar */}
-                      <div style={{ marginBottom: 16 }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 800, marginBottom: 6 }}>
-                          <span style={{ color: '#6B7280' }}>Progress</span>
-                          <span style={{ color: '#A78BFA' }}>{roadmapStats.dl?.percent || 0}%</span>
-                        </div>
-                        <div style={{ height: 6, background: '#1E2235', borderRadius: 3, overflow: 'hidden' }}>
-                          <div style={{ width: `${roadmapStats.dl?.percent || 0}%`, height: '100%', background: '#8B5CF6', borderRadius: 3, transition: 'width 0.4s ease' }} />
-                        </div>
-                      </div>
-                      <button 
-                        onClick={() => setPage('dl')} 
-                        style={{ 
-                          width: '100%', 
-                          background: '#8B5CF6', 
-                          border: 'none', 
-                          borderRadius: 10, 
-                          color: '#FFF', 
-                          padding: '12px', 
-                          fontWeight: 700, 
-                          cursor: 'pointer',
-                          boxShadow: '0 4px 10px rgba(139, 92, 246, 0.3)'
-                        }}
-                      >
-                        Open Deep Learning Roadmap
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* MLOps Card */}
-                  <div style={{ 
-                    background: '#10121C', 
-                    border: '1px solid #1E2235', 
-                    borderRadius: 20, 
-                    padding: 24,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    position: 'relative',
-                    overflow: 'hidden'
-                  }}>
-                    <div style={{
-                      position: 'absolute',
-                      top: 0, right: 0, width: 90, height: 90,
-                      background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, transparent 100%)',
-                      borderBottomLeftRadius: '100%'
-                    }}></div>
-                    <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                        <span style={{ fontSize: 9, letterSpacing: 2, color: '#34D399', fontWeight: 900, textTransform: 'uppercase', background: 'rgba(16, 185, 129, 0.1)', padding: '4px 8px', borderRadius: 6 }}>ENGINEERING TRACK</span>
-                        <span style={{ fontSize: 11, color: '#6B7280', fontWeight: 700 }}>8 Weeks · ~48h</span>
-                      </div>
-                      <h3 style={{ fontSize: 18, fontWeight: 800, margin: '0 0 10px 0', color: '#FFF' }}>MLOps & Data Engineering</h3>
-                      <p style={{ fontSize: 12.5, color: '#9CA3AF', lineHeight: 1.6, margin: '0 0 20px 0' }}>
-                        Distributed PySpark frames, Airflow DAG orchestrations, MLflow registry logs, Docker multi-stage builds, Triton serves, and Feast online Materializations.
-                      </p>
-                    </div>
-                    <div>
-                      {/* Progress bar */}
-                      <div style={{ marginBottom: 16 }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 800, marginBottom: 6 }}>
-                          <span style={{ color: '#6B7280' }}>Progress</span>
-                          <span style={{ color: '#34D399' }}>{roadmapStats.mlops?.percent || 0}%</span>
-                        </div>
-                        <div style={{ height: 6, background: '#1E2235', borderRadius: 3, overflow: 'hidden' }}>
-                          <div style={{ width: `${roadmapStats.mlops?.percent || 0}%`, height: '100%', background: '#10B981', borderRadius: 3, transition: 'width 0.4s ease' }} />
-                        </div>
-                      </div>
-                      <button 
-                        onClick={() => setPage('mlops')} 
-                        style={{ 
-                          width: '100%', 
-                          background: '#10B981', 
-                          border: 'none', 
-                          borderRadius: 10, 
-                          color: '#FFF', 
-                          padding: '12px', 
-                          fontWeight: 700, 
-                          cursor: 'pointer',
-                          boxShadow: '0 4px 10px rgba(16, 185, 129, 0.3)'
-                        }}
-                      >
-                        Open MLOps Roadmap
-                      </button>
-                    </div>
-                  </div>
-
+                    );
+                  })}
                 </div>
-              </div>
-            )}
+                    {page === 'role-detail' && (() => {
+              const activeRole = careerRoles.find(r => r.id === activeRoleId);
+              if (!activeRole) return null;
+
+              let sum = 0;
+              activeRole.modules.forEach(m => {
+                sum += roadmapStats[m]?.percent || 0;
+              });
+              const roleProgress = Math.round(sum / activeRole.modules.length) || 0;
+              const radius = 34;
+              const circumference = 2 * Math.PI * radius;
+              const strokeDashoffset = circumference - (roleProgress / 100) * circumference;
+
+              return (
+                <div>
+                  <button 
+                    onClick={() => { setActiveRoleId(null); setPage('home'); }} 
+                    style={{ 
+                      marginBottom: 16, 
+                      background: '#10121C', 
+                      border: '1px solid #1E2235', 
+                      color: '#E8E8F0', 
+                      padding: '10px 16px', 
+                      borderRadius: 10, 
+                      cursor: 'pointer',
+                      fontWeight: 700
+                    }}
+                  >
+                    ← Back to Career Paths
+                  </button>
+
+                  {/* Role Header Panel */}
+                  <div style={{
+                    background: 'linear-gradient(90deg, #11131F 0%, #08090E 100%)',
+                    border: '1px solid #1E2235',
+                    borderRadius: 20,
+                    padding: '28px',
+                    marginBottom: 24,
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    gap: 24,
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{ flex: '1 1 500px' }}>
+                      <span style={{ fontSize: 9, letterSpacing: 2, color: activeRole.color, fontWeight: 900, textTransform: 'uppercase', background: activeRole.bgColor, padding: '4px 8px', borderRadius: 6, display: 'inline-block', marginBottom: 12 }}>
+                        Career Role
+                      </span>
+                      <h2 style={{ fontSize: 26, fontWeight: 900, margin: '0 0 10px 0', color: '#FFF' }}>
+                        {activeRole.title}
+                      </h2>
+                      <p style={{ fontSize: 13.5, color: '#9CA3AF', margin: 0, lineHeight: 1.6 }}>
+                        {activeRole.desc}
+                      </p>
+                    </div>
+                    
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                      <div style={{ position: 'relative', width: 90, height: 90 }}>
+                        <svg width="90" height="90" viewBox="0 0 90 90" style={{ transform: 'rotate(-90deg)' }}>
+                          <circle cx="45" cy="45" r={radius} stroke="#1E2235" strokeWidth="6" fill="transparent" />
+                          <circle 
+                            cx="45" cy="45" r={radius} 
+                            stroke={activeRole.color} strokeWidth="6" fill="transparent" 
+                            strokeDasharray={circumference}
+                            strokeDashoffset={strokeDashoffset}
+                            strokeLinecap="round"
+                            style={{ transition: 'stroke-dashoffset 0.4s ease' }}
+                          />
+                        </svg>
+                        <div style={{
+                          position: 'absolute',
+                          top: 0, left: 0, right: 0, bottom: 0,
+                          display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
+                          fontSize: 18, fontWeight: 900, color: '#FFF'
+                        }}>
+                          {roleProgress}%
+                        </div>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: 13, fontWeight: 800, color: '#FFF' }}>Path Progress</div>
+                        <div style={{ fontSize: 11, color: '#6B7280', marginTop: 2 }}>{activeRole.modules.length} Roadmaps mapped</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Sub-modules Grid */}
+                  <h3 style={{ fontSize: 16, fontWeight: 800, color: '#FFF', marginBottom: 16 }}>Mapped Learning Modules</h3>
+                  <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', 
+                    gap: 20,
+                    marginBottom: 28 
+                  }}>
+                    {activeRole.modules.map(moduleId => {
+                      const moduleMetadata = {
+                        system: { title: "System Design (HLD + LLD)", weeks: "16 Weeks · ~30h", desc: "Distributed sharding, cache designs, service patterns, rate limiters." },
+                        ml: { title: "ML Transition Plan", weeks: "26 Weeks · ~100h", desc: "Focused 6-month curriculum to transition into Machine Learning roles." },
+                        python: { title: "Python Master Track", weeks: "8 Weeks · ~48h", desc: "Data structures, OOP, concurrency, and scientific computing packages." },
+                        sql: { title: "SQL & Databases", weeks: "8 Weeks · ~48h", desc: "Complex joins, window queries, indexing internals, transaction locks." },
+                        math: { title: "Math & Classical ML", weeks: "8 Weeks · ~48h", desc: "Linear algebra, multivariable calculus, regression, tree ensembles, PCA." },
+                        dl: { title: "Deep Learning & LLMs", weeks: "8 Weeks · ~48h", desc: "PyTorch tensor operations, Transformers attention, LoRA fine-tuning, RAG." },
+                        mlops: { title: "MLOps & Data Engineering", weeks: "8 Weeks · ~48h", desc: "Spark clusters, Airflow DAGs, MLflow registries, Docker/Kubernetes container deployments." },
+                        java: { title: "Java & Spring Boot Full Stack", weeks: "8 Weeks · ~48h", desc: "Java collections, Spring DI/IoC, JPA/Hibernate entities, JWT secure APIs." },
+                        frontend: { title: "React & Angular Frontend", weeks: "8 Weeks · ~48h", desc: "React hooks, Redux RTK states, Angular templates, RxJS observability." },
+                        devops: { title: "DevOps & Infrastructure", weeks: "8 Weeks · ~48h", desc: "Linux shell scripting, Docker, Kubernetes containers, Terraform IaC states." }
+                      }[moduleId] || { title: moduleId, weeks: "8 Weeks", desc: "Comprehensive learning curriculum." };
+
+                      const progress = roadmapStats[moduleId]?.percent || 0;
+
+                      return (
+                        <div 
+                          key={moduleId}
+                          style={{ 
+                            background: '#10121C', 
+                            border: '1px solid #1E2235', 
+                            borderRadius: 16, 
+                            padding: 20,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between',
+                            minHeight: 180
+                          }}
+                        >
+                          <div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: '#6B7280', fontWeight: 700, marginBottom: 8 }}>
+                              <span>{moduleMetadata.weeks}</span>
+                              <span style={{ color: activeRole.color }}>{progress}% Done</span>
+                            </div>
+                            <h4 style={{ fontSize: 15, fontWeight: 800, margin: '0 0 6px 0', color: '#FFF' }}>{moduleMetadata.title}</h4>
+                            <p style={{ fontSize: 12, color: '#9CA3AF', lineHeight: 1.5, margin: '0 0 16px 0' }}>
+                              {moduleMetadata.desc}
+                            </p>
+                          </div>
+                          <div>
+                            <div style={{ height: 4, background: '#1E2235', borderRadius: 2, overflow: 'hidden', marginBottom: 12 }}>
+                              <div style={{ width: `${progress}%`, height: '100%', background: activeRole.color, borderRadius: 2 }} />
+                            </div>
+                            <button 
+                              onClick={() => setPage(moduleId)}
+                              style={{ 
+                                width: '100%', 
+                                background: '#161824', 
+                                border: '1px solid #24293E', 
+                                borderRadius: 8, 
+                                color: '#FFF', 
+                                padding: '8px 12px', 
+                                fontWeight: 700, 
+                                fontSize: 12.5,
+                                cursor: 'pointer'
+                              }}
+                            >
+                              Open Module Checklist
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Career Path Resources */}
+                  <div style={{ 
+                    background: '#10121C', 
+                    border: '1px solid #1E2235', 
+                    borderRadius: 20, 
+                    padding: 24,
+                    marginTop: 20
+                  }}>
+                    <h3 style={{ fontSize: 16, fontWeight: 800, color: '#FFF', margin: '0 0 12px 0' }}>
+                      🎬 Top Recommended Learning Resources (Free)
+                    </h3>
+                    <p style={{ fontSize: 13, color: '#9CA3AF', margin: '0 0 16px 0', lineHeight: 1.5 }}>
+                      These premium video courses and guides are highly recommended for the **{activeRole.title}** path:
+                    </p>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 12 }}>
+                      {activeRole.materials.map((mat, i) => (
+                        <a 
+                          key={i}
+                          href={mat.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            background: '#08090E',
+                            border: '1px solid #1E2235',
+                            borderRadius: 12,
+                            padding: '12px 16px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 12,
+                            color: '#FFF',
+                            textDecoration: 'none',
+                            fontWeight: 700,
+                            fontSize: 13,
+                            transition: 'all 0.2s ease'
+                          }}
+                        >
+                          <span style={{ fontSize: 18 }}>📺</span>
+                          <div>
+                            <div style={{ color: activeRole.color, fontSize: 10, textTransform: 'uppercase', letterSpacing: 1 }}>Resource</div>
+                            <div style={{ marginTop: 2 }}>{mat.title}</div>
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
 
             {page === 'system' && (
               <div>
                 <button 
-                  onClick={() => setPage('home')} 
+                  onClick={() => setPage(activeRoleId ? 'role-detail' : 'home')} 
                   style={{ 
                     marginBottom: 16, 
                     background: '#10121C', 
@@ -1253,7 +1156,7 @@
                     fontWeight: 700
                   }}
                 >
-                  ← Back to Dashboard
+                  {activeRoleId ? '← Back to Path' : '← Back to Dashboard'}
                 </button>
                 <SystemDesignRoadmap user={user} />
               </div>
@@ -1262,7 +1165,7 @@
             {page === 'ml' && (
               <div>
                 <button 
-                  onClick={() => setPage('home')} 
+                  onClick={() => setPage(activeRoleId ? 'role-detail' : 'home')} 
                   style={{ 
                     marginBottom: 16, 
                     background: '#10121C', 
@@ -1274,7 +1177,7 @@
                     fontWeight: 700
                   }}
                 >
-                  ← Back to Dashboard
+                  {activeRoleId ? '← Back to Path' : '← Back to Dashboard'}
                 </button>
                 <FocusedRoadmap user={user} />
               </div>
@@ -1283,7 +1186,7 @@
             {page === 'python' && (
               <div>
                 <button 
-                  onClick={() => setPage('home')} 
+                  onClick={() => setPage(activeRoleId ? 'role-detail' : 'home')} 
                   style={{ 
                     marginBottom: 16, 
                     background: '#10121C', 
@@ -1295,7 +1198,7 @@
                     fontWeight: 700
                   }}
                 >
-                  ← Back to Dashboard
+                  {activeRoleId ? '← Back to Path' : '← Back to Dashboard'}
                 </button>
                 <PythonRoadmap user={user} />
               </div>
@@ -1304,7 +1207,7 @@
             {page === 'sql' && (
               <div>
                 <button 
-                  onClick={() => setPage('home')} 
+                  onClick={() => setPage(activeRoleId ? 'role-detail' : 'home')} 
                   style={{ 
                     marginBottom: 16, 
                     background: '#10121C', 
@@ -1316,7 +1219,7 @@
                     fontWeight: 700
                   }}
                 >
-                  ← Back to Dashboard
+                  {activeRoleId ? '← Back to Path' : '← Back to Dashboard'}
                 </button>
                 <SQLRoadmap user={user} />
               </div>
@@ -1325,7 +1228,7 @@
             {page === 'math' && (
               <div>
                 <button 
-                  onClick={() => setPage('home')} 
+                  onClick={() => setPage(activeRoleId ? 'role-detail' : 'home')} 
                   style={{ 
                     marginBottom: 16, 
                     background: '#10121C', 
@@ -1337,7 +1240,7 @@
                     fontWeight: 700
                   }}
                 >
-                  ← Back to Dashboard
+                  {activeRoleId ? '← Back to Path' : '← Back to Dashboard'}
                 </button>
                 <MathMLRoadmap user={user} />
               </div>
@@ -1346,7 +1249,7 @@
             {page === 'dl' && (
               <div>
                 <button 
-                  onClick={() => setPage('home')} 
+                  onClick={() => setPage(activeRoleId ? 'role-detail' : 'home')} 
                   style={{ 
                     marginBottom: 16, 
                     background: '#10121C', 
@@ -1358,7 +1261,7 @@
                     fontWeight: 700
                   }}
                 >
-                  ← Back to Dashboard
+                  {activeRoleId ? '← Back to Path' : '← Back to Dashboard'}
                 </button>
                 <DeepLearningRoadmap user={user} />
               </div>
@@ -1367,7 +1270,7 @@
             {page === 'mlops' && (
               <div>
                 <button 
-                  onClick={() => setPage('home')} 
+                  onClick={() => setPage(activeRoleId ? 'role-detail' : 'home')} 
                   style={{ 
                     marginBottom: 16, 
                     background: '#10121C', 
@@ -1379,9 +1282,72 @@
                     fontWeight: 700
                   }}
                 >
-                  ← Back to Dashboard
+                  {activeRoleId ? '← Back to Path' : '← Back to Dashboard'}
                 </button>
                 <MLOpsRoadmap user={user} />
+              </div>
+            )}
+
+            {page === 'java' && (
+              <div>
+                <button 
+                  onClick={() => setPage(activeRoleId ? 'role-detail' : 'home')} 
+                  style={{ 
+                    marginBottom: 16, 
+                    background: '#10121C', 
+                    border: '1px solid #1E2235', 
+                    color: '#E8E8F0', 
+                    padding: '10px 16px', 
+                    borderRadius: 10, 
+                    cursor: 'pointer',
+                    fontWeight: 700
+                  }}
+                >
+                  {activeRoleId ? '← Back to Path' : '← Back to Dashboard'}
+                </button>
+                <JavaFullStackRoadmap user={user} />
+              </div>
+            )}
+
+            {page === 'frontend' && (
+              <div>
+                <button 
+                  onClick={() => setPage(activeRoleId ? 'role-detail' : 'home')} 
+                  style={{ 
+                    marginBottom: 16, 
+                    background: '#10121C', 
+                    border: '1px solid #1E2235', 
+                    color: '#E8E8F0', 
+                    padding: '10px 16px', 
+                    borderRadius: 10, 
+                    cursor: 'pointer',
+                    fontWeight: 700
+                  }}
+                >
+                  {activeRoleId ? '← Back to Path' : '← Back to Dashboard'}
+                </button>
+                <FrontendFullStackRoadmap user={user} />
+              </div>
+            )}
+
+            {page === 'devops' && (
+              <div>
+                <button 
+                  onClick={() => setPage(activeRoleId ? 'role-detail' : 'home')} 
+                  style={{ 
+                    marginBottom: 16, 
+                    background: '#10121C', 
+                    border: '1px solid #1E2235', 
+                    color: '#E8E8F0', 
+                    padding: '10px 16px', 
+                    borderRadius: 10, 
+                    cursor: 'pointer',
+                    fontWeight: 700
+                  }}
+                >
+                  {activeRoleId ? '← Back to Path' : '← Back to Dashboard'}
+                </button>
+                <DevOpsRoadmap user={user} />
               </div>
             )}
 
