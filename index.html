@@ -90,6 +90,7 @@
   <script type="text/babel" src="./devops_roadmap.jsx?v=4"></script>
   <script type="text/babel" src="./java_roadmap.jsx?v=4"></script>
   <script type="text/babel" src="./dsa_roadmap.jsx?v=4"></script>
+  <script type="text/babel" src="./ai_engineer_roadmap.jsx?v=4"></script>
 
   <script type="text/babel">
     const careerRoles = [
@@ -115,77 +116,75 @@
         color: "#3B82F6", // Blue
         bgColor: "rgba(59, 130, 246, 0.1)",
         borderGlow: "0 4px 15px rgba(59, 130, 246, 0.2)",
-        modules: ["dsa", "java_core", "python", "sql", "system"],
+        modules: ["dsa", "java", "sql", "system"],
         materials: [
-          { title: "System Design Primer", url: "https://github.com/donnemartin/system-design-primer" },
-          { title: "LeetCode & DSA Patterns (NeetCode)", url: "https://neetcode.io/" },
-          { title: "SQLBolt - Interactive SQL", url: "https://sqlbolt.com/" }
+          { title: "NeetCode DSA Roadmap & Lectures", url: "https://www.youtube.com/c/NeetCode" },
+          { title: "freeCodeCamp System Design Fundamentals", url: "https://www.youtube.com/watch?v=SqcXyztPa10" },
+          { title: "Hussein Nasser Database Engines Course", url: "https://www.youtube.com/playlist?list=PLQnljOFTspQXjD01G5AuoGd5tIp9hkFk5" }
         ]
       },
       {
         id: "data_eng",
         title: "Data Engineer",
-        desc: "Design ETL/ELT pipelines, manage distributed big data, orchestrate tasks, and maintain warehouses.",
+        desc: "Design robust ETL/ELT pipelines, maintain lakehouses, clean large streams, and manage orchestration.",
         color: "#10B981", // Green
         bgColor: "rgba(16, 185, 129, 0.1)",
         borderGlow: "0 4px 15px rgba(16, 185, 129, 0.2)",
-        modules: ["dsa", "python", "sql", "mlops"],
+        modules: ["python", "sql", "system"],
         materials: [
           { title: "DataTalksClub Data Engineering Zoomcamp", url: "https://github.com/DataTalksClub/data-engineering-zoomcamp" },
-          { title: "Apache Spark Guide", url: "https://spark.apache.org/docs/latest/sql-programming-guide.html" },
-          { title: "Astronomer Airflow Academy", url: "https://www.astronomer.io/academy/" }
+          { title: "freeCodeCamp Python for Data Science Course", url: "https://www.youtube.com/watch?v=LHBEI3L3OD8" }
         ]
       },
       {
         id: "data_analyst",
         title: "Data Analyst",
-        desc: "Analyze business metrics, build interactive dashboards, master SQL queries, and perform stats analysis.",
+        desc: "Extract metrics, design dashboards, write robust SQL queries, and present statistical analysis.",
         color: "#06B6D4", // Cyan
         bgColor: "rgba(6, 182, 212, 0.1)",
         borderGlow: "0 4px 15px rgba(6, 182, 212, 0.2)",
-        modules: ["sql", "python", "math"],
+        modules: ["python", "sql"],
         materials: [
-          { title: "Alex The Analyst Roadmap (YouTube)", url: "https://www.youtube.com/playlist?list=PLUaB-1hjhk8G759nF56C7L6vWOC2tD7Tf" },
-          { title: "Mode Analytics SQL & Python Tutorial", url: "https://mode.com/sql-tutorial/" },
-          { title: "Khan Academy Statistics", url: "https://www.khanacademy.org/math/statistics-probability" }
+          { title: "Alex The Analyst Data Analyst BootCamp", url: "https://www.youtube.com/playlist?list=PLUaB-1hjhk8G759nFf8-jXmbXf_d8c4E8" },
+          { title: "freeCodeCamp SQL & Databases Full Course", url: "https://www.youtube.com/watch?v=HXV3zeQKqGY" }
         ]
       },
       {
         id: "data_scientist",
         title: "Data Scientist",
-        desc: "Formulate statistical experiments, design classical ML pipelines, extract data insights, and solve business problems.",
+        desc: "Build statistical models, engineer features, run regression/classification algorithms, and draw insights.",
         color: "#F59E0B", // Orange
         bgColor: "rgba(245, 158, 11, 0.1)",
         borderGlow: "0 4px 15px rgba(245, 158, 11, 0.2)",
         modules: ["math", "ml", "python", "sql"],
         materials: [
-          { title: "StatQuest ML Playlist", url: "https://www.youtube.com/playlist?list=PLMCXHnjXnJeMprCsz1zCoM9O1XqPzT_V4" },
-          { title: "Kettle ML System Design Notebooks", url: "https://github.com/chiphuyen/machine-learning-systems-design" },
-          { title: "Python for Data Analysis Book", url: "https://wesmckinney.com/book/" }
+          { title: "StatQuest Machine Learning Basics", url: "https://www.youtube.com/playlist?list=PLMCXHnjXnJeND0K13O4z4L5t5pG02Pnb1" },
+          { title: "Kaggle Machine Learning Micro-Courses", url: "https://www.kaggle.com/learn" },
+          { title: "freeCodeCamp Python for Beginners Course", url: "https://www.youtube.com/watch?v=8DvywoWv6fI" }
         ]
       },
       {
         id: "java_fs",
         title: "Full Stack Developer (Java)",
-        desc: "Develop robust enterprise apps with Core Java, Spring Boot microservices, security filters, and databases.",
+        desc: "Build secure MVC controllers, configure Hibernate ORMs, build React/Angular panels, and write SQL.",
         color: "#EC4899", // Pink
         bgColor: "rgba(236, 72, 153, 0.1)",
         borderGlow: "0 4px 15px rgba(236, 72, 153, 0.2)",
-        modules: ["dsa", "java_core", "java", "sql"],
+        modules: ["java_fs", "java", "sql", "dsa"],
         materials: [
-          { title: "Programming with Mosh Java Course", url: "https://www.youtube.com/watch?v=eIrMbLyXSZs" },
-          { title: "Amigoscode Spring Boot Course", url: "https://www.youtube.com/watch?v=9SGDpanrc8U" },
-          { title: "Java Guides Spring Security & JWT", url: "https://www.youtube.com/watch?v=KxqlJblhzfI" }
+          { title: "Amigoscode Spring Boot Tutorial for Beginners", url: "https://www.youtube.com/watch?v=9SGDpanrc8U" },
+          { title: "Java Brains Spring Boot Quick Start", url: "https://www.youtube.com/playlist?list=PLqq-7IBIsTz3oxnxHGvS3pWz612J2t_qO" },
+          { title: "Programming with Mosh React Course", url: "https://www.youtube.com/watch?v=Ke90Tje7VS0" }
         ]
       },
       {
         id: "frontend_fs",
         title: "Full Stack Engineer (React/Angular)",
-        desc: "Design responsive frontends using React component hooks, Angular DI routers, state libraries, and databases.",
+        desc: "Code beautiful responsive hooks, manage global stores, run express microservices, and deploy endpoints.",
         color: "#D946EF", // Fuchsia
         bgColor: "rgba(217, 70, 239, 0.1)",
         borderGlow: "0 4px 15px rgba(217, 70, 239, 0.2)",
-        modules: ["dsa", "frontend", "sql"],
+        modules: ["frontend_fs", "sql"],
         materials: [
           { title: "Programming with Mosh React Course", url: "https://www.youtube.com/watch?v=Ke90Tje7VS0" },
           { title: "Codevolution Angular Course", url: "https://www.youtube.com/watch?v=3qBXWUpoPHo" },
@@ -205,10 +204,33 @@
           { title: "freeCodeCamp Terraform Tutorial", url: "https://www.youtube.com/watch?v=SLB_c_ayRCo" },
           { title: "Jeff Geerling Ansible series", url: "https://www.youtube.com/playlist?list=PL2_OBreMn7FqZkvMYt6ATFfCbWy7zFiXI" }
         ]
+      },
+      {
+        id: "ai_eng",
+        title: "AI Engineer (Generative AI)",
+        desc: "Build LLM applications, design RAG semantic indexing pipelines, construct multi-agent systems, and apply guardrails.",
+        color: "#6366F1", // Indigo
+        bgColor: "rgba(99, 102, 241, 0.1)",
+        borderGlow: "0 4px 15px rgba(99, 102, 241, 0.2)",
+        modules: ["dsa", "python", "ai_engineer"],
+        materials: [
+          { title: "DeepLearning.ai ChatGPT Prompting Course", url: "https://www.youtube.com/watch?v=mEsleV16qdo" },
+          { title: "freeCodeCamp LangChain Full Course", url: "https://www.youtube.com/watch?v=lG7Uxts9SXs" },
+          { title: "freeCodeCamp Vector Database Course", url: "https://www.youtube.com/watch?v=klTvEwg3XJ4" },
+          { title: "Andrew Ng Agentic Design Patterns Lectures", url: "https://www.youtube.com/watch?v=q6gSCG4J1_U" }
+        ]
       }
     ];
 
     function RoleIcon({ roleId, size = 20 }) {
+      if (roleId === 'ai_eng') {
+        return (
+          <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+            <path d="m5 3 1 2.5L8.5 6 6 7 5 9.5 4 7 1.5 6 4 5.5 5 3Z" opacity="0.6" />
+          </svg>
+        );
+      }
       if (roleId === 'ai_ml') {
         return (
           <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -367,7 +389,8 @@
           frontend: getStats('frontend', window.frontendWeeks),
           devops: getStats('devops', window.devopsWeeks),
           java_core: getStats('java_core', window.javaCoreWeeks),
-          dsa: getStats('dsa', window.dsaWeeks)
+          dsa: getStats('dsa', window.dsaWeeks),
+          ai_engineer: getStats('ai_engineer', window.aiEngineerWeeks)
         };
       }, [user, statsUpdateTrigger, page]); // Update stats when returning to Home page
 
@@ -416,7 +439,7 @@
 
           // 3. If still no Gist ID, we will initialize a new private Gist
           if (!targetGistId) {
-            const emptyPayload = { system: {}, ml: {}, python: {}, sql: {}, math: {}, dl: {}, mlops: {}, java: {}, frontend: {}, devops: {}, java_core: {}, dsa: {} };
+            const emptyPayload = { system: {}, ml: {}, python: {}, sql: {}, math: {}, dl: {}, mlops: {}, java: {}, frontend: {}, devops: {}, java_core: {}, dsa: {}, ai_engineer: {} };
             const newGistId = await saveGistToGitHub(token, null, emptyPayload);
             targetGistId = newGistId;
             setGistId(targetGistId);
@@ -439,7 +462,7 @@
 
           if (contentStr) {
             const remoteProgress = JSON.parse(contentStr);
-            const roadmaps = ['system', 'ml', 'python', 'sql', 'math', 'dl', 'mlops', 'java', 'frontend', 'devops', 'java_core', 'dsa'];
+            const roadmaps = ['system', 'ml', 'python', 'sql', 'math', 'dl', 'mlops', 'java', 'frontend', 'devops', 'java_core', 'dsa', 'ai_engineer'];
             let mergedAny = false;
 
             // Merge local and remote check lists
@@ -522,7 +545,8 @@
             frontend: JSON.parse(localStorage.getItem(`frontend-progress-${user}`) || '{}'),
             devops: JSON.parse(localStorage.getItem(`devops-progress-${user}`) || '{}'),
             java_core: JSON.parse(localStorage.getItem(`java_core-progress-${user}`) || '{}'),
-            dsa: JSON.parse(localStorage.getItem(`dsa-progress-${user}`) || '{}')
+            dsa: JSON.parse(localStorage.getItem(`dsa-progress-${user}`) || '{}'),
+            ai_engineer: JSON.parse(localStorage.getItem(`ai_engineer-progress-${user}`) || '{}')
           };
           const newGistId = await saveGistToGitHub(gitToken, gistId, payload);
           if (newGistId !== gistId) {
@@ -1151,7 +1175,8 @@
                         frontend: { title: "React & Angular Frontend", weeks: "8 Weeks · ~48h", desc: "React hooks, Redux RTK states, Angular templates, RxJS observability." },
                         devops: { title: "DevOps & Infrastructure", weeks: "8 Weeks · ~48h", desc: "Linux shell scripting, Docker, Kubernetes containers, Terraform IaC states." },
                         java_core: { title: "Java Core Foundations", weeks: "8 Weeks · ~48h", desc: "Bytecode execution, encapsulation, exception handling, multithreading, and GC." },
-                        dsa: { title: "Data Structures & Algorithms", weeks: "8 Weeks · ~48h", desc: "Two pointers, binary search, recursions, binary trees, heaps, graphs, DP, and greedy algorithms." }
+                        dsa: { title: "Data Structures & Algorithms", weeks: "8 Weeks · ~48h", desc: "Two pointers, binary search, recursions, binary trees, heaps, graphs, DP, and greedy algorithms." },
+                        ai_engineer: { title: "AI Engineer (Generative AI)", weeks: "8 Weeks · ~48h", desc: "LLMs APIs, Prompt Engineering, Embeddings, Vector DBs, RAG pipelines, function calling, and Agents." }
                       }[moduleId] || { title: moduleId, weeks: "8 Weeks", desc: "Comprehensive learning curriculum." };
 
                       const progress = roadmapStats[moduleId]?.percent || 0;
@@ -1504,6 +1529,27 @@
                   {activeRoleId ? '← Back to Path' : '← Back to Dashboard'}
                 </button>
                 <DSARoadmap user={user} />
+              </div>
+            )}
+
+            {page === 'ai_engineer' && (
+              <div>
+                <button 
+                  onClick={() => setPage(activeRoleId ? 'role-detail' : 'home')} 
+                  style={{ 
+                    marginBottom: 16, 
+                    background: '#10121C', 
+                    border: '1px solid #1E2235', 
+                    color: '#E8E8F0', 
+                    padding: '10px 16px', 
+                    borderRadius: 10, 
+                    cursor: 'pointer',
+                    fontWeight: 700
+                  }}
+                >
+                  {activeRoleId ? '← Back to Path' : '← Back to Dashboard'}
+                </button>
+                <AIEngineerRoadmap user={user} />
               </div>
             )}
 
