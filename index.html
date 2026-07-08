@@ -44,6 +44,21 @@
       50% { transform: scale(1.2) translate(15px, -15px); opacity: 0.35; }
     }
 
+    @keyframes float-slower {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(5deg); }
+    }
+
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes shine {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
     .glow-orb {
       position: absolute;
       border-radius: 50%;
@@ -51,6 +66,71 @@
       z-index: 0;
       pointer-events: none;
       animation: pulse-glow 12s infinite alternate ease-in-out;
+    }
+
+    .fade-in {
+      animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .delayed-fade-1 {
+      opacity: 0;
+      animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+    }
+
+    .delayed-fade-2 {
+      opacity: 0;
+      animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+    }
+
+    .shiny-text {
+      background: linear-gradient(120deg, #818cf8 0%, #c084fc 25%, #6366f1 50%, #c084fc 75%, #818cf8 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 6s linear infinite;
+    }
+
+    .custom-input {
+      border: 1px solid #1E2235;
+      background: rgba(8, 9, 14, 0.8) !important;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .custom-input:focus {
+      border-color: #6366F1 !important;
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.3), inset 0 2px 4px rgba(0,0,0,0.8) !important;
+      background: rgba(16, 18, 28, 0.9) !important;
+    }
+
+    .interactive-btn {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4) !important;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .interactive-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6) !important;
+    }
+
+    .interactive-btn:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
+    .interactive-btn::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      transition: 0.5s;
+    }
+
+    .interactive-btn:hover::after {
+      left: 100%;
+      transition: all 0.6s ease-in-out;
     }
     
     /* Scrollbar customization */
@@ -92,6 +172,7 @@
   <script type="text/babel" src="./dsa_roadmap.jsx?v=4"></script>
   <script type="text/babel" src="./ai_engineer_roadmap.jsx?v=4"></script>
   <script type="text/babel" src="./oracle_dba_roadmap.jsx?v=4"></script>
+  <script type="text/babel" src="./python_dsa_roadmap.jsx?v=4"></script>
 
   <script type="text/babel">
     const careerRoles = [
@@ -234,10 +315,38 @@
           { title: "Oracle RMAN Backup and Recovery Tutorials", url: "https://www.youtube.com/playlist?list=PLB-c5cZaEwZ_H8W5L3TfN7VqE4y_QvK0u" },
           { title: "Oracle Data Guard Administration Tutorials", url: "https://www.youtube.com/watch?v=Tq_Yc0tV2dE" }
         ]
+      },
+      {
+        id: "py_dsa_role",
+        title: "DSA Specialist (Python)",
+        desc: "Master array slicing, nodes linkages, FIFO/LIFO buffers, chaining hash tables, BSTs recursion, heapq models, trie prefix checks, and sorting Lomuto partitions.",
+        color: "#D97706", // Amber
+        bgColor: "rgba(217, 119, 6, 0.1)",
+        borderGlow: "0 4px 15px rgba(217, 119, 6, 0.2)",
+        modules: ["python", "python_dsa"],
+        materials: [
+          { title: "NeetCode Arrays & Hashing Video Lectures", url: "https://www.youtube.com/playlist?list=PLot-Xpkr5xvgF0M1glCxotg40cjgs14yT" },
+          { title: "freeCodeCamp Python DSA Full Course", url: "https://www.youtube.com/watch?v=pkYtud_gM-s" },
+          { title: "Corey Schafer Python Lists & Dicts Tutorial", url: "https://www.youtube.com/watch?v=W8KRzm-HUcc" }
+        ]
       }
     ];
 
     function RoleIcon({ roleId, size = 20 }) {
+      if (roleId === 'py_dsa_role') {
+        return (
+          <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="5" r="2.5" />
+            <circle cx="5" cy="12" r="2.5" />
+            <circle cx="19" cy="12" r="2.5" />
+            <circle cx="12" cy="19" r="2.5" />
+            <line x1="12" y1="7.5" x2="5" y2="9.5" />
+            <line x1="12" y1="7.5" x2="19" y2="9.5" />
+            <line x1="5" y1="14.5" x2="12" y2="16.5" />
+            <line x1="19" y1="14.5" x2="12" y2="16.5" />
+          </svg>
+        );
+      }
       if (roleId === 'oracle_dba_role') {
         return (
           <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -419,7 +528,8 @@
           java_core: getStats('java_core', window.javaCoreWeeks),
           dsa: getStats('dsa', window.dsaWeeks),
           ai_engineer: getStats('ai_engineer', window.aiEngineerWeeks),
-          oracle_dba: getStats('oracle_dba', window.oracleDBAWeeks)
+          oracle_dba: getStats('oracle_dba', window.oracleDBAWeeks),
+          python_dsa: getStats('python_dsa', window.pythonDSAWeeks)
         };
       }, [user, statsUpdateTrigger, page]); // Update stats when returning to Home page
 
@@ -468,7 +578,7 @@
 
           // 3. If still no Gist ID, we will initialize a new private Gist
           if (!targetGistId) {
-            const emptyPayload = { system: {}, ml: {}, python: {}, sql: {}, math: {}, dl: {}, mlops: {}, java: {}, frontend: {}, devops: {}, java_core: {}, dsa: {}, ai_engineer: {}, oracle_dba: {} };
+            const emptyPayload = { system: {}, ml: {}, python: {}, sql: {}, math: {}, dl: {}, mlops: {}, java: {}, frontend: {}, devops: {}, java_core: {}, dsa: {}, ai_engineer: {}, oracle_dba: {}, python_dsa: {} };
             const newGistId = await saveGistToGitHub(token, null, emptyPayload);
             targetGistId = newGistId;
             setGistId(targetGistId);
@@ -491,7 +601,7 @@
 
           if (contentStr) {
             const remoteProgress = JSON.parse(contentStr);
-            const roadmaps = ['system', 'ml', 'python', 'sql', 'math', 'dl', 'mlops', 'java', 'frontend', 'devops', 'java_core', 'dsa', 'ai_engineer', 'oracle_dba'];
+            const roadmaps = ['system', 'ml', 'python', 'sql', 'math', 'dl', 'mlops', 'java', 'frontend', 'devops', 'java_core', 'dsa', 'ai_engineer', 'oracle_dba', 'python_dsa'];
             let mergedAny = false;
 
             // Merge local and remote check lists
@@ -576,7 +686,8 @@
             java_core: JSON.parse(localStorage.getItem(`java_core-progress-${user}`) || '{}'),
             dsa: JSON.parse(localStorage.getItem(`dsa-progress-${user}`) || '{}'),
             ai_engineer: JSON.parse(localStorage.getItem(`ai_engineer-progress-${user}`) || '{}'),
-            oracle_dba: JSON.parse(localStorage.getItem(`oracle_dba-progress-${user}`) || '{}')
+            oracle_dba: JSON.parse(localStorage.getItem(`oracle_dba-progress-${user}`) || '{}'),
+            python_dsa: JSON.parse(localStorage.getItem(`python_dsa-progress-${user}`) || '{}')
           };
           const newGistId = await saveGistToGitHub(gitToken, gistId, payload);
           if (newGistId !== gistId) {
@@ -646,35 +757,38 @@
             <div className="glow-orb" style={{ top: '15%', left: '10%', width: 250, height: 250, background: '#7C3AED' }} />
             <div className="glow-orb" style={{ bottom: '15%', right: '10%', width: 300, height: 300, background: '#2563EB' }} />
 
-            <div style={{ 
+            <div className="fade-in" style={{ 
               width: '100%', 
-              maxWidth: 480, 
+              maxWidth: 520, 
               textAlign: 'center', 
               background: 'rgba(16, 18, 28, 0.75)', 
               backdropFilter: 'blur(20px)',
               border: '1px solid rgba(30, 34, 53, 0.8)', 
               borderRadius: 24, 
-              padding: '44px 36px',
-              boxShadow: '0 20px 50px rgba(0, 0, 0, 0.5)',
+              padding: '52px 40px',
+              boxShadow: '0 25px 60px rgba(0, 0, 0, 0.6)',
               position: 'relative',
-              zIndex: 1
+              zIndex: 1,
+              animation: 'float-slower 8s infinite alternate ease-in-out'
             }}>
-              <div style={{ 
+              <div className="delayed-fade-1" style={{ 
                 fontSize: 10, 
                 letterSpacing: 4, 
-                color: '#3B82F6', 
-                marginBottom: 16, 
+                color: '#818CF8', 
+                marginBottom: 20, 
                 fontWeight: 900,
                 textTransform: 'uppercase'
               }}>
-                Synapse Portal
+                Synapse Gateway
               </div>
-              <h2 style={{ fontSize: 30, fontWeight: 900, marginBottom: 12, color: '#FFF' }}>Begin Your Journey</h2>
-              <p style={{ fontSize: 13.5, color: '#9CA3AF', lineHeight: 1.6, marginBottom: 28 }}>
+              <h2 className="shiny-text delayed-fade-1" style={{ fontSize: 34, fontWeight: 900, marginBottom: 16, lineHeight: 1.2 }}>
+                Future Foundation : The First steps
+              </h2>
+              <p className="delayed-fade-1" style={{ fontSize: 13.5, color: '#9CA3AF', lineHeight: 1.6, marginBottom: 32 }}>
                 Enter your name to initialize a personalized career transition dashboard. Progress is stored securely in your browser's local cache.
               </p>
               
-              <div style={{ position: 'relative', marginBottom: 20 }}>
+              <div className="delayed-fade-2" style={{ position: 'relative', marginBottom: 24 }}>
                 <input
                   type="text"
                   value={nameInput}
@@ -685,42 +799,32 @@
                       setUser(nameInput.trim());
                     }
                   }}
+                  className="custom-input"
                   style={{ 
                     width: '100%', 
-                    padding: '16px 20px', 
-                    borderRadius: 12, 
-                    border: '1px solid #22273D', 
-                    background: '#08090E', 
+                    padding: '18px 24px', 
+                    borderRadius: 14, 
                     color: '#FFF', 
-                    fontSize: 14, 
+                    fontSize: 15.5, 
                     outline: 'none',
                     boxSizing: 'border-box'
                   }}
-                  onFocus={(e) => e.target.style.borderColor = '#3B82F6'}
-                  onBlur={(e) => e.target.style.borderColor = '#22273D'}
                 />
               </div>
 
               <button
                 onClick={() => setUser(nameInput.trim())}
                 disabled={!nameInput.trim()}
+                className="interactive-btn delayed-fade-2"
                 style={{ 
                   width: '100%', 
-                  padding: '16px 20px', 
-                  borderRadius: 12, 
+                  padding: '18px 24px', 
+                  borderRadius: 14, 
                   border: 'none', 
-                  background: nameInput.trim() ? 'linear-gradient(90deg, #2563EB 0%, #7C3AED 100%)' : '#1A1C28', 
-                  color: nameInput.trim() ? '#FFF' : '#4B5563', 
+                  color: nameInput.trim() ? '#FFF' : '#6B7280', 
                   fontWeight: 800, 
                   cursor: nameInput.trim() ? 'pointer' : 'not-allowed',
-                  boxShadow: nameInput.trim() ? '0 4px 15px rgba(59, 130, 246, 0.4)' : 'none',
-                  transform: nameInput.trim() ? 'scale(1)' : 'none'
-                }}
-                onMouseEnter={(e) => {
-                  if (nameInput.trim()) e.target.style.transform = 'translateY(-1px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.transform = 'translateY(0)';
+                  fontSize: 15.5
                 }}
               >
                 Sign In
@@ -1207,7 +1311,8 @@
                         java_core: { title: "Java Core Foundations", weeks: "8 Weeks · ~48h", desc: "Bytecode execution, encapsulation, exception handling, multithreading, and GC." },
                         dsa: { title: "Data Structures & Algorithms", weeks: "8 Weeks · ~48h", desc: "Two pointers, binary search, recursions, binary trees, heaps, graphs, DP, and greedy algorithms." },
                         ai_engineer: { title: "AI Engineer (Generative AI)", weeks: "8 Weeks · ~48h", desc: "LLMs APIs, Prompt Engineering, Embeddings, Vector DBs, RAG pipelines, function calling, and Agents." },
-                        oracle_dba: { title: "Oracle DBA (Database Administrator)", weeks: "8 Weeks · ~48h", desc: "Instance memory structures, PL/SQL, JSON document queries, RMAN backup catalog protocols, Active Data Guard replication, RAC setups, and zero-downtime upgrades (EBR)." }
+                        oracle_dba: { title: "Oracle DBA (Database Administrator)", weeks: "8 Weeks · ~48h", desc: "Instance memory structures, PL/SQL, JSON document queries, RMAN backup catalog protocols, Active Data Guard replication, RAC setups, and zero-downtime upgrades (EBR)." },
+                        python_dsa: { title: "Python DSA Specialization", weeks: "8 Weeks · ~48h", desc: "Dynamic arrays slicing, self-referential linked list node reversals, custom separate chaining hash tables, heap heapq, prefix trie trees, and DSU compressions." }
                       }[moduleId] || { title: moduleId, weeks: "8 Weeks", desc: "Comprehensive learning curriculum." };
 
                       const progress = roadmapStats[moduleId]?.percent || 0;
@@ -1602,6 +1707,27 @@
                   {activeRoleId ? '← Back to Path' : '← Back to Dashboard'}
                 </button>
                 <OracleDBARoadmap user={user} />
+              </div>
+            )}
+
+            {page === 'python_dsa' && (
+              <div>
+                <button 
+                  onClick={() => setPage(activeRoleId ? 'role-detail' : 'home')} 
+                  style={{ 
+                    marginBottom: 16, 
+                    background: '#10121C', 
+                    border: '1px solid #1E2235', 
+                    color: '#E8E8F0', 
+                    padding: '10px 16px', 
+                    borderRadius: 10, 
+                    cursor: 'pointer',
+                    fontWeight: 700
+                  }}
+                >
+                  {activeRoleId ? '← Back to Path' : '← Back to Dashboard'}
+                </button>
+                <PythonDSARoadmap user={user} />
               </div>
             )}
 
